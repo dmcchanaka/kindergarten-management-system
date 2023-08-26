@@ -1,5 +1,5 @@
 <template>
-    This is kindergarten management system
+    <router-view></router-view>
 </template>
 
 <style lang="scss">
