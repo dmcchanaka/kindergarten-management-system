@@ -15,6 +15,22 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
         ]
+    },
+    {
+        path: "/",
+        redirect: "/dashboard",
+        component: () => import("@/layouts/main-layout/MainLayout.vue"),
+        children: [
+            {
+                path: "/dashboard",
+                name: "dashboard",
+                component: () => import("@/views/Dashboard.vue"),
+                meta: {
+                  pageTitle: "Dashboard",
+                  breadcrumbs: ["Dashboards"],
+                },
+            },
+        ]
     }
 ];
 

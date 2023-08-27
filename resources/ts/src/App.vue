@@ -3,6 +3,7 @@
 </template>
 
 <style lang="scss">
+@import "sweetalert2/dist/sweetalert2.css";
 </style>
 
 <script lang="ts">
