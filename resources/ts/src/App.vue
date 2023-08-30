@@ -1,8 +1,9 @@
 <template>
-    This is kindergarten management system
+    <router-view></router-view>
 </template>
 
 <style lang="scss">
+@import "sweetalert2/dist/sweetalert2.css";
 </style>
 
 <script lang="ts">
