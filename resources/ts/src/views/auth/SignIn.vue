@@ -53,7 +53,7 @@
         </div>
 
         <div class="w-1/2 md:block hidden ">
-            <img :src="getAssetPath('media/backgrounds/bg-02.png')" class="rounded-2xl" alt="page img">
+            <img :src="getAssetPath('media/backgrounds/bg-02.png')" style="height: 100%;width: 100%;" class="rounded-2xl" alt="page img">
         </div>
 
         </div>

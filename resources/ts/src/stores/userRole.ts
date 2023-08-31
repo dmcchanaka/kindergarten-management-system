@@ -4,19 +4,19 @@ import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
 
 export interface UserRole {
-    id: string;
+    role_id: string;
     description: string;
 }
 
 export const useUserRoleStore = defineStore("userRole", () => {
 
     const errors = ref({});
-    const userRole = ref<UserRole | null>(null);
+    const userRoleList = ref<UserRole[]>([]);
 
     function fetchUserRoles() {
-        return ApiService.get("/login")
+        return ApiService.post("/user-roles-list", {})
             .then(({ data }) => {
-                console.log(data);
+                setUserRoles(data.userRoles);
             })
             .catch(({ response }) => {
                 console.log(response);
@@ -30,7 +30,18 @@ export const useUserRoleStore = defineStore("userRole", () => {
             });
     }
 
+    function setUserRoles(roles: UserRole[]) {
+        userRoleList.value = roles;
+        errors.value = {};
+    }
+
     function setError(error: any) {
         errors.value = { ...error };
+    }
+
+    return {
+        fetchUserRoles,
+        userRoleList,
+        errors
     }
 });

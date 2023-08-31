@@ -19,7 +19,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "footer",
+  name: "footer-layer",
   setup() {
     return {
     }

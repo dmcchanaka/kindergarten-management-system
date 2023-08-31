@@ -59,7 +59,7 @@
     </div>
 
     <div class="mt-5 w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-        <UserRoleList></UserRoleList>
+        <UserRoleList :userRoleList="userRoleList"></UserRoleList>
     </div>
     
 </template>
@@ -67,10 +67,12 @@
 <style lang="scss"></style>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { useUserRoleStore, type UserRole } from "@/stores/userRole";
 
-import UserRoleList from "@/components/user-roles/table/UserRoleList.vue"
+import UserRoleList from "@/components/user-roles/table/UserRoleList.vue";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 export default defineComponent({
     name: "view-user-roles",
@@ -82,17 +84,34 @@ export default defineComponent({
         UserRoleList
     },
     setup() {
+        const store = useUserRoleStore();
+
+        const userRoleList = ref<Array<UserRole>>([]);
 
         onMounted(async() => {
             await fetchUserRoleList();
         });
 
         const fetchUserRoleList = async() => {
-            
+            await store.fetchUserRoles();
+            const error = Object.values(store.errors);
+            if (error.length === 0) {
+                userRoleList.value.splice(0, userRoleList.value.length, ...store.userRoleList);
+            } else {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try again!'
+                }).then((result) => {
+                    store.errors = {};
+                })
+            }
         }
 
         return {
-
+            userRoleList
         }
     },
 });
