@@ -30,6 +30,15 @@ const routes: Array<RouteRecordRaw> = [
                   breadcrumbs: ["Dashboards"],
                 },
             },
+            {
+                path: "/user-roles",
+                name: "user-roles",
+                component: () => import("@/views/user-roles/ViewRoles.vue"),
+                meta: {
+                  pageTitle: "User Roles",
+                  breadcrumbs: ["User Roles"],
+                },
+            },
         ]
     }
 ];
