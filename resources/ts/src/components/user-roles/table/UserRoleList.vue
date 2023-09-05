@@ -26,9 +26,6 @@
                     </td>
                     <td class="py-3 px-6 text-center">
                         <div class="flex item-center justify-center">
-                            <!-- <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                <EyeIcon class="h-5 w-5 text-gray-600 hover:text-purple-500 hover:scale-110" />
-                            </div> -->
                             <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                 <PencilSquareIcon class="h-5 w-5 text-gray-600 hover:text-green-500 hover:scale-110" />
                             </div>
@@ -56,7 +53,7 @@ export default defineComponent({
     components: {
         EyeIcon,
         PencilSquareIcon,
-        TrashIcon
+        TrashIcon,
     },
     setup() {
     },
