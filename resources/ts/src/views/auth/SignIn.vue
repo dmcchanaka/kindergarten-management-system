@@ -21,7 +21,7 @@
 
             <button 
                 ref="submitButton" 
-                class="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6"
+                class="w-full block bg-blue-500 hover:bg-blue-800 focus:bg-blue-800 text-white font-semibold rounded-lg px-4 py-3 mt-6"
                 :disabled="loading"
                 >
                 <span v-if="!loading">Log In</span>
@@ -109,20 +109,7 @@ export default defineComponent({
                 confirmButtonText: 'Ok, got it!'
             }).then(() => {
                 router.push({ name: "dashboard" });
-            })
-        // Swal.fire({
-        //   text: "You have successfully logged in!",
-        //   icon: "success",
-        //   buttonsStyling: false,
-        //   confirmButtonText: "Ok, got it!",
-        //   heightAuto: false,
-        //   customClass: {
-        //    confirmButton: "btn fw-semobold btn-light-primary",
-        //   },
-        // }).then(() => {
-        //   // Go to page after successfully login
-        //   router.push({ name: "choose-product" });
-        // });
+            });
       } else {
         Swal.fire({
             title: 'Oops...',

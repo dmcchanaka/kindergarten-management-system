@@ -8,7 +8,7 @@
    <title>Portal</title>
    @vite('resources/css/app.css')
 </head>
-<body class="antialiased m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
+<body class="antialiased">
    <div id="app"></div>
    @vite('resources/ts/app.ts')
 </body>
