@@ -1,20 +1,19 @@
 <template>
   <!-- Navbar -->
-  <nav
-    class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start sticky top-[1%] backdrop-saturate-[200%] backdrop-blur-[30px] bg-[hsla(0,0%,100%,0.8)] shadow-blur z-110"
+  <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start sticky top-[1%] backdrop-saturate-[200%] backdrop-blur-[30px] bg-[hsla(0,0%,100%,0.8)] shadow-blur z-110"
     navbar-main navbar-scroll="true">
     <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
       <nav>
         <!-- breadcrumb -->
         <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
           <li class="leading-normal text-sm">
-            <a class="opacity-50 text-slate-700" href="javascript:;">Pages</a>
+            <router-link to="/" class="text-slate-700 text-sm"><HomeIcon class="h-4 w-5 text-sm mb-1" />Home</router-link>
           </li>
-          <li
-            class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
-            aria-current="page">Dashboard</li>
+          <template v-for="(item, i) in breadcrumbs" :key="i">
+            <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">{{ item }}</li>
+          </template>
         </ol>
-        <h6 class="mb-0 font-bold capitalize">Dashboard</h6>
+        <h5 class="mb-0 font-bold capitalize">{{ pageTitle }}</h5>
       </nav>
 
       <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -30,15 +29,41 @@
           </div>
         </div>
         <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-          <!-- online builder btn  -->
-          <!-- <li class="flex items-center">
-                <a class="inline-block px-8 py-2 mb-0 mr-4 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro border-fuchsia-500 ease-soft-in text-xs hover:scale-102 active:shadow-soft-xs text-fuchsia-500 hover:border-fuchsia-500 active:bg-fuchsia-500 active:hover:text-fuchsia-500 hover:text-fuchsia-500 tracking-tight-soft hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
-              </li> -->
           <li class="flex items-center">
-            <a href="../pages/sign-in.html"
-              class="block px-0 py-2 font-semibold transition-all ease-nav-brand text-sm text-slate-500">
-              <UserCircleIcon class="h-6 w-6 text-black-500" />&nbsp;
-              <span class="hidden sm:inline">Chanaka</span>
+            <Menu as="div" class="relative ml-3">
+              <div>
+                <MenuButton class="relative flex rounded-full text-sm focus:outline-none focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <span class="absolute -inset-1.5" />
+                  <span class="sr-only">Open user menu</span>
+                  <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                  <div class="font-medium dark:text-white text-left pl-4">
+                    <div>{{ currentUser }}</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ userRole }}</div>
+                </div>
+                </MenuButton>
+              </div>
+              <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItem v-slot="{ active }">
+                    <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your Profile</a>
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <a @click="signOut()" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign out</a>
+                  </MenuItem>
+                </MenuItems>
+              </transition>
+            </Menu>
+          </li>
+          <li class="flex items-center pl-4 xl:hidden">
+            <a href="javascript:;" class="block p-0 transition-all ease-nav-brand text-slate-500" sidenav-trigger @click.prevent="toggleSideBar">
+              <div class="w-4.5 overflow-hidden">
+                <Bars3Icon class="w-5 text-sm mb-1 ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all" />
+                <Bars3Icon class="w-5 text-sm mb-1 ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all" />
+                <Bars3Icon class="w-5 text-sm mb-1 ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all" />
+              </div>
             </a>
           </li>
         </ul>
@@ -50,20 +75,66 @@
 <style lang="scss"></style>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
-import { MagnifyingGlassIcon, UserCircleIcon } from '@heroicons/vue/24/solid';
-
+import { MagnifyingGlassIcon, UserCircleIcon, HomeIcon, Bars3Icon } from '@heroicons/vue/24/solid';
+import { useRoute, useRouter } from "vue-router";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { useAuthStore } from "@/stores/auth";
 
 export default defineComponent({
   name: "top-bar",
+  props: {},
   components: {
     UserCircleIcon,
-    MagnifyingGlassIcon
+    MagnifyingGlassIcon,
+    HomeIcon,
+    Bars3Icon,
+    Menu,
+    MenuButton,
+    MenuItems,
+    MenuItem
   },
-  setup() {
+  setup(props, {emit}) {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useAuthStore();
+
+    const signOut = () => {
+      store.logout();
+      router.push({ name: "sign-in" });
+    };
+
+    const pageTitle = computed(() => {
+      return route.meta.pageTitle;
+    });
+
+    const breadcrumbs = computed(() => {
+      return route.meta.breadcrumbs;
+    });
+
+    const currentUser = computed(() => {
+      const user = store.user;
+      return typeof user?.name != 'undefined' ? user?.name : "-";
+    });
+
+    const userRole = computed(() => {
+      const user = store.user;
+      return typeof user?.userRole != 'undefined' ? user?.userRole : "-";
+    });
+
+    const toggleSideBar = () => {
+      emit('sidebarToggle')
+    }
+
     return {
-      getAssetPath
+      getAssetPath,
+      pageTitle,
+      breadcrumbs,
+      currentUser,
+      userRole,
+      signOut,
+      toggleSideBar
     }
   },
 });

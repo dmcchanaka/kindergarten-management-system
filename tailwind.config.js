@@ -9,6 +9,11 @@ module.exports = {
   presets: [],
   darkMode: "class",
   theme: {
+    extend: {
+      textColor: {
+        'sm': 'var(--custom-text-color, red)', // Default text color is black (#000)
+      },
+    },
     screens: {
       sm: "576px",
       "sm-max": { max: "576px" },

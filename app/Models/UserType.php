@@ -9,6 +9,8 @@ class UserType extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'u_tp_id';
+
     protected $table = 'user_type';
 
     /**

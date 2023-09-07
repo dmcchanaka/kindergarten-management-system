@@ -32,7 +32,32 @@ class UserController extends Controller {
                 'userId' => $user->getKey(),
                 'name' => $user->name,
                 'email' => $user->email,
-                'userAccessLevel' => $user->u_tp_id
+                'userAccessLevel' => $user->u_tp_id,
+                'userRole'=>$user->userRole()
+            ];
+
+            return response()->json([
+                'result'=>true,
+                'userInfo' => $userInfo
+            ],200);
+        } else {
+            return response()->json([
+                'result'=>false,
+                'errors' => 'The Entered Password is incorrect'
+            ],404);
+        }
+    }
+
+    public function verifyToken(Request $request){
+        $user = $request->user();
+        if($user){
+            $userInfo = [
+                'token' => $request->api_token,
+                'userId' => $user->getKey(),
+                'name' => $user->name,
+                'email' => $user->email,
+                'userAccessLevel' => $user->u_tp_id,
+                'userRole'=>$user->userRole()
             ];
 
             return response()->json([
