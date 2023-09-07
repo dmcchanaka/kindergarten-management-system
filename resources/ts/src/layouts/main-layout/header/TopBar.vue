@@ -57,6 +57,15 @@
               </transition>
             </Menu>
           </li>
+          <li class="flex items-center pl-4 xl:hidden">
+            <a href="javascript:;" class="block p-0 transition-all ease-nav-brand text-slate-500" sidenav-trigger @click.prevent="toggleSideBar">
+              <div class="w-4.5 overflow-hidden">
+                <Bars3Icon class="w-5 text-sm mb-1 ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all" />
+                <Bars3Icon class="w-5 text-sm mb-1 ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all" />
+                <Bars3Icon class="w-5 text-sm mb-1 ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all" />
+              </div>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -68,23 +77,25 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
-import { MagnifyingGlassIcon, UserCircleIcon, HomeIcon } from '@heroicons/vue/24/solid';
+import { MagnifyingGlassIcon, UserCircleIcon, HomeIcon, Bars3Icon } from '@heroicons/vue/24/solid';
 import { useRoute, useRouter } from "vue-router";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { useAuthStore } from "@/stores/auth";
 
 export default defineComponent({
   name: "top-bar",
+  props: {},
   components: {
     UserCircleIcon,
     MagnifyingGlassIcon,
     HomeIcon,
+    Bars3Icon,
     Menu,
     MenuButton,
     MenuItems,
     MenuItem
   },
-  setup() {
+  setup(props, {emit}) {
     const route = useRoute();
     const router = useRouter();
     const store = useAuthStore();
@@ -112,13 +123,18 @@ export default defineComponent({
       return typeof user?.userRole != 'undefined' ? user?.userRole : "-";
     });
 
+    const toggleSideBar = () => {
+      emit('sidebarToggle')
+    }
+
     return {
       getAssetPath,
       pageTitle,
       breadcrumbs,
       currentUser,
       userRole,
-      signOut
+      signOut,
+      toggleSideBar
     }
   },
 });
