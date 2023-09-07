@@ -1,15 +1,16 @@
 <template>
-  <div :style="{ backgroundColor: backgroundColor }" class="min-h-screen m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500" style="margin-top: -20px;">
+  <div :style="{ backgroundColor: backgroundColor }" class="min-h-screen m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500" style="margin-top: -16px;">
     <Aside></Aside>
     <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200 mt-4">
       <Topbar></Topbar>
 
       <div class="w-full px-6 py-6 mx-auto">
         <router-view></router-view>
-      </div>
-      <!-- Footer -->
+        <!-- Footer -->
       <Footer></Footer>
       <!-- Footer -->
+      </div>
+      
     </main>
     <!--  -->
   </div>

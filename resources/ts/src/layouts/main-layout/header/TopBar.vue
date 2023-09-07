@@ -7,7 +7,7 @@
         <!-- breadcrumb -->
         <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
           <li class="leading-normal text-sm">
-            <router-link to="/" class="opacity-50 text-slate-700">Home</router-link>
+            <router-link to="/" class="text-slate-700 text-sm"><HomeIcon class="h-4 w-5 text-sm mb-1" />Home</router-link>
           </li>
           <template v-for="(item, i) in breadcrumbs" :key="i">
             <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">{{ item }}</li>
@@ -68,7 +68,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
-import { MagnifyingGlassIcon, UserCircleIcon } from '@heroicons/vue/24/solid';
+import { MagnifyingGlassIcon, UserCircleIcon, HomeIcon } from '@heroicons/vue/24/solid';
 import { useRoute, useRouter } from "vue-router";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { useAuthStore } from "@/stores/auth";
@@ -78,6 +78,7 @@ export default defineComponent({
   components: {
     UserCircleIcon,
     MagnifyingGlassIcon,
+    HomeIcon,
     Menu,
     MenuButton,
     MenuItems,
