@@ -44,6 +44,15 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+                path: "/add-user-role",
+                name: "add-user-roles",
+                component: () => import("@/components/user-roles/forms/AddUserRole.vue"),
+                meta: {
+                  pageTitle: "Add User Role",
+                  breadcrumbs: ["User Roles", "Add User Role"],
+                },
+            },
+            {
                 path: "/settings",
                 name: "settings",
                 component: () => import("@/views/settings/Settings.vue"),

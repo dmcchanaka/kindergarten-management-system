@@ -1,22 +1,20 @@
 <template>
-    <div class="mt-5 w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <div
+        class="mt-5 w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
             <div class="flex flex-wrap -mx-3">
                 <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                    <h6 class="mb-0">Invoices</h6>
+                    <h6 class="mb-0">User Role List</h6>
                 </div>
-                <div class="flex-none w-1/2 max-w-full px-1 py-1 text-right">
-                    <button type="button"
-                    class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                    <PlusIcon class="h-5 w-5 text-white-600 hover:text-gray-500 hover:scale-110" />
-                    Add
-                </button>
+                <div class="flex-none w-1/2 max-w-full px-0 mb-2 text-right">
+                    <router-link to="/add-user-role" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
+                        <PlusIcon class="h-5 w-5 text-white-600 hover:text-gray-500 hover:scale-110" />&nbsp;&nbsp;Add User Role
+                    </router-link>
                 </div>
             </div>
         </div>
         <UserRoleList :userRoleList="userRoleList"></UserRoleList>
     </div>
-    
 </template>
 
 <style lang="scss"></style>
@@ -34,9 +32,9 @@ import { PlusIcon } from '@heroicons/vue/24/solid';
 export default defineComponent({
     name: "view-user-roles",
     components: {
-        Menu, 
-        MenuButton, 
-        MenuItem, 
+        Menu,
+        MenuButton,
+        MenuItem,
         MenuItems,
         UserRoleList,
         PlusIcon
@@ -46,11 +44,11 @@ export default defineComponent({
 
         const userRoleList = ref<Array<UserRole>>([]);
 
-        onMounted(async() => {
+        onMounted(async () => {
             await fetchUserRoleList();
         });
 
-        const fetchUserRoleList = async() => {
+        const fetchUserRoleList = async () => {
             await store.fetchUserRoles();
             const error = Object.values(store.errors);
             if (error.length === 0) {
