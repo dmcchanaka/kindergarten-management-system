@@ -1,30 +1,38 @@
 <template>
-    <div>
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        #
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Description
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Action
-                    </th>
+    <div class="overflow-x-auto">
+        <table class="min-w-max w-full table-auto">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal border">
+                    <th class="py-3 px-6 text-left">#</th>
+                    <th class="py-3 px-6 text-left">Description</th>
+                    <th class="py-3 px-6 text-center">Status</th>
+                    <th class="py-3 px-6 text-center">Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr v-for="(item, index) in userRoleList" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{ item.role_id }}
-                    </th>
-                    <td class="px-6 py-4">
-                        {{ item.description }}
+            <tbody class="text-gray-600 text-sm font-light">
+                <tr v-for="(item, index) in userRoleList" :key="index" class="border border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left whitespace-nowrap">
+                        <div class="flex items-center">
+                            <span class="font-medium">{{ item.role_id }}</span>
+                        </div>
                     </td>
-                    <td class="flex items-center px-6 py-4 space-x-3">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+                    <td class="py-3 px-6 text-left">
+                        <div class="flex items-center">
+                            <span>{{ item.description }}</span>
+                        </div>
+                    </td>
+                    <td class="py-3 px-6 text-center">
+                        <span class="bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">Active</span>
+                    </td>
+                    <td class="py-3 px-6 text-center">
+                        <div class="flex item-center justify-center">
+                            <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                <PencilSquareIcon class="h-5 w-5 text-gray-600 hover:text-green-500 hover:scale-110" />
+                            </div>
+                            <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                <TrashIcon class="h-5 w-5 text-gray-600 hover:text-red-500 hover:scale-110" />
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -35,6 +43,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { EyeIcon,PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
 
 export default defineComponent({
     name: "table-user-roles",
@@ -42,6 +51,9 @@ export default defineComponent({
         userRoleList: { type: Array as () => Array<any>, required: true },
     },
     components: {
+        EyeIcon,
+        PencilSquareIcon,
+        TrashIcon,
     },
     setup() {
     },

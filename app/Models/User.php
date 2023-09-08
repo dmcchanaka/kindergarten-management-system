@@ -45,4 +45,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function user_type(){
+        $this->belongsTo(UserType::class, 'u_tp_id','u_tp_id');
+    }
+
+    public function userRole(){
+        $userType = UserType::find($this->u_tp_id);
+        return ($userType)?$userType->user_type:"-";
+    }
 }

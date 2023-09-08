@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw, } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -20,6 +21,9 @@ const routes: Array<RouteRecordRaw> = [
         path: "/",
         redirect: "/dashboard",
         component: () => import("@/layouts/main-layout/MainLayout.vue"),
+        meta: {
+            middleware: "auth",
+        },
         children: [
             {
                 path: "/dashboard",
@@ -27,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/Dashboard.vue"),
                 meta: {
                   pageTitle: "Dashboard",
-                  breadcrumbs: ["Dashboards"],
+                  breadcrumbs: ["Dashboard"],
                 },
             },
             {
@@ -40,6 +44,7 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+
                 path: "/organizations",
                 name: "organizations",
                 component: () => import("@/views/organizations/KGMS_OrganizationsList.vue"),
@@ -66,6 +71,16 @@ const routes: Array<RouteRecordRaw> = [
                   breadcrumbs: ["Edit Organization"],
                 },
             },
+            {
+                path: "/settings",
+                name: "settings",
+                component: () => import("@/views/settings/Settings.vue"),
+                meta: {
+                  pageTitle: "General Settings",
+                  breadcrumbs: ["Settings"],
+
+                },
+            },
         ]
     }
 ];
@@ -73,6 +88,24 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
     history: createWebHistory('/'),
     routes,
+});
+
+router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore();
+
+    // verify auth token before each page change
+    authStore.verifyAuth();
+
+     // before page access check if page requires authentication
+    if (to.meta.middleware == "auth") {
+        if (authStore.isAuthenticated) {
+        next();
+        } else {
+        next({ name: "sign-in" });
+        }
+    } else {
+        next();
+    }
 });
 
 export default router;

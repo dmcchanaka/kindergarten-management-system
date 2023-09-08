@@ -5,10 +5,11 @@ import JwtService from "@/core/services/JwtService";
 
 export interface User {
     token: string;
+    userId: number;
     name: string;
     email: string;
-    username: string;
-    password: string;
+    userAccessLevel: number;
+    userRole: string;
 }
 
 export interface Credentials {
@@ -19,7 +20,7 @@ export interface Credentials {
 export const useAuthStore = defineStore("auth", () => {
     const errors = ref({});
     const user = ref<User | null>(null);
-    const isAuthenticated = ref(!!JwtService.getToken());
+    const isAuthenticated = ref(!!JwtService.getToken() || JwtService.getToken() !== 'undefined');
 
     function setAuth(authUser: User) {
         isAuthenticated.value = true;
@@ -56,6 +57,22 @@ export const useAuthStore = defineStore("auth", () => {
             });
     }
 
+    function verifyAuth() {
+        if (JwtService.getToken()) {
+          ApiService.setHeader();
+          ApiService.post("/verify_token", { api_token: JwtService.getToken() })
+            .then(({ data }) => {
+              setAuth(data.userInfo);
+            })
+            .catch(({ response }) => {
+              setError(response.data.errors);
+              purgeAuth();
+            });
+        } else {
+          purgeAuth();
+        }
+    }
+
     function logout() {
         purgeAuth();
     }
@@ -65,6 +82,7 @@ export const useAuthStore = defineStore("auth", () => {
         user,
         isAuthenticated,
         login,
+        verifyAuth,
         logout
     }
 });

@@ -4,6 +4,7 @@
 
 <style lang="scss">
 @import "sweetalert2/dist/sweetalert2.css";
+// @import "@/assets/css/soft-ui-dashboard-tailwind.css";
 </style>
 
 <script lang="ts">
