@@ -43,7 +43,7 @@
             </button>
             <button
                 class="btn btn--green-1"
-                @click="step == totalSteps ? createOrganization() : nextStep()"
+                @click="step == totalSteps ? submitOrganizationFormData() : nextStep()"
             >
                 {{ step == totalSteps ? "Finish" : "Next" }}
             </button>
@@ -226,8 +226,9 @@ $transiton: all 500ms ease;
 
 import { useOrganizationFormDataStore } from "@/stores/organizationFormData";
 import ApiService from "@/core/services/ApiService";
+import { useRoute } from 'vue-router';
 import Swal from "sweetalert2/dist/sweetalert2.js";
-import { defineComponent, ref, computed, reactive, watch } from "vue";
+import { defineComponent, ref, computed, reactive, watch, onMounted, onBeforeUpdate } from "vue";
 import KGMS_Step1Organization from "@/components/organizations/stepper/KGMS_Step1Organization.vue";
 import KGMS_Step2Principal from "@/components/organizations/stepper/KGMS_Step2Principal.vue";
 
@@ -255,6 +256,8 @@ export default defineComponent({
     setup() {
 
         const store = useOrganizationFormDataStore();
+
+        const route = useRoute();
         
         const step = ref(1);
 
@@ -265,6 +268,7 @@ export default defineComponent({
             oAddress: "",
             oContact: 0,
             oEmail: "",
+            pId: null,
             pName: "",
             pContact: 0,
             pEmail: "",
@@ -301,8 +305,11 @@ export default defineComponent({
             formData.pPassword = data?.pPassword;
         };
 
-        const createOrganization = async () => {
-            return await ApiService.post("/organization/create", formData)
+        const submitOrganizationFormData = async () => {
+
+            const API_URL = route.name !== 'edit-organization' ? "/organization/create" : `/organization/update/${route.params.id}`;
+
+            return await ApiService.post(API_URL, formData)
             .then(({ data }) => {
                 console.log('Success : ',data);
                 Swal.fire({
@@ -325,15 +332,51 @@ export default defineComponent({
 
                     store.setOrganizationFormDataErrors(response.data.errors);
                     step.value = 1;
-                    //console.log(store.formDataErrors);
                 }
             });
         };
 
+        const getOrganization = async () => {
+            return await ApiService.get(`organization/find/${route.params.id}`)
+            .then(({ data }) => {
+                store.setOrganizationFormData(data.organization);
+
+                formData.oName = data.organization.oName;
+                formData.oAddress = data.organization.oAddress;
+                formData.oContact =data.organization.oContact;
+                formData.oEmail = data.organization.oEmail;
+                formData.pId = data.organization.pId;
+                formData.pName = data.organization.pName;
+                formData.pContact =data.organization.pContact;
+                formData.pEmail = data.organization.pEmail;
+                formData.pPassword = data.organization.pPassword;
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: response.data.message,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Try again!'
+                    });
+
+                }
+            });
+        }
+
         watch(formData, (newValue, oldValue) => {
             store.setOrganizationFormData(formData);
-            //console.log(store.formData);
         });
+
+        onMounted(async () => {
+            console.log('before');
+
+            if(route.name === 'edit-organization') {
+                await getOrganization();
+            }
+        });
+
 
         return {
             KGMS_Step1Organization,
@@ -345,7 +388,7 @@ export default defineComponent({
             totalSteps,
             handleOrganizationData,
             handlePrincipalData,
-            createOrganization,
+            submitOrganizationFormData,
         };
     },
 });

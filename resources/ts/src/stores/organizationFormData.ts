@@ -9,6 +9,7 @@ export interface OrganizationFormData {
     oAddress: string,
     oContact: number,
     oEmail: string,
+    pId: string | null | undefined,
     pName: string,
     pContact: number,
     pEmail: string,
@@ -50,6 +51,7 @@ export const useOrganizationFormDataStore = defineStore("CreateOrganization", ()
         oAddress: '',
         oContact: 0,
         oEmail: '',
+        pId: '',
         pName: '',
         pContact: 0,
         pEmail: '',
@@ -57,15 +59,42 @@ export const useOrganizationFormDataStore = defineStore("CreateOrganization", ()
     });
 
     function setOrganizationFormData(data: OrganizationFormData) {
-        formData.value.oName = data?.oName;
-        formData.value.oAddress = data?.oAddress;
-        formData.value.oContact = data?.oContact;
-        formData.value.oEmail = data?.oEmail;
-        formData.value.pName = data?.pName;
-        formData.value.pContact = data?.pContact;
-        formData.value.pEmail = data?.pEmail;
-        formData.value.pPassword = data?.pPassword;
-    }
+        if (![undefined,null,''].includes(data?.oName)) {
+          formData.value.oName = data.oName;
+        }
+      
+        if (![undefined,null,''].includes(data?.oAddress)) {
+          formData.value.oAddress = data.oAddress;
+        }
+      
+        if (![undefined,null,'','0',0].includes(data?.oContact)) {
+          formData.value.oContact = data.oContact;
+        }
+      
+        if (![undefined,null,''].includes(data?.oEmail)) {
+          formData.value.oEmail = data.oEmail;
+        }
+      
+        if (![undefined,null,''].includes(data?.pId)) {
+          formData.value.pId = data.pId;
+        }
+      
+        if (![undefined,null,''].includes(data?.pName)) {
+          formData.value.pName = data.pName;
+        }
+      
+        if (![undefined,null,'0', 0].includes(data?.pContact)) {
+          formData.value.pContact = data.pContact;
+        }
+      
+        if (![undefined,null,''].includes(data?.pEmail)) {
+          formData.value.pEmail = data.pEmail;
+        }
+      
+        if (![undefined,null,''].includes(data?.pPassword)) {
+          formData.value.pPassword = data.pPassword;
+        }
+      }
 
     function setOrganizationFormDataErrors(errors: any) {
         formDataErrors.value.oName = errors?.oName;

@@ -57,6 +57,15 @@ const routes: Array<RouteRecordRaw> = [
                   breadcrumbs: ["Create Organization"],
                 },
             },
+            {
+                path: "/organization/edit/:id",
+                name: "edit-organization",
+                component: () => import("@/views/organizations/KGMS_OrganizationEdit.vue"),
+                meta: {
+                  pageTitle: "Edit Organization",
+                  breadcrumbs: ["Edit Organization"],
+                },
+            },
         ]
     }
 ];

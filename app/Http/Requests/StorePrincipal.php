@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePrincipal extends FormRequest
 {
@@ -25,7 +26,7 @@ class StorePrincipal extends FormRequest
             'pName' => 'required|string|max:100',
             'pContact' => 'required|integer|digits_between:10,25',
             'pEmail' => 'required|email|max:100|unique:users,email',
-            'pPassword' => 'required|string|max:255',
+            'pPassword' => 'nullable|string|max:255',
         ];
     }
 
@@ -35,7 +36,7 @@ class StorePrincipal extends FormRequest
             'pName' => 'Principal name',
             'pContact' => 'Principal contact number',
             'pEmail' => 'Principal email',
-            'pPassword' => 'Principal email',
+            'pPassword' => 'Principal password',
         ];
     }
 }

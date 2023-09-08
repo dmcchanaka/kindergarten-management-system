@@ -59,6 +59,7 @@
                     <td class="flex items-center px-6 py-4 space-x-3">
                         <a
                             href="#"
+                            @click="this.$router.push({ name: 'edit-organization', params: { id: item.e_id } });"
                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                             >Edit</a
                         >
