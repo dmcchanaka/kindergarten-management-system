@@ -47,7 +47,7 @@ const routes: Array<RouteRecordRaw> = [
 
                 path: "/organizations",
                 name: "organizations",
-                component: () => import("@/views/organizations/KGMS_OrganizationsList.vue"),
+                component: () => import("@/views/organizations/OrganizationsList.vue"),
                 meta: {
                   pageTitle: "Organizations",
                   breadcrumbs: ["Organizations"],
@@ -56,7 +56,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: "/organization/create",
                 name: "create-organization",
-                component: () => import("@/views/organizations/KGMS_OrganizationCreate.vue"),
+                component: () => import("@/views/organizations/OrganizationCreate.vue"),
                 meta: {
                   pageTitle: "Create Organization",
                   breadcrumbs: ["Create Organization"],
@@ -65,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: "/organization/edit/:id",
                 name: "edit-organization",
-                component: () => import("@/views/organizations/KGMS_OrganizationEdit.vue"),
+                component: () => import("@/views/organizations/OrganizationEdit.vue"),
                 meta: {
                   pageTitle: "Edit Organization",
                   breadcrumbs: ["Edit Organization"],

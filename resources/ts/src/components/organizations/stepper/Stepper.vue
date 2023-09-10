@@ -229,7 +229,7 @@ import ApiService from "@/core/services/ApiService";
 import { useRoute } from 'vue-router';
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { defineComponent, ref, computed, reactive, watch, onMounted, onBeforeUpdate } from "vue";
-import KGMS_Step1Organization from "@/components/organizations/stepper/KGMS_Step1Organization.vue";
+import KGMS_Step1Organization from "@/components/organizations/stepper/Step1Organization.vue";
 import KGMS_Step2Principal from "@/components/organizations/stepper/KGMS_Step2Principal.vue";
 
 

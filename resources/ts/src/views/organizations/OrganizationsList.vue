@@ -30,7 +30,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { useOrganizationsStore, type Organization } from "@/stores/organizations";
 
-import KGMS_TableOrganization from "@/components/organizations/tables/KGMS_OrganizationsTable.vue";
+import KGMS_TableOrganization from "@/components/organizations/tables/OrganizationsTable.vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 
 export default defineComponent({
