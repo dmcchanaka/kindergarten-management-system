@@ -46,7 +46,6 @@ export const useAuthStore = defineStore("auth", () => {
                 setAuth(data.userInfo);
             })
             .catch(({ response }) => {
-                console.log(response);
                 if (response.status === 404) {
                     const error = {
                         message : response.data.errors,

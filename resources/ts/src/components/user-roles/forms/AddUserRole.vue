@@ -8,8 +8,10 @@
                         <h6 class="mb-0">User Role & Permissions</h6>
                     </div>
                     <div class="flex-none w-1/2 max-w-full px-3 text-right">
-                        <router-link to="/user-roles" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
-                            <ArrowLeftIcon class="h-5 w-5 text-white-600 hover:text-gray-500 hover:scale-110" />&nbsp;&nbsp;Back
+                        <router-link to="/user-roles"
+                            class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                            <ArrowLeftIcon class="h-5 w-5 text-white-600 hover:text-gray-500 hover:scale-110" />
+                            &nbsp;&nbsp;Back
                         </router-link>
                     </div>
                 </div>
@@ -27,12 +29,24 @@
                                     <div class="w-full">
                                         <form>
                                             <div class="mb-6">
-                                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User Role</label>
+                                                <label
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User
+                                                    Role</label>
                                                 <input type="text"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="Enter User Role" required>
+                                                    placeholder="Enter User Role" v-model="userRoleForm.userRole" required>
                                             </div>
-                                            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                                            <button 
+                                                ref="submitButton" 
+                                                type="submit" 
+                                                @click.prevent="submitUserRole"
+                                                :disabled="userRoleForm.loading"
+                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                <span v-if="!userRoleForm.loading">Submit</span>
+                                                <span v-if="userRoleForm.loading">
+                                                Please wait...
+                                                </span>
+                                            </button>
                                         </form>
                                     </div>
                                 </li>
@@ -54,85 +68,26 @@
                             </div>
                         </div>
                         <div class="flex-auto p-4 pt-6">
-                            <div class="overflow-x-auto">
-                                <table class="w-full mb-0 align-top border-gray-200 text-slate-500 dark:border-white/40">
-                                    <thead class="align-bottom">
-                                        <tr>
-                                            <th colspan="4"
-                                                class="px-6 py-3 pl-1 font-semibold capitalize align-middle bg-transparent border-b border-solid shadow-none tracking-none whitespace-nowrap border-b-gray-200 dark:border-white/40 dark:text-white">
-                                                <p class="mb-0 dark:text-white/60 text-left">Activity</p>
-                                            </th>
-                                            <th
-                                                class="px-6 py-3 font-semibold text-center capitalize align-middle bg-transparent border-b border-solid shadow-none tracking-none whitespace-nowrap border-b-gray-200 dark:border-white/40 dark:text-white">
-                                                <p class="mb-0 dark:text-white/60">Add</p>
-                                            </th>
-                                            <th
-                                                class="px-6 py-3 font-semibold text-center capitalize align-middle bg-transparent border-b border-solid shadow-none tracking-none whitespace-nowrap border-b-gray-200 dark:border-white/40 dark:text-white">
-                                                <p class="mb-0 dark:text-white/60">View</p>
-                                            </th>
-                                            <th
-                                                class="px-6 py-3 font-semibold text-center capitalize align-middle bg-transparent border-b border-solid shadow-none tracking-none whitespace-nowrap border-b-gray-200 dark:border-white/40 dark:text-white">
-                                                <p class="mb-0 dark:text-white/60">Edit</p>
-                                            </th>
-                                            <th
-                                                class="px-6 py-3 font-semibold text-center capitalize align-middle bg-transparent border-b border-solid shadow-none tracking-none whitespace-nowrap border-b-gray-200 dark:border-white/40 dark:text-white">
-                                                <p class="mb-0 dark:text-white/60">Delete</p>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="p-2 pl-1 align-top border-b whitespace-nowrap dark:border-white/40 dark:text-white"
-                                                colspan="4">
-                                                <div class="my-auto">
-                                                    <span
-                                                        class="block leading-normal text-sm text-slate-700 dark:text-white">Mentions</span>
-                                                </div>
-                                            </td>
-                                            <td class="p-2 align-top bg-transparent border-b whitespace-nowrap dark:border-white/40 dark:text-white text-center">
-                                                <div>
-                                                    <label class="relative inline-flex items-center cursor-pointer">
-                                                        <input type="checkbox" value="" class="sr-only peer" checked>
-                                                        <div
-                                                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td class="p-2 align-top bg-transparent border-b whitespace-nowrap dark:border-white/40 dark:text-white text-center">
-                                                <div>
-                                                    <label class="relative inline-flex items-center cursor-pointer">
-                                                        <input type="checkbox" value="" class="sr-only peer" checked>
-                                                        <div
-                                                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td class="p-2 align-top bg-transparent border-b whitespace-nowrap dark:border-white/40 dark:text-white text-center">
-                                                <div>
-                                                    <label class="relative inline-flex items-center cursor-pointer">
-                                                        <input type="checkbox" value="" class="sr-only peer" checked>
-                                                        <div
-                                                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td class="p-2 align-top bg-transparent border-b whitespace-nowrap dark:border-white/40 dark:text-white text-center">
-                                                <div>
-                                                    <label class="relative inline-flex items-center cursor-pointer">
-                                                        <input type="checkbox" value="" class="sr-only peer" checked>
-                                                        <div
-                                                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <ul class="flex flex-col pl-0 mb-0 rounded-lg">
+                                <li class="relative flex p-6 mb-2 border-0 rounded-t-inherit rounded-xl bg-gray-50">
+                                    <div class="w-full">
+                                        <form>
+                                            <div class="mb-6">
+                                                <label
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Permissions</label>
+                                                <Multiselect 
+                                                    v-model="userRoleForm.selectedPermissions"
+                                                    placeholder="Choose permissions" 
+                                                    mode="tags" 
+                                                    :close-on-select="false"
+                                                    :searchable="true" 
+                                                    :create-option="true" 
+                                                    :options="permissionsList" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -141,17 +96,121 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import { useUserRoleStore, type UserRole, Permission, SaveUserRole } from "@/stores/userRole";
 
 import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
+import Swal from "sweetalert2/dist/sweetalert2.js";
+
+import Multiselect from '@vueform/multiselect'
+
 export default defineComponent({
     name: "add-user-role",
     props: {
     },
     components: {
-        ArrowLeftIcon
+        ArrowLeftIcon,
+        Multiselect
     },
     setup() {
+        const store = useUserRoleStore();
+        const submitButton = ref<HTMLButtonElement | null>(null);
+
+        const permissionsList = ref<Array<Permission>>([]);
+
+        const userRoleForm = ref({
+            userRole: "",
+            selectedPermissions: [],
+            loading: false
+        });
+
+        onMounted(async () => {
+            await fetchPermissionList();
+        });
+
+        const fetchPermissionList = async () => {
+            await store.fetchPermissions();
+            const error = Object.values(store.errors);
+            if (error.length === 0) {
+                permissionsList.value.splice(0, permissionsList.value.length, ...store.permissionsList);
+            } else {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try again!'
+                }).then((result) => {
+                    store.errors = {};
+                })
+            }
+        }
+
+        const submitUserRole = async() => {
+
+            if(userRoleForm.value.userRole == ''){
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Please Enter User Role Name',
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try again!'
+                }).then((result) => {
+                })
+            } else if(userRoleForm.value.selectedPermissions.length === 0){
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Please select atleast one permission',
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try again!'
+                }).then((result) => {
+                })
+            } else {
+                userRoleForm.value.loading = true;
+                if (submitButton.value) { 
+                    submitButton.value!.disabled = true;
+                }
+                const inputs = {
+                    userRole: userRoleForm.value.userRole, // Use the appropriate property
+                    permissions: userRoleForm.value.selectedPermissions,
+                };
+                await store.saveUserRole(inputs);
+                const error = Object.values(store.errors);
+                if (error.length === 0) {
+                    Swal.fire({
+                        title: 'Good job!',
+                        text: 'Record has been successfuly added',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Ok, got it!'
+                    }).then(() => {
+                        userRoleForm.value.selectedPermissions = [];
+                        userRoleForm.value.userRole = "";
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: error[0] as string,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Try again!'
+                    }).then((result) => {
+                        store.errors = {};
+                    })
+                }
+                submitButton.value!.disabled = false;
+                userRoleForm.value.loading = false;
+            } 
+        }
+
+        return {
+            permissionsList,
+            userRoleForm,
+            submitUserRole,
+            submitButton
+        }
     },
 });
 </script>
+<style src="@vueform/multiselect/themes/default.css"></style>
