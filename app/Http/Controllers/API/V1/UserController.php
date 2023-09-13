@@ -2,6 +2,8 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
+use App\Models\UserPermission;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -38,9 +40,22 @@ class UserController extends Controller {
                     'userRole'=>$user->userRole()
                 ];
 
+                $permissionQuery = Permission::query();
+                //user permission
+                if(config('kindergarten.type_super_admin') == $user->u_tp_id){
+                    
+                } else {
+                    $userPermission = UserPermission::where('u_tp_id', $user->u_tp_id)->get();
+                    if($userPermission){
+                        $permissionQuery->whereIn('p_id', $userPermission->pluck('p_id')->all());
+                    }
+                }
+                $permissions = $permissionQuery->select(['p_id AS id', 'name'])->get();
+
                 return response()->json([
                     'result'=>true,
-                    'userInfo' => $userInfo
+                    'userInfo' => $userInfo,
+                    'userPermissions' => $permissions,
                 ],200);
             } else {
                 return response()->json([
