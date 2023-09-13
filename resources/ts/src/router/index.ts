@@ -44,7 +44,6 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
-
                 path: "/organizations",
                 name: "organizations",
                 component: () => import("@/views/organizations/OrganizationsList.vue"),
@@ -69,6 +68,25 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                   pageTitle: "Edit Organization",
                   breadcrumbs: ["Edit Organization"],
+                }
+            },
+            {
+                path: "/add-user-role",
+                name: "add-user-role",
+                component: () => import("@/components/user-roles/forms/AddUserRole.vue"),
+                meta: {
+                  pageTitle: "Add User Role",
+                  breadcrumbs: ["User Roles", "Add User Role"],
+                },
+            },
+            {
+                path: "/edit-user-role",
+                name: "edit-user-role",
+                component: () => import("@/components/user-roles/forms/EditUserRole.vue"),
+                meta: {
+                  pageTitle: "Edit User Role",
+                  breadcrumbs: ["User Roles", "Edit User Role"],
+
                 },
             },
             {

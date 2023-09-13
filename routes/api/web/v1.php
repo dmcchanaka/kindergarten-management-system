@@ -11,12 +11,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('verify_token', [UserController::class, 'verifyToken']);
     Route::post('user-roles-list', [UserRoleController::class, 'userRoleList']);
     
+    Route::prefix('organization')->group(function () {
+        Route::get('/list', [OrganizationController::class, 'index'])->name('organization-list');
+        Route::post('/create', [OrganizationController::class, 'create'])->name('organization-create');
+        Route::delete('/delete/{id}', [OrganizationController::class, 'delete'])->name('organization-delete');
+        Route::post('/update/{id}', [OrganizationController::class, 'update'])->name('organization-update');
+        Route::get('/find/{id}', [OrganizationController::class, 'find'])->name('organization-find');
+    });
+
+    Route::post('permission-list', [UserRoleController::class, 'permissionList']);
+    Route::post('user-role-save', [UserRoleController::class, 'userRoleSave']);
+    Route::post('user-role-update', [UserRoleController::class, 'userRoleUpdate']);
+});
+
+
     
-});
-Route::prefix('organization')->group(function () {
-    Route::get('/list', [OrganizationController::class, 'index'])->name('organization-list');
-    Route::post('/create', [OrganizationController::class, 'create'])->name('organization-create');
-    Route::delete('/delete/{id}', [OrganizationController::class, 'delete'])->name('organization-delete');
-    Route::post('/update/{id}', [OrganizationController::class, 'update'])->name('organization-update');
-    Route::get('/find/{id}', [OrganizationController::class, 'find'])->name('organization-find');
-});
