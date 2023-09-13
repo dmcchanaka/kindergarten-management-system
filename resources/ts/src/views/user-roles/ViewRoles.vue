@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <UserRoleList :userRoleList="userRoleList"></UserRoleList>
+        <UserRoleList @edit-user-type="editUserType" :userRoleList="userRoleList"></UserRoleList>
     </div>
 </template>
 
@@ -23,6 +23,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { useUserRoleStore, type UserRole } from "@/stores/userRole";
+import { useRouter } from "vue-router";
 
 import UserRoleList from "@/components/user-roles/table/UserRoleList.vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
@@ -41,6 +42,7 @@ export default defineComponent({
     },
     setup() {
         const store = useUserRoleStore();
+        const router = useRouter();
 
         const userRoleList = ref<Array<UserRole>>([]);
 
@@ -66,8 +68,14 @@ export default defineComponent({
             }
         }
 
+        const editUserType = (userTypeId) => {
+            store.saveUserRoleId(userTypeId);
+            router.push({ name: "edit-user-role" });
+        }
+
         return {
-            userRoleList
+            userRoleList,
+            editUserType
         }
     },
 });

@@ -24,6 +24,7 @@ export const useUserRoleStore = defineStore("userRole", () => {
     const errors = ref({});
     const userRoleList = ref<UserRole[]>([]);
     const permissionsList = ref<Permission[]>([]);
+    const idUserRole = ref(0);
 
     function fetchUserRoles() {
         return ApiService.post("/user-roles-list", {})
@@ -92,6 +93,27 @@ export const useUserRoleStore = defineStore("userRole", () => {
             });
     }
 
+    function saveUserRoleId(userRoleId) {
+        idUserRole.value = userRoleId;
+    }
+
+    function updateUserRole(saveUserRole: SaveUserRole) {
+        return ApiService.post("/user-role-update", saveUserRole)
+            .then(({ data }) => {
+                // setAuth(data.userInfo);
+                console.log(data);
+            })
+            .catch(({ response }) => {
+                if (response.status === 404 || response.status === 500) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
     return {
         fetchUserRoles,
         userRoleList,
@@ -99,5 +121,8 @@ export const useUserRoleStore = defineStore("userRole", () => {
         fetchPermissions,
         permissionsList,
         saveUserRole,
+        saveUserRoleId,
+        idUserRole,
+        updateUserRole
     }
 });

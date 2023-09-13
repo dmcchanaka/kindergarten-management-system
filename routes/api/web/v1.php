@@ -11,4 +11,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('user-roles-list', [UserRoleController::class, 'userRoleList']);
     Route::post('permission-list', [UserRoleController::class, 'permissionList']);
     Route::post('user-role-save', [UserRoleController::class, 'userRoleSave']);
+    Route::post('user-role-update', [UserRoleController::class, 'userRoleUpdate']);
 });
