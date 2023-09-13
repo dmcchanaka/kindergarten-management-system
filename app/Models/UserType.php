@@ -21,4 +21,8 @@ class UserType extends Model
     protected $fillable = [
         'user_type',
     ];
+
+    public function getKey(){
+        return $this->u_tp_id;
+    }
 }

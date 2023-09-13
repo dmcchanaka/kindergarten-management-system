@@ -27,7 +27,7 @@
                     <td class="py-3 px-6 text-center">
                         <div class="flex item-center justify-center">
                             <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                <PencilSquareIcon class="h-5 w-5 text-gray-600 hover:text-green-500 hover:scale-110" />
+                                <PencilSquareIcon @click="editUserType(item.role_id)" class="h-5 w-5 text-gray-600 hover:text-green-500 hover:scale-110" />
                             </div>
                             <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                 <TrashIcon class="h-5 w-5 text-gray-600 hover:text-red-500 hover:scale-110" />
@@ -50,12 +50,23 @@ export default defineComponent({
     props: {
         userRoleList: { type: Array as () => Array<any>, required: true },
     },
+    emits: [
+        "edit-user-type",
+    ],
     components: {
         EyeIcon,
         PencilSquareIcon,
         TrashIcon,
     },
-    setup() {
+    setup(props, { emit }) {
+        
+        const editUserType = (userTypeId) => {
+            emit("edit-user-type", userTypeId);
+        }
+
+        return {
+            editUserType
+        }
     },
 });
 </script>
