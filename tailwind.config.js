@@ -11,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       textColor: {
-        'sm': 'var(--custom-text-color, red)', // Default text color is black (#000)
+        'sm': 'var(--custom-text-color, #344767)', // Default text color is black (#000)
       },
     },
     screens: {
