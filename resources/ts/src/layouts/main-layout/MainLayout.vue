@@ -1,6 +1,6 @@
 <template>
   <div :style="{ backgroundColor: backgroundColor }" class="min-h-screen m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500" style="margin-top: -16px;">
-    <Aside :class="{ 'translate-x-0': isSidebarOpen, 'shadow-soft-xl': isSidebarOpen }" :style="{ 'margin-left': isSidebarOpen ? null : '0rem' }"></Aside>
+    <Aside @close-sidebar="closeSideBar" :class="{ 'translate-x-0': isSidebarOpen, 'shadow-soft-xl': isSidebarOpen }" :style="{ 'margin-left': isSidebarOpen ? null : '0rem' }"></Aside>
     <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200 mt-4">
       <Topbar @sidebarToggle="sidebarToggle"></Topbar>
       
@@ -77,12 +77,17 @@ export default defineComponent({
       return route.meta.breadcrumbs;
     });
 
+    const closeSideBar = () => {
+      isSidebarOpen.value = !isSidebarOpen.value;
+    }
+
     return {
       backgroundColor,
       sidebarToggle,
       isSidebarOpen,
       pageTitle,
-      breadcrumbs
+      breadcrumbs,
+      closeSideBar
     }
   },
 });
