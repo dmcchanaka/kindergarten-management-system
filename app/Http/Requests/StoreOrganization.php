@@ -22,20 +22,22 @@ class StoreOrganization extends FormRequest
     public function rules(): array
     {
         return [
-            'oName' => 'required|string|max:100',
-            'oAddress' => 'required|string|max:255',
-            'oContact' => 'required|integer|digits_between:10,25',
-            'oEmail' => 'required|email|max:100|unique:users,email'
+            'name' => 'required|string|max:100',
+            'address' => 'required|string|max:255',
+            'contact_num' => 'required|digits_between:10,25',
+            'email' => 'required|email|max:100|unique:users,email',
+            'principal_id' => 'required|integer'
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'oName' => 'Organization name',
-            'oAddress' => 'Organization address',
-            'oContact' => 'Organization contact number',
-            'oEmail' => 'Organization email',
+            'name' => 'organization name',
+            'address' => 'organization address',
+            'contact_num' => 'organization contact number',
+            'email' => 'organization email',
+            'principal_id' => 'principal'
         ];
     }
 }

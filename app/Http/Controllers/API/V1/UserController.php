@@ -4,7 +4,10 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\UserPermission;
+use App\Models\User;
+use App\Models\UserType;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -93,5 +96,25 @@ class UserController extends Controller {
                 'errors' => 'The Entered Password is incorrect'
             ],404);
         }
+    }
+
+    // Get users by type
+    public function getUsers(Request $request, $userType): JsonResponse{
+
+        // Get existing user types
+        $existingUserTypes = UserType::select('user_type')->pluck('user_type')->toArray();
+        
+        if(!in_array($userType, $existingUserTypes)){
+            return response()->json(['message' => 'Invalid user type'],400);
+        }
+
+        $users = User::join('user_type', 'users.u_tp_id', '=', 'user_type.u_tp_id')
+                ->select('users.id as value','users.name')
+                ->where('user_type.user_type', $userType)
+                ->get();
+
+        
+        return response()->json(['users' => $users]);
+
     }
 }

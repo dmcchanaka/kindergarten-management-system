@@ -18,6 +18,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/update/{id}', [OrganizationController::class, 'update'])->name('organization-update');
         Route::get('/find/{id}', [OrganizationController::class, 'find'])->name('organization-find');
     });
+    Route::get('role-user/{role}', [UserController::class, 'getUsers'])->name('get-role-users');
 
     Route::post('permission-list', [UserRoleController::class, 'permissionList']);
     Route::post('user-role-save', [UserRoleController::class, 'userRoleSave']);

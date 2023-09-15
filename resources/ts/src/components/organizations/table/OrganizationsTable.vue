@@ -8,7 +8,6 @@
             >
                 <tr>
                     <th scope="col" class="px-6 py-3">#</th>
-                    <th scope="col" class="px-6 py-3">ID</th>
                     <th scope="col" class="px-6 py-3">Name</th>
                     <th scope="col" class="px-6 py-3">Address</th>
                     <th scope="col" class="px-6 py-3">Contact Num</th>
@@ -29,12 +28,6 @@
                     >
                         {{ ++index }}
                     </th>
-                    <td
-                        class="flex-wrap px-6 py-4"
-                        style="overflow-wrap: anywhere"
-                    >
-                        {{ item.e_id }}
-                    </td>
                     <td class="px-6 py-4">
                         {{ item.name }}
                     </td>
@@ -57,18 +50,16 @@
                         }}
                     </td>
                     <td class="flex items-center px-6 py-4 space-x-3">
-                        <a
+                        <button
                             href="#"
-                            @click="this.$router.push({ name: 'edit-organization', params: { id: item.e_id } });"
+                            @click="editOrganization(item.e_id);"
                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                            >Edit</a
-                        >
-                        <a
+                            >Edit</button>
+                        <button
                             href="#"
                             @click="deleteOrganization(item.e_id)"
                             class="font-medium text-red-600 dark:text-red-500 hover:underline"
-                            >Remove</a
-                        >
+                            >Remove</button>
                     </td>
                 </tr>
                 <tr v-if="organizationList.length == 0">
@@ -138,8 +129,13 @@ export default defineComponent({
             emit("fetch-rows");
         };
 
+        const editOrganization = (id: number) => {
+            emit("edit-organization", id);
+        }
+
         return {
             deleteOrganization,
+            editOrganization
         };
     },
 });

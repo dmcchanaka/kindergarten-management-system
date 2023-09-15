@@ -9,14 +9,80 @@ export interface Organization {
     name: string,
     address: string,
     contact_num: string,
+    principal_id : null | number,
+    principal_name : null | string, 
     email: string,
     created_at: string
+}
+
+export interface OrganizationFormData {
+    name: string;
+    address: string;
+    contact_num: string;
+    email: string;
+    principal_id: number;
+}
+
+export interface OrganizationFormDataErrors {
+    name: Array<string>;
+    address: Array<string>;
+    contact_num: Array<string>;
+    email: Array<string>;
+    principal_id: Array<string>;
 }
 
 export const useOrganizationsStore = defineStore("Organization", () => {
 
     const errors = ref({});
     const OrganizationList = ref<Organization[]>([]);
+    const organizationId = ref('');
+
+    const formDataErrors = ref<OrganizationFormDataErrors>({
+        name: [],
+        address: [],
+        contact_num: [],
+        email: [],
+        principal_id: []
+    });
+
+    const formData = ref<OrganizationFormData>({
+        name: "",
+        address: "",
+        contact_num: "",
+        email: "",
+        principal_id: NaN,
+    });
+
+    function setOrganizationFormData(data: OrganizationFormData) {
+        if (![undefined, null, ""].includes(data?.name)) {
+            formData.value.name = data.name;
+        }
+
+        if (![undefined, null, ""].includes(data?.address)) {
+            formData.value.address = data.address;
+        }
+
+        if (![undefined, null, "", "0", 0].includes(data?.contact_num)) {
+            formData.value.contact_num = data.contact_num;
+        }
+
+        if (![undefined, null, ""].includes(data?.email)) {
+            formData.value.email = data.email;
+        }
+
+        if (![NaN].includes(data?.principal_id)) {
+            formData.value.principal_id = data.principal_id;
+        }
+
+    }
+
+    function setOrganizationFormDataErrors(errors: any) {
+        formDataErrors.value.name = errors?.name;
+        formDataErrors.value.address = errors?.address;
+        formDataErrors.value.contact_num = errors?.contact_num;
+        formDataErrors.value.email = errors?.email;
+        formDataErrors.value.principal_id = errors?.principal_id;
+    }
 
     async function fetchOrganizations () {
         return await ApiService.get("/organization/list")
@@ -35,6 +101,56 @@ export const useOrganizationsStore = defineStore("Organization", () => {
         });
     }
 
+    async function fetchOrganization () {
+        return await ApiService.get(`/organization/find/${organizationId.value}`)
+        .then(({data}) => {
+            console.log(data);
+            formData.value.name = data.organization.name;
+            formData.value.address = data.organization.address;
+            formData.value.contact_num = data.organization.contact_num;
+            formData.value.email = data.organization.email;
+            formData.value.principal_id = data.organization.principal_id;
+        })
+        .catch(({ response }) => {
+            console.log(response);
+            if (response.status !== 200) {
+                const error = {
+                    message : response.data.errors,
+                    status : response.status,
+                }
+                setError(error);
+            }
+        });
+    }
+
+    async function saveOrganization (formData: OrganizationFormData) {
+     
+        return await ApiService.post(`/organization/update/${organizationId.value}`, formData)
+          .then(({ data }) => {
+            return data;
+          })
+          .catch(({ response }) => {
+            if (response.status !== 200) {
+                  setOrganizationFormDataErrors(response.data.errors);
+                  return response;
+              }
+          });
+    }
+
+    async function updateOrganization (formData: OrganizationFormData) {
+     
+        return await ApiService.post("/organization/create", formData)
+          .then(({ data }) => {
+            return data;
+          })
+          .catch(({ response }) => {
+            if (response.status !== 200) {
+                  setOrganizationFormDataErrors(response.data.errors);
+                  return response;
+              }
+          });
+    }
+
     function setOrganizations(organizations: Organization[]) {
         OrganizationList.value = organizations;
         errors.value = {};
@@ -44,10 +160,22 @@ export const useOrganizationsStore = defineStore("Organization", () => {
         errors.value = { ...error };
     }
 
+    function saveOrganizationId(id: string) {
+        organizationId.value = id;
+    }
+
     return {
         fetchOrganizations,
         OrganizationList,
-        errors
+        errors,
+        setOrganizationFormData,
+        setOrganizationFormDataErrors,
+        formData,
+        formDataErrors,
+        saveOrganization,
+        saveOrganizationId,
+        fetchOrganization,
+        updateOrganization
     }
 
 });

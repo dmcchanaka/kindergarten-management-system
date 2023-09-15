@@ -19,7 +19,7 @@
     </div>
 
     <div class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-        <KGMS_TableOrganization :organizationList="organizationList" @fetch-rows="fetchOrganizations"></KGMS_TableOrganization>
+        <KGMS_TableOrganization :organizationList="organizationList" @fetch-rows="fetchOrganizations" @edit-organization="editOrganization"></KGMS_TableOrganization>
     </div>
     
 </template>
@@ -30,8 +30,9 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { useOrganizationsStore, type Organization } from "@/stores/organizations";
 
-import KGMS_TableOrganization from "@/components/organizations/tables/OrganizationsTable.vue";
+import KGMS_TableOrganization from "@/components/organizations/table/OrganizationsTable.vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
     name: "view-organizations",
@@ -40,7 +41,7 @@ export default defineComponent({
     },
     setup() {
         const store = useOrganizationsStore();
-
+        const router = useRouter();
         const organizationList = ref<Array<Organization>>([]);
 
         onMounted(async() => {
@@ -65,9 +66,15 @@ export default defineComponent({
             }
         }
 
+        const editOrganization = (id: string) => {
+            store.saveOrganizationId(id);
+            router.push({ name: "edit-organization" });
+        }
+
         return {
             organizationList,
-            fetchOrganizations
+            fetchOrganizations,
+            editOrganization
         }
     },
 });
