@@ -5,6 +5,7 @@ import App from './App.vue';
 
 import router from "./router";
 import ApiService from "@/core/services/ApiService";
+import { initVeeValidate } from "@/core/plugins/vee-validate";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -20,4 +21,6 @@ app.use(router);
 app.component("fa", FontAwesomeIcon)
 
 ApiService.init(app);
+initVeeValidate();
+
 app.mount("#app");
