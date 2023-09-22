@@ -32,7 +32,6 @@ export const useUserRoleStore = defineStore("userRole", () => {
                 setUserRoles(data.userRoles);
             })
             .catch(({ response }) => {
-                console.log(response);
                 if (response.status === 404) {
                     const error = {
                         message : response.data.errors,

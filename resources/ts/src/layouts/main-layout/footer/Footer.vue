@@ -1,5 +1,5 @@
 <template>
-    <footer class="pt-4 fixed bottom-0">
+    <!-- <footer class="pt-4 fixed bottom-0">
         <div class="w-full px-6 mx-auto">
             <div class="flex flex-wrap items-center -mx-3 lg:justify-between">
                 <div class="leading-normal text-center text-sm text-slate-500 lg:text-left">
@@ -11,7 +11,7 @@
                     </div>
             </div>
         </div>
-    </footer>
+    </footer> -->
 </template>
 <style lang="scss"></style>
 

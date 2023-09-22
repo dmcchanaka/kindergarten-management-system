@@ -8,7 +8,7 @@
                 </div>
                 <div class="flex-none w-1/2 max-w-full px-0 mb-2 text-right">
                     <router-link to="/add-user-role" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
-                        <PlusIcon class="h-5 w-5 text-white-600 hover:text-gray-500 hover:scale-110" />&nbsp;&nbsp;Add User Role
+                        <fa icon="plus" />&nbsp;&nbsp;Add User Role
                     </router-link>
                 </div>
             </div>
