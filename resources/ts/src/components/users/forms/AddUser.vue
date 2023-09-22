@@ -190,8 +190,16 @@ export default defineComponent({
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'Ok, got it!'
                     }).then(() => {
-                        // userForm.value.selectedPermissions = [];
-                        // userForm.value.userRole = "";
+                        userForm.value.firstName = "";
+                        userForm.value.lastName = "";
+                        userForm.value.email = "";
+                        userForm.value.phoneNumber = "";
+                        userForm.value.address = "";
+                        userForm.value.userRole = "";
+                        userForm.value.userName = "";
+                        userForm.value.password = "";
+                        userForm.value.passwordConfirm = "";
+                        userForm.value.loading = false;
                     });
                 } else {
                     Swal.fire({
@@ -202,6 +210,7 @@ export default defineComponent({
                         confirmButtonText: 'Try again!'
                     }).then((result) => {
                         store.errors = {};
+                        store.formDataErrors = {};
                     })
                 }
                 submitButton.value!.disabled = false;
