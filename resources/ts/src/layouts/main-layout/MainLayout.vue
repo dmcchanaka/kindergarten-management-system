@@ -1,10 +1,9 @@
 <template>
-  <div :style="{ backgroundColor: backgroundColor }" class="min-h-screen m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500" style="margin-top: -16px;">
+  <div :style="{ backgroundColor: backgroundColor }" class="min-h-screen m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
     <Aside @close-sidebar="closeSideBar" :class="{ 'translate-x-0': isSidebarOpen, 'shadow-soft-xl': isSidebarOpen }" :style="{ 'margin-left': isSidebarOpen ? null : '0rem' }"></Aside>
-    <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200 mt-4">
+    <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200 pt-2">
       <Topbar @sidebarToggle="sidebarToggle"></Topbar>
-      
-      
+
       <div class="w-full px-6 py-6 mx-auto">
         <div class="lg:flex lg:items-center lg:justify-between">
           <div class="flex-1 min-w-0">
@@ -27,19 +26,17 @@
         </div>
         <router-view></router-view>
         <!-- Footer -->
-      <Footer></Footer>
-      <!-- Footer -->
+        <Footer></Footer>
+        <!-- Footer -->
       </div>
-      
     </main>
-    <!--  -->
   </div>
 </template>
 <style lang="scss">
 </style>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 import Aside from "@/layouts/main-layout/aside/Aside.vue";
@@ -60,7 +57,7 @@ export default defineComponent({
     const store = useSettingsStore();
 
     const backgroundColor = computed(()=> {
-      return store.backgroundColor;
+      return store.backgroundColor || '';
     });
 
     const isSidebarOpen = ref(false);
@@ -80,6 +77,12 @@ export default defineComponent({
     const closeSideBar = () => {
       isSidebarOpen.value = !isSidebarOpen.value;
     }
+
+    //apply background color to page body
+    onMounted(() => {
+      document.documentElement.style.backgroundColor = backgroundColor.value;
+      document.body.style.backgroundColor = backgroundColor.value;
+    });
 
     return {
       backgroundColor,
