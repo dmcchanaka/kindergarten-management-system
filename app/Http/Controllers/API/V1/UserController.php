@@ -110,11 +110,13 @@ class UserController extends Controller {
             $users->transform(function($user){
                 return [
                     'id'=>$user->id,
-                    'name'=>$user->name,
+                    'first_name'=>$user->first_name,
+                    'last_name'=>$user->last_name,
                     'contact_number'=>$user->contact_num,
                     'email'=>$user->email,
                     'username'=>$user->username,
-                    'user_role'=>$user->userRole()
+                    'user_role'=>$user->userRole(),
+                    'address'=>$user->address,
                 ];
             });
             return response()->json([

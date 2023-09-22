@@ -26,8 +26,11 @@
             <template v-slot:id="{ row: users }">
                 <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.id }}</a>
             </template>
-            <template v-slot:name="{ row: users }">
-                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.name }}</a>
+            <template v-slot:first_name="{ row: users }">
+                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.first_name }}</a>
+            </template>
+            <template v-slot:last_name="{ row: users }">
+                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.last_name }}</a>
             </template>
             <template v-slot:email="{ row: users }">
                 <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.email }}</a>
@@ -37,6 +40,9 @@
             </template>
             <template v-slot:user-role="{ row: users }">
                 <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.user_role }}</a>
+            </template>
+            <template v-slot:address="{ row: users }">
+                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.address }}</a>
             </template>
             <template v-slot:actions="{ row: users }">
                 <a class="mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500">
@@ -79,8 +85,15 @@ export default defineComponent({
                 textAlign: "text-left",
             },
             {
-                columnName: "Name",
-                columnLabel: "name",
+                columnName: "First Name",
+                columnLabel: "first_name",
+                sortEnabled: true,
+                columnWidth: 250,
+                textAlign: "text-left",
+            },
+            {
+                columnName: "Last Name",
+                columnLabel: "last_name",
                 sortEnabled: true,
                 columnWidth: 250,
                 textAlign: "text-left",
@@ -102,6 +115,13 @@ export default defineComponent({
             {
                 columnName: "User Role",
                 columnLabel: "user-role",
+                sortEnabled: true,
+                columnWidth: 100,
+                textAlign: "text-center",
+            },
+            {
+                columnName: "Address",
+                columnLabel: "address",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-center",
