@@ -80,10 +80,10 @@ class OrganizationController extends Controller
                 return response()->json(['message' => 'Organization not found.'], 404);
             }
 
-            $organization->name = $validatedRequest->oName;
-            $organization->address = $validatedRequest->oAddress;
-            $organization->contact_num = $validatedRequest->oContact;
-            $organization->email = $validatedRequest->oEmail;
+            $organization->name = $validatedRequest->name;
+            $organization->address = $validatedRequest->address;
+            $organization->contact_num = $validatedRequest->contact_num;
+            $organization->email = $validatedRequest->email;
             $organization->save();
 
             DB::commit();
