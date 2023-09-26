@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
-                path: "/organization/create",
+                path: "/create-organization",
                 name: "create-organization",
                 component: () => import("@/views/organizations/OrganizationCreate.vue"),
                 meta: {

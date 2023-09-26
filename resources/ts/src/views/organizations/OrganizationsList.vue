@@ -1,24 +1,17 @@
 <template>
-    <div class="lg:flex lg:items-center lg:justify-between">
-        <div class="flex-1 min-w-0">
-            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Organizations</h2>
-            <div class="flex flex-col mt-1 sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
-
-
+    <div class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+            <div class="flex flex-wrap -mx-3">
+                <div class="flex items-center flex-none w-1/2 max-w-full px-3">
+                    <h6 class="mb-0">Organization List</h6>
+                </div>
+                <div class="flex-none w-1/2 max-w-full px-0 mb-2 text-right">
+                    <router-link to="create-organization" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
+                        <fa icon="plus" />&nbsp;&nbsp;Add New Organization
+                    </router-link>
+                </div>
             </div>
         </div>
-        <div class="flex mt-5 lg:ml-4 lg:mt-0">
-            <span class="sm:ml-3">
-                <button type="button"
-                    @click="this.$router.push({ name: 'create-organization' });"
-                    class="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Add New Organization
-                </button>
-            </span>
-        </div>
-    </div>
-
-    <div class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <KGMS_TableOrganization :organizationList="organizationList" @fetch-rows="fetchOrganizations" @edit-organization="editOrganization"></KGMS_TableOrganization>
     </div>
     
