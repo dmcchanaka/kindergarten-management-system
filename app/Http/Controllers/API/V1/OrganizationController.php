@@ -52,13 +52,13 @@ class OrganizationController extends Controller
                 'address' => $validatedRequest->address,
                 'contact_num' => $validatedRequest->contact_num,
                 'email' => $validatedRequest->email,
-                'principle_id' => $validatedRequest->principal_id
+                'principal_id' => $validatedRequest->principal_id
             ]);
 
             return response()->json(['message' => 'New organization successfully created.', 'status' => 200]);
         } catch (Exception $e) {
             $this->logException($e);
-            return response()->json(['message' => "Failed to create organization."], 417);
+            return response()->json(['message' => "Failed to create organization.", 'ex'=> $e], 417);
         }
     }
 
@@ -84,6 +84,7 @@ class OrganizationController extends Controller
             $organization->address = $validatedRequest->address;
             $organization->contact_num = $validatedRequest->contact_num;
             $organization->email = $validatedRequest->email;
+            $organization->principal_id = $validatedRequest->principal_id;
             $organization->save();
 
             DB::commit();
@@ -129,7 +130,7 @@ class OrganizationController extends Controller
         try {
             $id = Crypt::decrypt($id);
 
-            $organization = Organization::select('id', 'name', 'principle_id', 'address', 'contact_num', 'email')
+            $organization = Organization::select('id', 'name', 'principal_id', 'address', 'contact_num', 'email')
                 ->where('id', $id)
                 ->first();
 
@@ -138,9 +139,9 @@ class OrganizationController extends Controller
             }
 
             $organization->e_id = Crypt::encrypt($organization->id);
-            $organization->e_principle_id = Crypt::encrypt($organization->principle_id);
+            $organization->e_principal_id = Crypt::encrypt($organization->principal_id);
             $organization->__unset('id');
-            //$organization->__unset('principle_id');
+            //$organization->__unset('principal_id');
 
             return response()->json(['organization' => $organization, 'message' => "Organization data fetched.", 'status' => 200]);
         } catch (Exception $e) {

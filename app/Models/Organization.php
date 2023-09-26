@@ -12,6 +12,6 @@ class Organization extends Model
     use HasFactory;
 
     protected $table = 'organizations';
-    protected $fillable = ['name', 'address', 'contact_num', 'email', 'principle_id'];
+    protected $fillable = ['name', 'address', 'contact_num', 'email', 'principal_id'];
 
 }
