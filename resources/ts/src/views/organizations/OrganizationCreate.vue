@@ -259,14 +259,6 @@ export default defineComponent({
 
       await fetchPrincipals();
 
-      form.name = store.formData.name;
-      form.address = store.formData.address;
-      form.contact_num = ["NaN", 0, "0"].includes(
-        store.formData.contact_num.toString()
-      )
-        ? ""
-        : store.formData.contact_num.toString();
-      form.email = store.formData.email;
     });
 
     const fetchPrincipals = async () => {
