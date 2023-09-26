@@ -5,12 +5,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\User;
 use App\Models\UserPermission;
-<<<<<<< HEAD
-use App\Models\User;
 use App\Models\UserType;
-=======
 use App\Validators\CustomValidator;
->>>>>>> develop
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
