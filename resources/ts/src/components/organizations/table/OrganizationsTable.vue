@@ -50,7 +50,7 @@
                         }}
                     </td>
                     <td class="flex items-center px-6 py-4 space-x-3">
-                        <button
+                        <!-- <button
                             href="#"
                             @click="editOrganization(item.e_id);"
                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -59,7 +59,16 @@
                             href="#"
                             @click="deleteOrganization(item.e_id)"
                             class="font-medium text-red-600 dark:text-red-500 hover:underline"
-                            >Remove</button>
+                            >Remove</button> -->
+
+                        <a href="#" @click="editOrganization(item.e_id);"  class="mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
+                            <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
+                        </a>
+                        <a href="#" @click="deleteOrganization(item.e_id)" class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:focus:ring-red-800 dark:hover:bg-red-500 group">
+                            <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
+                        </a>
+
+
                     </td>
                 </tr>
                 <tr v-if="organizationList.length == 0">
@@ -80,6 +89,7 @@
 import { defineComponent } from "vue";
 import ApiService from "@/core/services/ApiService";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+
 
 export default defineComponent({
     name: "table-organizations",
