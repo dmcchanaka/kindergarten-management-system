@@ -17,7 +17,10 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('contact_num')->nullable();
             $table->string('email')->nullable();
+            $table->unsignedBigInteger('principal_id')->nullable();
+            $table->foreign('principal_id')->references('id')->on('users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
