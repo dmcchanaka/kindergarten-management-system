@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
 
+import { useSettingsStore } from "./settings"; 
+
 export interface User {
     token: string;
     userId: number;
@@ -18,6 +20,7 @@ export interface Credentials {
 }
 
 export const useAuthStore = defineStore("auth", () => {
+    const settingsStore = useSettingsStore();
     const errors = ref({});
     const user = ref<User | null>(null);
     const isAuthenticated = ref(!!JwtService.getToken() || JwtService.getToken() !== 'undefined');
@@ -44,6 +47,7 @@ export const useAuthStore = defineStore("auth", () => {
         return ApiService.post("/login", credentials)
             .then(({ data }) => {
                 setAuth(data.userInfo);
+                settingsStore.setUiSettings(data.settings);
             })
             .catch(({ response }) => {
                 if (response.status === 404 || response.status === 500) {

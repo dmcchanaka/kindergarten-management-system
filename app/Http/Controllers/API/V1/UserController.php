@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\GeneralSetting;
 use App\Models\Permission;
 use App\Models\User;
 use App\Models\UserPermission;
@@ -58,10 +59,29 @@ class UserController extends Controller {
                 }
                 $permissions = $permissionQuery->select(['p_id AS id', 'name'])->get();
 
+                //general settings
+                $settings = [
+                    'logo' => '/media/logo/logo.png',
+                    'backgroundColor' => 'transparent',
+                    'headerColor' => '#344767',
+                    'textColor' => '#344767'
+                ];
+                $generalSettings = GeneralSetting::where('organization_id', 1)->latest()->first();
+    
+                if($generalSettings){
+                    $settings = [
+                        'logo' => url('/') .$generalSettings->logo_url,
+                        'backgroundColor' => $generalSettings->background_color,
+                        'headerColor' => $generalSettings->heading_color,
+                        'textColor' => $generalSettings->text_color
+                    ];
+                }
+
                 return response()->json([
                     'result'=>true,
                     'userInfo' => $userInfo,
                     'userPermissions' => $permissions,
+                    'settings' => $settings
                 ],200);
             } else {
                 return response()->json([

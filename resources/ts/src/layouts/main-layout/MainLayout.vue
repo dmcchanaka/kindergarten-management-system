@@ -17,7 +17,7 @@
                   <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">{{ item }}</li>
                 </template>
               </ol>
-              <h5 class="mb-0 font-bold capitalize">{{ pageTitle }}</h5>
+              <h5 class="text-header mb-0 font-bold capitalize">{{ pageTitle }}</h5>
             </nav>
           </div>
           <div class="flex mt-5 lg:ml-4 lg:mt-0">
@@ -36,7 +36,7 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted } from "vue";
+import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import Aside from "@/layouts/main-layout/aside/Aside.vue";
@@ -57,8 +57,35 @@ export default defineComponent({
     const store = useSettingsStore();
 
     const backgroundColor = computed(()=> {
-      return store.backgroundColor || '';
+      return store.generalSettings?.backgroundColor || '';
     });
+
+    //apply background color to page body
+    onMounted(() => {
+      document.documentElement.style.backgroundColor = backgroundColor.value;
+      document.body.style.backgroundColor = backgroundColor.value;
+    });
+
+    const computedTextColor = computed(()=> {
+      return store.generalSettings?.textColor || '';
+    });
+    document.documentElement.style.setProperty('--custom-text-color', computedTextColor.value);
+
+    const computedHeaderColor = computed(()=> {
+      return store.generalSettings?.headerColor || '';
+    });
+    document.documentElement.style.setProperty('--custom-header-color', computedHeaderColor.value);
+
+    watch(
+      [() => computedHeaderColor.value, () => computedTextColor.value],
+      ([newHeaderColor, newTextColor]) => {
+        console.log("Header color changed to:", newHeaderColor);
+        console.log("Text color changed to:", newTextColor);
+
+        document.documentElement.style.setProperty('--custom-header-color', newHeaderColor);
+        document.documentElement.style.setProperty('--custom-text-color', newTextColor);
+      }
+    );
 
     const isSidebarOpen = ref(false);
 
@@ -77,12 +104,6 @@ export default defineComponent({
     const closeSideBar = () => {
       isSidebarOpen.value = !isSidebarOpen.value;
     }
-
-    //apply background color to page body
-    onMounted(() => {
-      document.documentElement.style.backgroundColor = backgroundColor.value;
-      document.body.style.backgroundColor = backgroundColor.value;
-    });
 
     return {
       backgroundColor,

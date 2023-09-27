@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\V1\OrganizationController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\UserRoleController;
+use App\Http\Controllers\GeneralSettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [UserController::class, 'login'])->name('login');
@@ -27,4 +28,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //user management
     Route::post('users-list', [UserController::class, 'usersList']);
     Route::post('user-registration', [UserController::class, 'userRegistration']);
+
+    //general settings
+    Route::post('save-logo', [GeneralSettingsController::class, 'saveLogo']);
+    Route::post('fetch-general-settings', [GeneralSettingsController::class, 'fetchGeneralSettings']);
+    Route::post('save-ui-settings', [GeneralSettingsController::class, 'saveUiSettings']);
 });
