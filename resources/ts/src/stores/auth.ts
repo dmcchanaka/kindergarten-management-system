@@ -24,12 +24,17 @@ export const useAuthStore = defineStore("auth", () => {
     const errors = ref({});
     const user = ref<User | null>(null);
     const isAuthenticated = ref(!!JwtService.getToken() || JwtService.getToken() !== 'undefined');
+    const organization = ref({});
 
     function setAuth(authUser: User) {
         isAuthenticated.value = true;
         user.value = authUser;
         errors.value = {};
         JwtService.saveToken(user.value.token);
+    }
+
+    function setOrganization(org: any) {
+        organization.value = { ...org };
     }
 
     function setError(error: any) {
@@ -41,12 +46,15 @@ export const useAuthStore = defineStore("auth", () => {
         user.value = {} as User;
         errors.value = {};
         JwtService.destroyToken();
+        organization.value = {};
+        settingsStore.generalSettings = null;
     }
 
     function login(credentials: Credentials) {
         return ApiService.post("/login", credentials)
             .then(({ data }) => {
                 setAuth(data.userInfo);
+                setOrganization(data.organizationInfo);
                 settingsStore.setUiSettings(data.settings);
             })
             .catch(({ response }) => {
@@ -66,6 +74,8 @@ export const useAuthStore = defineStore("auth", () => {
           ApiService.post("/verify_token", { api_token: JwtService.getToken() })
             .then(({ data }) => {
               setAuth(data.userInfo);
+              setOrganization(data.organizationInfo);
+              settingsStore.setUiSettings(data.settings);
             })
             .catch(({ response }) => {
               setError(response.data.errors);
@@ -86,6 +96,7 @@ export const useAuthStore = defineStore("auth", () => {
         isAuthenticated,
         login,
         verifyAuth,
-        logout
+        logout,
+        organization
     }
 });
