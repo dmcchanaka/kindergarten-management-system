@@ -29,7 +29,7 @@ class GeneralSettingsController extends Controller
             } else {
                 $settings = [
                     'logo' => '/media/logo/logo.png',
-                    'backgroundColor' => 'transparent',
+                    'backgroundColor' => '#f3f4f6',
                     'headerColor' => '#344767',
                     'textColor' => '#344767'
                 ];

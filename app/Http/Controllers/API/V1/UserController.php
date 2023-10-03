@@ -67,7 +67,7 @@ class UserController extends Controller {
                     //general settings
                     $settings = [
                         'logo' => url('/'). '/media/logo/logo.png',
-                        'backgroundColor' => 'transparent',
+                        'backgroundColor' => '#f3f4f6',
                         'headerColor' => '#344767',
                         'textColor' => '#344767'
                     ];
@@ -142,7 +142,7 @@ class UserController extends Controller {
                     //general settings
                     $settings = [
                         'logoo' => url('/') .'/media/logo/logo.png',
-                        'backgroundColor' => 'transparent',
+                        'backgroundColor' => '#f3f4f6',
                         'headerColor' => '#344767',
                         'textColor' => '#344767'
                     ];
