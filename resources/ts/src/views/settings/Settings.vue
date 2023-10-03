@@ -5,13 +5,23 @@
       <div class="border-black/12.5 shadow-soft-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4 mb-5">
         <div class="relative z-10 flex flex-col flex-auto h-full p-4">
           <div class="flex items-center space-x-4">
-            <img class="w-20 h-20 rounded-lg" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+            <img class="w-20 h-20 rounded-lg" :src="settings.logo" alt="" >
             <div class="font-medium dark:text-white">
                 <div>Organization</div>
                 <div class="mt-3">
-                  <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <CloudArrowUpIcon class="h-4 w-5 text-white mb-1" /> Upload Logo
-                  </button>
+                  <label
+                    for="logoInput"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  >
+                    <input
+                      id="logoInput"
+                      type="file"
+                      accept="image/*"
+                      class="hidden"
+                      @change="changelogo"
+                    />
+                    <fa icon="cloud-arrow-up" class="h-4 w-5 text-white" /> Upload Logo
+                  </label>
                 </div>
             </div>
           </div>
@@ -32,7 +42,7 @@
     <div class="w-full h-full max-w-full px-3 lg:w-8/12 lg:flex-none">
       <div
         class="border-black/12.5 shadow-soft-xl relative flex h-full min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4">
-        <form class="space-y-6" @submit.prevent="onSubmitLogin">
+        <form class="space-y-6" @submit.prevent="onSubmitSettings">
           <h5 class="mb-0 font-bold capitalize">UI Configurations</h5>
           <div>
             <label for="email" class="block mb-2 text-sm font-medium">Background Color</label>
@@ -72,9 +82,9 @@
 <style lang="scss"></style>
   
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, ref, watch, onMounted } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
-import { useSettingsStore, type UiSettings } from "@/stores/settings";
+import { useSettingsStore, type UiSettings, FormLogo } from "@/stores/settings";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 
 import { CloudArrowUpIcon } from '@heroicons/vue/24/solid';
@@ -91,22 +101,80 @@ export default defineComponent({
 
     const dynamicColor = ref('blue');
 
-    watch(dynamicColor, (newColor) => {
-      document.documentElement.style.setProperty('--custom-text-color', newColor);
-    });
+    // const settings = ref({
+    //   logo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    //   selectedLogo: "",
+    //   backgroundColor: store.backgroundColor ? store.backgroundColor : '#4b5563', //gray
+    //   headerColor: '#2563eb', //blue
+    //   textColor: '#16a34a' //green
+    // });
 
     const settings = ref({
-      backgroundColor: store.backgroundColor ? store.backgroundColor : '#4b5563', //gray
-      headerColor: '#2563eb', //blue
-      textColor: '#16a34a' //green
+      logo: "",
+      selectedLogo: "",
+      backgroundColor: "", //gray
+      headerColor: "", //blue
+      textColor: "" //green
     });
 
-    const onSubmitLogin = async (values: any) => {
-      dynamicColor.value = 'ambian';
+    // watch(() => settings.value.textColor, (newColor) => {
+    //   document.documentElement.style.setProperty('--custom-text-color', newColor);
+    // });
+
+    watch(
+      [() => settings.value.backgroundColor, () => settings.value.headerColor, () => settings.value.textColor],
+      ([newBgColor, newHeaderColor, newTextColor]) => {
+        document.documentElement.style.setProperty('--custom-background-color', newBgColor);
+        document.documentElement.style.setProperty('--custom-header-color', newHeaderColor);
+        document.documentElement.style.setProperty('--custom-text-color', newTextColor);
+      }
+    );
+
+    onMounted(async() => {
+      await fetchGeneralSettings();
+    });
+
+    //fetch all previous settings with page load
+    const fetchGeneralSettings = async() => {
+      let inputs = {
+        organizationId: '1',
+        userId: '2'
+      }
+      await store.fetchUiSettings(inputs);
+      const error = Object.values(store.errors);
+      if (error.length === 0) {
+        const logo = store.generalSettings?.logo;
+        const backgroundColor = store.generalSettings?.backgroundColor;
+        const headerColor = store.generalSettings?.headerColor;
+        const textColor = store.generalSettings?.textColor;
+
+        if (backgroundColor && headerColor && textColor && logo) {
+          settings.value.backgroundColor = backgroundColor;
+          settings.value.headerColor = headerColor;
+          settings.value.textColor = textColor;
+          settings.value.logo = logo;
+        }
+      } else {
+        Swal.fire({
+          title: 'Oops...',
+          text: error[0] as string,
+          icon: 'error',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Try again!'
+        }).then((result) => {
+          store.errors = {};
+        })
+      }
+    };
+
+    const onSubmitSettings = async (values: any) => {
+      dynamicColor.value = 'yellow';
       if (submitButton.value) {
         submitButton.value!.disabled = true;
       }
       let inputs = {
+        organizationId: '1',
+        userId: '2',
         backgroundColor: settings.value.backgroundColor,
         headerColor: settings.value.headerColor,
         textColor: settings.value.textColor,
@@ -121,9 +189,17 @@ export default defineComponent({
           confirmButtonColor: '#3085d6',
           confirmButtonText: 'Ok, got it!'
         }).then(() => {
-          settings.value.backgroundColor = '#4b5563';
-          settings.value.headerColor = '#2563eb';
-          settings.value.textColor = '#16a34a';
+          const logo = store.generalSettings?.logo;
+          const backgroundColor = store.generalSettings?.backgroundColor;
+          const headerColor = store.generalSettings?.headerColor;
+          const textColor = store.generalSettings?.textColor;
+
+          if (backgroundColor && headerColor && textColor && logo) {
+            settings.value.backgroundColor = backgroundColor;
+            settings.value.headerColor = headerColor;
+            settings.value.textColor = textColor;
+            settings.value.logo = logo;
+          }
         });
       } else {
         Swal.fire({
@@ -140,12 +216,41 @@ export default defineComponent({
       loading.value = false;
     };
 
+    const changelogo = async(event) => {
+      const createUrl = URL.createObjectURL(event.target.files[0]);
+      URL.revokeObjectURL(event.target.files[0]);
+      settings.value.logo = createUrl;
+      settings.value.selectedLogo = event.target.files[0];
+
+      const formData = new FormData();
+      formData.append('image',settings.value.selectedLogo);
+      formData.append('organizationId', '1');
+      formData.append('userId', '2');
+
+      await store.saveLogo(formData);
+      const error = Object.values(store.errors);
+      if (error.length === 0) {
+        settings.value.logo = store.logo;
+      } else {
+          Swal.fire({
+              title: 'Oops...',
+              text: error[0] as string,
+              icon: 'error',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Try again!'
+          }).then((result) => {
+              store.errors = {};
+          })
+      }
+    }
+
     return {
       getAssetPath,
       settings,
       loading,
       submitButton,
-      onSubmitLogin
+      onSubmitSettings,
+      changelogo
     }
   },
 });

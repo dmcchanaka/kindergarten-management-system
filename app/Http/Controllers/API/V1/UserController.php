@@ -2,11 +2,15 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\GeneralSetting;
+use App\Models\Organization;
 use App\Models\Permission;
 use App\Models\User;
 use App\Models\UserPermission;
+use App\Models\UserType;
 use App\Validators\CustomValidator;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -56,10 +60,42 @@ class UserController extends Controller {
                 }
                 $permissions = $permissionQuery->select(['p_id AS id', 'name'])->get();
 
+                $organizationInfo = [];
+                //organization info
+                if(config('kindergarten.type_super_admin') == $user->u_tp_id){
+                    $organization = Organization::first();
+                    //general settings
+                    $settings = [
+                        'logo' => url('/'). '/media/logo/logo.png',
+                        'backgroundColor' => '#f3f4f6',
+                        'headerColor' => '#344767',
+                        'textColor' => '#344767'
+                    ];
+                } elseif(config('kindergarten.type_principal') == $user->u_tp_id){
+                    $organization = Organization::where('principal_id', $user->getKey())->latest()->first();
+                    if($organization){
+                        $organizationInfo = [
+                         'id'=>$organization->id,
+                         'name'=>$organization->name,
+                        ];
+                     }
+                    $generalSettings = GeneralSetting::where('organization_id', $organization->id)->latest()->first();
+                    if($generalSettings){
+                        $settings = [
+                            'logo' => url('/') .$generalSettings->logo_url,
+                            'backgroundColor' => $generalSettings->background_color,
+                            'headerColor' => $generalSettings->heading_color,
+                            'textColor' => $generalSettings->text_color
+                        ];
+                    }
+                }
+
                 return response()->json([
                     'result'=>true,
                     'userInfo' => $userInfo,
                     'userPermissions' => $permissions,
+                    'settings' => $settings,
+                    'organizationInfo' => $organizationInfo
                 ],200);
             } else {
                 return response()->json([
@@ -87,9 +123,55 @@ class UserController extends Controller {
                 'userRole'=>$user->userRole()
             ];
 
+            $permissionQuery = Permission::query();
+                //user permission
+                if(config('kindergarten.type_super_admin') == $user->u_tp_id){
+                    
+                } else {
+                    $userPermission = UserPermission::where('u_tp_id', $user->u_tp_id)->get();
+                    if($userPermission){
+                        $permissionQuery->whereIn('p_id', $userPermission->pluck('p_id')->all());
+                    }
+                }
+                $permissions = $permissionQuery->select(['p_id AS id', 'name'])->get();
+
+                $organizationInfo = [];
+                //organization info
+                if(config('kindergarten.type_super_admin') == $user->u_tp_id){
+                    $organization = Organization::first();
+                    //general settings
+                    $settings = [
+                        'logoo' => url('/') .'/media/logo/logo.png',
+                        'backgroundColor' => '#f3f4f6',
+                        'headerColor' => '#344767',
+                        'textColor' => '#344767'
+                    ];
+                } elseif(config('kindergarten.type_principal') == $user->u_tp_id){
+                    $organization = Organization::where('principal_id', $user->getKey())->latest()->first();
+                    $generalSettings = GeneralSetting::where('organization_id', $organization->id)->latest()->first();
+                    if($generalSettings){
+                        $settings = [
+                            'logo' => url('/') .$generalSettings->logo_url,
+                            'backgroundColor' => $generalSettings->background_color,
+                            'headerColor' => $generalSettings->heading_color,
+                            'textColor' => $generalSettings->text_color
+                        ];
+                    }
+                }
+
+                if($organization){
+                    $organizationInfo = [
+                     'id'=>$organization->id,
+                     'name'=>$organization->name,
+                    ];
+                 }
+
             return response()->json([
                 'result'=>true,
-                'userInfo' => $userInfo
+                'userInfo' => $userInfo,
+                'userPermissions' => $permissions,
+                'settings' => $settings,
+                'organizationInfo' => $organizationInfo
             ],200);
         } else {
             return response()->json([
@@ -97,6 +179,26 @@ class UserController extends Controller {
                 'errors' => 'The Entered Password is incorrect'
             ],404);
         }
+    }
+
+    // Get users by type
+    public function getUsers(Request $request, $userType): JsonResponse{
+
+        // Get existing user types
+        $existingUserTypes = UserType::select('user_type')->pluck('user_type')->toArray();
+        
+        if(!in_array($userType, $existingUserTypes)){
+            return response()->json(['message' => 'Invalid user type'],400);
+        }
+
+        $users = User::join('user_type', 'users.u_tp_id', '=', 'user_type.u_tp_id')
+                ->select('users.id as value','users.name')
+                ->where('user_type.user_type', $userType)
+                ->get();
+
+        
+        return response()->json(['users' => $users]);
+
     }
 
     public function usersList(Request $request){

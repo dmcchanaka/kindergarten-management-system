@@ -44,6 +44,33 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+                path: "/organizations",
+                name: "organizations",
+                component: () => import("@/views/organizations/OrganizationsList.vue"),
+                meta: {
+                  pageTitle: "Organizations",
+                  breadcrumbs: ["Organizations"],
+                },
+            },
+            {
+                path: "/create-organization",
+                name: "create-organization",
+                component: () => import("@/components/organizations/forms/OrganizationCreate.vue"),
+                meta: {
+                  pageTitle: "Create Organization",
+                  breadcrumbs: ["Create Organization"],
+                },
+            },
+            {
+                path: "/organization/edit",
+                name: "edit-organization",
+                component: () => import("@/components/organizations/forms/OrganizationEdit.vue"),
+                meta: {
+                  pageTitle: "Edit Organization",
+                  breadcrumbs: ["Edit Organization"],
+                }
+            },
+            {
                 path: "/add-user-role",
                 name: "add-user-role",
                 component: () => import("@/components/user-roles/forms/AddUserRole.vue"),
@@ -59,6 +86,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                   pageTitle: "Edit User Role",
                   breadcrumbs: ["User Roles", "Edit User Role"],
+
                 },
             },
             {
@@ -86,6 +114,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                   pageTitle: "General Settings",
                   breadcrumbs: ["Settings"],
+
                 },
             },
         ]

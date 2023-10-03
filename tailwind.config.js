@@ -12,6 +12,7 @@ module.exports = {
     extend: {
       textColor: {
         'sm': 'var(--custom-text-color, #344767)', // Default text color is black (#000)
+        'header': 'var(--custom-header-color, #344767)', // Default h1 text color
       },
     },
     screens: {

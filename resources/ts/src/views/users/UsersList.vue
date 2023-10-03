@@ -1,13 +1,13 @@
 <template>
     <div
-        class="mt-5 w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
             <div class="flex flex-wrap -mx-3">
                 <div class="flex items-center flex-none w-1/2 max-w-full px-3">
                     <h6 class="mb-0">User List</h6>
                 </div>
                 <div class="flex-none w-1/2 max-w-full px-0 mb-2 text-right">
-                    <router-link to="/add-user" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
+                    <router-link to="/add-user" class="inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
                         <fa icon="plus" />&nbsp;&nbsp;Add User
                     </router-link>
                 </div>
@@ -24,32 +24,32 @@
             checkbox-label="id"
         >
             <template v-slot:id="{ row: users }">
-                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.id }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.id }}</a>
             </template>
             <template v-slot:first_name="{ row: users }">
-                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.first_name }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.first_name }}</a>
             </template>
             <template v-slot:last_name="{ row: users }">
-                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.last_name }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.last_name }}</a>
             </template>
             <template v-slot:email="{ row: users }">
-                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.email }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.email }}</a>
             </template>
             <template v-slot:telephone="{ row: users }">
-                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.contact_number }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.contact_number }}</a>
             </template>
             <template v-slot:user-role="{ row: users }">
-                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.user_role }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.user_role }}</a>
             </template>
             <template v-slot:address="{ row: users }">
-                <a class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">{{ users.address }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.address }}</a>
             </template>
             <template v-slot:actions="{ row: users }">
-                <a class="mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500">
-                    <fa icon="pen-to-square" class="text-purple-700 hover:text-white"></fa>
+                <a class="mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
+                    <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
                 </a>
-                <a class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500">
-                    <fa icon="trash-can" class="text-red-700 hover:text-white"></fa>
+                <a class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
+                    <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
                 </a>
             </template>
         </Datatable>

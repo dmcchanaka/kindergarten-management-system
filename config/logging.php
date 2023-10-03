@@ -126,6 +126,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'KGMS_ERROR_LOGGER' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/kgms_error.log'),
+            'level' => 'error',
+        ],
     ],
 
 ];

@@ -25,6 +25,11 @@ const MainMenuConfig: Array<MenuItem> = [
         icon: "user",
       },
       {
+        heading: "organizations",
+        route: "/organizations",
+        icon: "building-columns",
+      },
+      {
         heading: "settings",
         route: "/settings",
         icon: "wrench",
