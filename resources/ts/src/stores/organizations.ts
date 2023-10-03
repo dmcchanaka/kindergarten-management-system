@@ -77,7 +77,6 @@ export const useOrganizationsStore = defineStore("Organization", () => {
                 setOrganizations(data.organizations);
             })
             .catch(({ response }) => {
-                console.log(response);
                 if (response.status !== 200) {
                     const error = {
                         message: response.data.errors,
@@ -93,7 +92,6 @@ export const useOrganizationsStore = defineStore("Organization", () => {
             `/organization/find/${organizationId.value}`
         )
             .then(({ data }) => {
-                console.log(data);
                 formData.value.name = data.organization.name;
                 formData.value.address = data.organization.address;
                 formData.value.contact_num = data.organization.contact_num;
@@ -101,7 +99,6 @@ export const useOrganizationsStore = defineStore("Organization", () => {
                 formData.value.principal_id = data.organization.principal_id;
             })
             .catch(({ response }) => {
-                console.log(response);
                 if (response.status !== 200) {
                     const error = {
                         message: response.data.errors,
