@@ -55,7 +55,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: "/create-organization",
                 name: "create-organization",
-                component: () => import("@/views/organizations/OrganizationCreate.vue"),
+                component: () => import("@/components/organizations/forms/OrganizationCreate.vue"),
                 meta: {
                   pageTitle: "Create Organization",
                   breadcrumbs: ["Create Organization"],
@@ -64,7 +64,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: "/organization/edit",
                 name: "edit-organization",
-                component: () => import("@/views/organizations/OrganizationEdit.vue"),
+                component: () => import("@/components/organizations/forms/OrganizationEdit.vue"),
                 meta: {
                   pageTitle: "Edit Organization",
                   breadcrumbs: ["Edit Organization"],

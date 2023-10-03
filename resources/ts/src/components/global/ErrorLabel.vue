@@ -1,7 +1,5 @@
-<template v-if="errors">
-  <span v-for="(error, index) in errors" :key="index" class="block pr-4 mb-1 text-sm font-bold text-left text-red-600">
-    {{ error }}
-  </span>
+<template>
+  <p class="text-red-500 text-xs italic -mb-3">{{ error }}</p>
 </template>
 
 <style scoped lang="scss"></style>
@@ -10,9 +8,9 @@
 import { defineComponent, ref, reactive } from "vue";
 
 export default defineComponent({
-    name: "KGMS_ErrorLable",
+    name: "global-error-lable",
     props: {
-        errors: Array
+        error: String
     },
     setup(props){
         return {}

@@ -35,13 +35,7 @@ export const useOrganizationsStore = defineStore("Organization", () => {
     const OrganizationList = ref<Organization[]>([]);
     const organizationId = ref("");
 
-    const formDataErrors = ref<OrganizationFormDataErrors>({
-        name: [],
-        address: [],
-        contact_num: [],
-        email: [],
-        principal_id: [],
-    });
+    const formDataErrors = ref({});
 
     const formData = ref<OrganizationFormData>({
         name: "",
@@ -73,12 +67,8 @@ export const useOrganizationsStore = defineStore("Organization", () => {
         }
     }
 
-    function setOrganizationFormDataErrors(errors: any) {
-        formDataErrors.value.name = errors?.name;
-        formDataErrors.value.address = errors?.address;
-        formDataErrors.value.contact_num = errors?.contact_num;
-        formDataErrors.value.email = errors?.email;
-        formDataErrors.value.principal_id = errors?.principal_id;
+    function setFormDataErrors(error: any) {
+        formDataErrors.value = { ...error };
     }
 
     async function fetchOrganizations() {
@@ -129,8 +119,18 @@ export const useOrganizationsStore = defineStore("Organization", () => {
             })
             .catch(({ response }) => {
                 if (response.status !== 200) {
-                    setOrganizationFormDataErrors(response.data.errors);
-                    return response;
+                    let errorMsg = '';
+                    if (typeof response.data.errors === 'object') {
+                        errorMsg = 'Some fields are missing';
+                    } else {
+                        errorMsg = response.data.errors;
+                    }
+                    const error = {
+                        message : errorMsg,
+                        status : response.status,
+                    }
+                    setError(error);
+                    setFormDataErrors(response.data.errors);
                 }
             });
     }
@@ -140,15 +140,25 @@ export const useOrganizationsStore = defineStore("Organization", () => {
             `/organization/update/${organizationId.value}`,
             formData
         )
-            .then(({ data }) => {
-                return data;
-            })
-            .catch(({ response }) => {
-                if (response.status !== 200) {
-                    setOrganizationFormDataErrors(response.data.errors);
-                    return response;
+        .then(({ data }) => {
+            return data;
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                let errorMsg = '';
+                if (typeof response.data.errors === 'object') {
+                    errorMsg = 'Some fields are missing';
+                } else {
+                    errorMsg = response.data.errors;
                 }
-            });
+                const error = {
+                    message : errorMsg,
+                    status : response.status,
+                }
+                setError(error);
+                setFormDataErrors(response.data.errors);
+            }
+        });
     }
 
     function setOrganizations(organizations: Organization[]) {
@@ -169,12 +179,13 @@ export const useOrganizationsStore = defineStore("Organization", () => {
         OrganizationList,
         errors,
         setOrganizationFormData,
-        setOrganizationFormDataErrors,
+        setFormDataErrors,
         formData,
         formDataErrors,
         saveOrganization,
         saveOrganizationId,
         fetchOrganization,
         updateOrganization,
+        organizationId
     };
 });

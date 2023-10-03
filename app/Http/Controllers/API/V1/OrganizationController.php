@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Http\Requests\StoreOrganization;
 use App\Models\Organization;
 use App\Traits\ExceptionLogTrait;
+use App\Validators\CustomValidator;
 use Exception;
 
 /**
@@ -40,19 +41,50 @@ class OrganizationController extends Controller
     }
 
     // Create organization
-    public function create(StoreOrganization $request): JsonResponse
+    public function create(Request $request)
     {
+        $data = $request->all();
 
-        $validatedRequest = (object)$request->validated();
+        $rules = [
+            'name' => 'required|string|max:100',
+            'address' => 'required|string|max:255',
+            'contact_num' => 'required|digits_between:10,25',
+            'email' => 'required|email|max:100|unique:users,email',
+            'principal_id' => 'required|integer'
+        ];
+
+        $attributes = [
+            'name' => 'organization name',
+            'address' => 'organization address',
+            'contact_num' => 'organization contact number',
+            'email' => 'organization email',
+            'principal_id' => 'principal'
+        ];
+
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
 
         try {
 
             Organization::create([
-                'name' => $validatedRequest->name,
-                'address' => $validatedRequest->address,
-                'contact_num' => $validatedRequest->contact_num,
-                'email' => $validatedRequest->email,
-                'principal_id' => $validatedRequest->principal_id
+                'name' => $request->name,
+                'address' => $request->address,
+                'contact_num' => $request->contact_num,
+                'email' => $request->email,
+                'principal_id' => $request->principal_id
             ]);
 
             return response()->json(['message' => 'New organization successfully created.', 'status' => 200]);
@@ -63,10 +95,41 @@ class OrganizationController extends Controller
     }
 
     // Update organization
-    public function update(StoreOrganization $request, $id): JsonResponse
+    public function update(Request $request, $id)
     {
+        $data = $request->all();
 
-        $validatedRequest = (object)$request->validated();
+        $rules = [
+            'name' => 'required|string|max:100',
+            'address' => 'required|string|max:255',
+            'contact_num' => 'required|digits_between:10,25',
+            'email' => 'required|email|max:100|unique:users,email',
+            'principal_id' => 'required|integer'
+        ];
+
+        $attributes = [
+            'name' => 'organization name',
+            'address' => 'organization address',
+            'contact_num' => 'organization contact number',
+            'email' => 'organization email',
+            'principal_id' => 'principal'
+        ];
+
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
 
         DB::beginTransaction();
         try {
@@ -80,11 +143,11 @@ class OrganizationController extends Controller
                 return response()->json(['message' => 'Organization not found.'], 404);
             }
 
-            $organization->name = $validatedRequest->name;
-            $organization->address = $validatedRequest->address;
-            $organization->contact_num = $validatedRequest->contact_num;
-            $organization->email = $validatedRequest->email;
-            $organization->principal_id = $validatedRequest->principal_id;
+            $organization->name = $request->name;
+            $organization->address = $request->address;
+            $organization->contact_num = $request->contact_num;
+            $organization->email = $request->email;
+            $organization->principal_id = $request->principal_id;
             $organization->save();
 
             DB::commit();
