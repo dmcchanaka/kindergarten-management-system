@@ -8,6 +8,7 @@ use App\Models\Permission;
 use App\Models\User;
 use App\Models\UserPermission;
 use App\Models\UserType;
+use App\Traits\UserAllocation;
 use App\Validators\CustomValidator;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller {
+
+    use UserAllocation;
 
     //create login function
     public function login(Request $request){
@@ -48,47 +51,13 @@ class UserController extends Controller {
                     'userRole'=>$user->userRole()
                 ];
 
-                $permissionQuery = Permission::query();
-                //user permission
-                if(config('kindergarten.type_super_admin') == $user->u_tp_id){
-                    
-                } else {
-                    $userPermission = UserPermission::where('u_tp_id', $user->u_tp_id)->get();
-                    if($userPermission){
-                        $permissionQuery->whereIn('p_id', $userPermission->pluck('p_id')->all());
-                    }
-                }
-                $permissions = $permissionQuery->select(['p_id AS id', 'name'])->get();
-
+                /**Organization info */
                 $organizationInfo = [];
-                //organization info
-                if(config('kindergarten.type_super_admin') == $user->u_tp_id){
-                    $organization = Organization::first();
-                    //general settings
-                    $settings = [
-                        'logo' => url('/'). '/media/logo/logo.png',
-                        'backgroundColor' => '#f3f4f6',
-                        'headerColor' => '#344767',
-                        'textColor' => '#344767'
-                    ];
-                } elseif(config('kindergarten.type_principal') == $user->u_tp_id){
-                    $organization = Organization::where('principal_id', $user->getKey())->latest()->first();
-                    if($organization){
-                        $organizationInfo = [
-                         'id'=>$organization->id,
-                         'name'=>$organization->name,
-                        ];
-                     }
-                    $generalSettings = GeneralSetting::where('organization_id', $organization->id)->latest()->first();
-                    if($generalSettings){
-                        $settings = [
-                            'logo' => url('/') .$generalSettings->logo_url,
-                            'backgroundColor' => $generalSettings->background_color,
-                            'headerColor' => $generalSettings->heading_color,
-                            'textColor' => $generalSettings->text_color
-                        ];
-                    }
-                }
+                $organizationInfo = $this->getUserAllocatedOrganization($user);
+                /**General settings info */
+                $settings = $this->getGeneralSettingsByUser($user);
+                /**User Permissions */
+                $permissions = $this->getAllocatedPermissionsByUser($user);
 
                 return response()->json([
                     'result'=>true,
@@ -106,7 +75,7 @@ class UserController extends Controller {
         } catch(Exception $e){
             return response()->json([
                 'result' => false,
-                'errors' => 'Database connection error: ' . $e->getMessage()
+                'errors' => $e->getMessage()
             ], 500);
         }
     }
@@ -123,48 +92,13 @@ class UserController extends Controller {
                 'userRole'=>$user->userRole()
             ];
 
-            $permissionQuery = Permission::query();
-                //user permission
-                if(config('kindergarten.type_super_admin') == $user->u_tp_id){
-                    
-                } else {
-                    $userPermission = UserPermission::where('u_tp_id', $user->u_tp_id)->get();
-                    if($userPermission){
-                        $permissionQuery->whereIn('p_id', $userPermission->pluck('p_id')->all());
-                    }
-                }
-                $permissions = $permissionQuery->select(['p_id AS id', 'name'])->get();
-
-                $organizationInfo = [];
-                //organization info
-                if(config('kindergarten.type_super_admin') == $user->u_tp_id){
-                    $organization = Organization::first();
-                    //general settings
-                    $settings = [
-                        'logoo' => url('/') .'/media/logo/logo.png',
-                        'backgroundColor' => '#f3f4f6',
-                        'headerColor' => '#344767',
-                        'textColor' => '#344767'
-                    ];
-                } elseif(config('kindergarten.type_principal') == $user->u_tp_id){
-                    $organization = Organization::where('principal_id', $user->getKey())->latest()->first();
-                    $generalSettings = GeneralSetting::where('organization_id', $organization->id)->latest()->first();
-                    if($generalSettings){
-                        $settings = [
-                            'logo' => url('/') .$generalSettings->logo_url,
-                            'backgroundColor' => $generalSettings->background_color,
-                            'headerColor' => $generalSettings->heading_color,
-                            'textColor' => $generalSettings->text_color
-                        ];
-                    }
-                }
-
-                if($organization){
-                    $organizationInfo = [
-                     'id'=>$organization->id,
-                     'name'=>$organization->name,
-                    ];
-                 }
+             /**Organization info */
+             $organizationInfo = [];
+             $organizationInfo = $this->getUserAllocatedOrganization($user);
+             /**General settings info */
+             $settings = $this->getGeneralSettingsByUser($user);
+             /**User Permissions */
+             $permissions = $this->getAllocatedPermissionsByUser($user);
 
             return response()->json([
                 'result'=>true,

@@ -7,7 +7,7 @@
           <div class="flex items-center space-x-4">
             <img class="w-20 h-20 rounded-lg" :src="settings.logo" alt="" >
             <div class="font-medium dark:text-white">
-                <div>Organization</div>
+                <div>{{ currentOrganization }}</div>
                 <div class="mt-3">
                   <label
                     for="logoInput"
@@ -82,8 +82,9 @@
 <style lang="scss"></style>
   
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted } from "vue";
+import { defineComponent, ref, watch, onMounted, computed } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
+import { useAuthStore } from "@/stores/auth";
 import { useSettingsStore, type UiSettings, FormLogo } from "@/stores/settings";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 
@@ -95,31 +96,33 @@ export default defineComponent({
     CloudArrowUpIcon
   },
   setup() {
+    const authStore = useAuthStore();
     const store = useSettingsStore();
     const submitButton = ref<HTMLButtonElement | null>(null);
     const loading = ref(false);
 
-    const dynamicColor = ref('blue');
+    const currentOrganizationId = computed(() => {
+      const organization = authStore.organization;
+      return typeof organization?.id != 'undefined' ? organization?.id : "0";
+    });
 
-    // const settings = ref({
-    //   logo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    //   selectedLogo: "",
-    //   backgroundColor: store.backgroundColor ? store.backgroundColor : '#4b5563', //gray
-    //   headerColor: '#2563eb', //blue
-    //   textColor: '#16a34a' //green
-    // });
+    const currentOrganization = computed(() => {
+      const organization = authStore.organization;
+      return typeof organization?.name != 'undefined' ? organization?.name : "-";
+    });
+
+    const userId = computed(() => {
+      const user = authStore.user;
+      return typeof user?.userId != 'undefined' ? user?.userId : "0";
+    });
 
     const settings = ref({
       logo: "",
       selectedLogo: "",
       backgroundColor: "", //gray
       headerColor: "", //blue
-      textColor: "" //green
+      textColor: "", //green
     });
-
-    // watch(() => settings.value.textColor, (newColor) => {
-    //   document.documentElement.style.setProperty('--custom-text-color', newColor);
-    // });
 
     watch(
       [() => settings.value.backgroundColor, () => settings.value.headerColor, () => settings.value.textColor],
@@ -137,8 +140,8 @@ export default defineComponent({
     //fetch all previous settings with page load
     const fetchGeneralSettings = async() => {
       let inputs = {
-        organizationId: '1',
-        userId: '2'
+        organizationId: currentOrganizationId.value,
+        userId: userId.value
       }
       await store.fetchUiSettings(inputs);
       const error = Object.values(store.errors);
@@ -168,13 +171,12 @@ export default defineComponent({
     };
 
     const onSubmitSettings = async (values: any) => {
-      dynamicColor.value = 'yellow';
       if (submitButton.value) {
         submitButton.value!.disabled = true;
       }
       let inputs = {
-        organizationId: '1',
-        userId: '2',
+        organizationId: currentOrganizationId.value,
+        userId: userId.value,
         backgroundColor: settings.value.backgroundColor,
         headerColor: settings.value.headerColor,
         textColor: settings.value.textColor,
@@ -250,7 +252,8 @@ export default defineComponent({
       loading,
       submitButton,
       onSubmitSettings,
-      changelogo
+      changelogo,
+      currentOrganization
     }
   },
 });

@@ -24,11 +24,12 @@
                 <MenuButton class="relative flex rounded-full text-sm focus:outline-none focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span class="absolute -inset-1.5" />
                   <span class="sr-only">Open user menu</span>
-                  <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                  <div class="font-medium dark:text-white text-left pl-4">
-                    <div>{{ currentUser }}</div>
+                  <div class="font-medium dark:text-white text-left pl-4 pr-3">
+                    <div>{{ currentUser }} <span v-if="currentOrganization" class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">({{ currentOrganization }})</span></div>
                     <div class="text-sm text-gray-500 dark:text-gray-400">{{ userRole }}</div>
-                </div>
+                  </div>
+                  <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                  
                 </MenuButton>
               </div>
               <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
@@ -112,6 +113,11 @@ export default defineComponent({
       return typeof user?.userRole != 'undefined' ? user?.userRole : "-";
     });
 
+    const currentOrganization = computed(() => {
+      const organization = store.organization;
+      return typeof organization?.name != 'undefined' ? organization?.name : "-";
+    });
+
     const toggleSideBar = () => {
       emit('sidebarToggle')
     }
@@ -123,7 +129,8 @@ export default defineComponent({
       currentUser,
       userRole,
       signOut,
-      toggleSideBar
+      toggleSideBar,
+      currentOrganization
     }
   },
 });
