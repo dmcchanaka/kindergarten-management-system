@@ -58,13 +58,16 @@ class UserController extends Controller {
                 $settings = $this->getGeneralSettingsByUser($user);
                 /**User Permissions */
                 $permissions = $this->getAllocatedPermissionsByUser($user);
+                /**User Menu */
+                $menuItems = $this->getAllocatedMainMenuByUser($user);
 
                 return response()->json([
                     'result'=>true,
                     'userInfo' => $userInfo,
                     'userPermissions' => $permissions,
                     'settings' => $settings,
-                    'organizationInfo' => $organizationInfo
+                    'organizationInfo' => $organizationInfo,
+                    'userMenu' => $menuItems
                 ],200);
             } else {
                 return response()->json([
@@ -99,13 +102,16 @@ class UserController extends Controller {
              $settings = $this->getGeneralSettingsByUser($user);
              /**User Permissions */
              $permissions = $this->getAllocatedPermissionsByUser($user);
+             /**User Menu */
+             $menuItems = $this->getAllocatedMainMenuByUser($user);
 
             return response()->json([
                 'result'=>true,
                 'userInfo' => $userInfo,
                 'userPermissions' => $permissions,
                 'settings' => $settings,
-                'organizationInfo' => $organizationInfo
+                'organizationInfo' => $organizationInfo,
+                'userMenu' => $menuItems
             ],200);
         } else {
             return response()->json([

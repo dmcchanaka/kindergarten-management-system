@@ -19,7 +19,7 @@ Trait UserAllocation {
         }
 
         $organizations = $organizationQuery->get();
-        
+
         $organizations->transform(function($org){
             return [
                 'id'=>$org->id,
@@ -112,5 +112,33 @@ Trait UserAllocation {
             ->get();
     
         return $permissions;
+    }
+
+    //get user allocated main menubar
+    public function getAllocatedMainMenuByUser($user){
+        $menuCollection = collect([]);
+        if (config('kindergarten.type_super_admin') == $user->u_tp_id) {
+            // Super admin has all permissions, so you can return all permissions here.
+            $menuCollection = Permission::select(['heading', 'route', 'icon'])->orderBy('order')->get();
+        } else {
+            // For other user roles, let's fetch their permissions.
+            $userPermissions = UserPermission::where('u_tp_id', $user->u_tp_id)->pluck('p_id')->all();
+
+            if (!empty($userPermissions)) {
+                // Fetch the menu based on the user's permissions
+                $allocatedMenu = Permission::whereIn('p_id', $userPermissions)
+                    ->select(['heading', 'route', 'icon'])
+                    ->orderBy('order')
+                    ->get();
+    
+                // Add the fetched menu items to the collection
+                $menuCollection = collect($allocatedMenu);
+            }
+        }
+    
+        // Remove duplicates based on 'heading' and re-index the collection
+        $uniqueAllocatedMenu = $menuCollection->unique('heading')->values()->all();
+
+        return $uniqueAllocatedMenu;
     }
 }
