@@ -25,11 +25,21 @@
 import { defineComponent, computed } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
 import { useAuthStore } from "@/stores/auth";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "dashboard",
   setup() {
     const store = useAuthStore();
+    const { t, te } = useI18n();
+
+    const translate = (text: string) => {
+      if (te(text)) {
+        return t(text);
+      } else {
+        return text;
+      }
+    };
 
     const currentOrganization = computed(() => {
       const organization = store.organization;
@@ -44,7 +54,8 @@ export default defineComponent({
     return {
       getAssetPath,
       currentOrganization,
-      userRole
+      userRole,
+      translate
     }
   },
 });

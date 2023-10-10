@@ -31,8 +31,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "dashboard",
                 component: () => import("@/views/Dashboard.vue"),
                 meta: {
-                  pageTitle: "Dashboard",
-                  breadcrumbs: ["Dashboard"],
+                  pageTitle: "dashboard",
+                  breadcrumbs: ["dashboard"],
                 },
             },
             {
@@ -40,8 +40,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "user-roles",
                 component: () => import("@/views/user-roles/UserRoleList.vue"),
                 meta: {
-                  pageTitle: "User Roles",
-                  breadcrumbs: ["User Roles"],
+                  pageTitle: "userRoles",
+                  breadcrumbs: ["userRoles"],
                 },
             },
             {
