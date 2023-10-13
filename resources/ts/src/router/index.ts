@@ -119,7 +119,26 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
         ]
-    }
+    },
+    {
+        path: "/",
+        component: () => import("@/layouts/SystemLayout.vue"),
+        children: [
+            {
+                path: "/404",
+                name: "404",
+                component: () =>
+                    import("@/views/auth/Error404.vue"),
+                meta: {
+                    pageTitle: "Error 404",
+                },
+            },
+        ]
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        redirect: "/404",
+    },
 ];
 
 const router = createRouter({
@@ -128,14 +147,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    console.log(from);
+    console.log(to);
     const authStore = useAuthStore();
 
     // verify auth token before each page change
     authStore.verifyAuth();
 
+    const requiredPermission = to.name;
      // before page access check if page requires authentication
     if (to.meta.middleware == "auth") {
-        if (authStore.isAuthenticated) {
+        if (authStore.isAuthenticated && hasPermission(authStore.userPermissions, requiredPermission)) {
         next();
         } else {
         next({ name: "sign-in" });
@@ -144,6 +166,10 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
+
+function hasPermission(userPermissions, requiredPermission) {
+    return userPermissions.some(permission => permission.name === requiredPermission);
+}
 
 export default router;
 
