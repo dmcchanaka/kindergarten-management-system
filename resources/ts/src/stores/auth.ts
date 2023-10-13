@@ -19,12 +19,25 @@ export interface Credentials {
     password: string;
 }
 
+export interface UserPermission {
+    id: number,
+    name: string
+}
+
+export interface UserMenu {
+    heading: string;
+    route: string;
+    icon: string;
+}
+
 export const useAuthStore = defineStore("auth", () => {
     const settingsStore = useSettingsStore();
     const errors = ref({});
     const user = ref<User | null>(null);
     const isAuthenticated = ref(!!JwtService.getToken() || JwtService.getToken() !== 'undefined');
     const organization = ref({});
+    const userPermissions = ref<UserPermission[]>([]);
+    const navBarList = ref<UserMenu[]>([]);
 
     function setAuth(authUser: User) {
         isAuthenticated.value = true;
@@ -35,6 +48,14 @@ export const useAuthStore = defineStore("auth", () => {
 
     function setOrganization(org: any) {
         organization.value = { ...org };
+    }
+
+    function setUserPermission(myPermission: UserPermission[]){
+        userPermissions.value = myPermission;
+    }
+
+    function setUserMenu(myMenuItem: UserMenu[]){
+        navBarList.value = myMenuItem;
     }
 
     function setError(error: any) {
@@ -48,6 +69,8 @@ export const useAuthStore = defineStore("auth", () => {
         JwtService.destroyToken();
         organization.value = {};
         settingsStore.generalSettings = null;
+        userPermissions.value = [];
+        navBarList.value = [];
     }
 
     function login(credentials: Credentials) {
@@ -56,6 +79,8 @@ export const useAuthStore = defineStore("auth", () => {
                 setAuth(data.userInfo);
                 setOrganization(data.organizationInfo);
                 settingsStore.setUiSettings(data.settings);
+                setUserPermission(data.userPermissions);
+                setUserMenu(data.userMenu);
             })
             .catch(({ response }) => {
                 if (response.status === 404 || response.status === 500) {
@@ -76,6 +101,8 @@ export const useAuthStore = defineStore("auth", () => {
               setAuth(data.userInfo);
               setOrganization(data.organizationInfo);
               settingsStore.setUiSettings(data.settings);
+              setUserPermission(data.userPermissions);
+              setUserMenu(data.userMenu);
             })
             .catch(({ response }) => {
               setError(response.data.errors);
@@ -97,6 +124,8 @@ export const useAuthStore = defineStore("auth", () => {
         login,
         verifyAuth,
         logout,
-        organization
+        organization,
+        userPermissions,
+        navBarList
     }
 });

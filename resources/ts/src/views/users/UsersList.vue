@@ -7,7 +7,7 @@
                     <h6 class="mb-0">User List</h6>
                 </div>
                 <div class="flex-none w-1/2 max-w-full px-0 mb-2 text-right">
-                    <router-link to="/add-user" class="inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
+                    <router-link v-if="isPermittedRoute('add-user')" to="/add-user" class="inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
                         <fa icon="plus" />&nbsp;&nbsp;Add User
                     </router-link>
                 </div>
@@ -60,6 +60,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import { useUserStore, type Users } from "@/stores/users";
+import { useAuthStore } from "@/stores/auth";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import arraySort from "array-sort";
 
@@ -70,6 +71,7 @@ export default defineComponent({
         Datatable
     },
     setup() {
+        const authStore = useAuthStore();
         const store = useUserStore();
 
         const selectedIds = ref<Array<number>>([]);
@@ -193,12 +195,19 @@ export default defineComponent({
             }
         }
 
+        const isPermittedRoute = (currentRoute) => {
+            if(authStore.userPermissions.length > 0){
+              return authStore.userPermissions.some(permission => permission.name === currentRoute);
+            }
+        }
+
         return {
             tableData,
             tableHeader,
             searchItems,
             sort,
             onItemSelect,
+            isPermittedRoute
         }
     }
 });

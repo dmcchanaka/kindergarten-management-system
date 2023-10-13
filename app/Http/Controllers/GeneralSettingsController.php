@@ -3,41 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\GeneralSetting;
+use App\Traits\UserAllocation;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class GeneralSettingsController extends Controller
 {
+    use UserAllocation;
+
     public function fetchGeneralSettings(Request $request){
+        $user = Auth::user();
         try {
-            $generalSettings = GeneralSetting::where('organization_id', $request->organizationId)->latest()->first();
-    
-            if($generalSettings){
-                $settings = [
-                    'logo' => url('/') .$generalSettings->logo_url,
-                    'backgroundColor' => $generalSettings->background_color,
-                    'headerColor' => $generalSettings->heading_color,
-                    'textColor' => $generalSettings->text_color
-                ];
-    
-                return response()->json([
-                    'result' => true,
-                    'settings' => $settings
-                ], 200);
-            } else {
-                $settings = [
-                    'logo' => '/media/logo/logo.png',
-                    'backgroundColor' => '#f3f4f6',
-                    'headerColor' => '#344767',
-                    'textColor' => '#344767'
-                ];
-                return response()->json([
-                    'result' => true,
-                    'settings' => $settings
-                ], 200);
-            }
+
+            $settings = $this->getGeneralSettingsByUser($user);
+            return response()->json([
+                'result' => true,
+                'settings' => $settings
+            ], 200);
         } catch (QueryException $e) {
             // Handle database query exceptions
             return response()->json([

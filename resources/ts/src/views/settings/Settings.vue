@@ -7,7 +7,7 @@
           <div class="flex items-center space-x-4">
             <img class="w-20 h-20 rounded-lg" :src="settings.logo" alt="" >
             <div class="font-medium dark:text-white">
-                <div>Organization</div>
+                <div>{{ currentOrganization }}</div>
                 <div class="mt-3">
                   <label
                     for="logoInput"
@@ -30,11 +30,11 @@
       <div class="border-black/12.5 shadow-soft-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4 mb-5">
         <div class="relative z-10 flex flex-col flex-auto h-full p-4">
           <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select language</label>
-          <select id="small" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <select id="small" @click="selectLanguage" v-model="i18n.locale.value" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option selected>Choose language</option>
-            <option value="US">ENGLISH</option>
-            <option value="FR">FRENCH</option>
-            <option value="DE">GERMEN</option>
+            <option v-for="(country, code) in countries" :key="code" :value="code">
+              {{ country.name }}
+            </option>
           </select>
         </div>
       </div>
@@ -82,10 +82,12 @@
 <style lang="scss"></style>
   
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted } from "vue";
+import { defineComponent, ref, watch, onMounted, computed } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
+import { useAuthStore } from "@/stores/auth";
 import { useSettingsStore, type UiSettings, FormLogo } from "@/stores/settings";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useI18n } from "vue-i18n";
 
 import { CloudArrowUpIcon } from '@heroicons/vue/24/solid';
 
@@ -95,31 +97,61 @@ export default defineComponent({
     CloudArrowUpIcon
   },
   setup() {
+    const authStore = useAuthStore();
     const store = useSettingsStore();
+    const i18n = useI18n();
+
+    //languages with country flags
+    const countries = {
+      en: {
+        flag: "media/flags/united-states.svg",
+        name: "English",
+      },
+      de: {
+        flag: "media/flags/germany.svg",
+        name: "German",
+      },
+      fr: {
+        flag: "media/flags/france.svg",
+        name: "French",
+      },
+    };
+
+    i18n.locale.value = localStorage.getItem("lang")
+      ? (localStorage.getItem("lang") as string)
+      : "en";
+
+    //select induvidual language
+    const selectLanguage = (event) => {
+      localStorage.setItem("lang", event.target.value);
+      i18n.locale.value = event.target.value;
+    };
+
     const submitButton = ref<HTMLButtonElement | null>(null);
     const loading = ref(false);
 
-    const dynamicColor = ref('blue');
+    const currentOrganizationId = computed(() => {
+      const organization = authStore.organization;
+      return typeof organization?.id != 'undefined' ? organization?.id : "0";
+    });
 
-    // const settings = ref({
-    //   logo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    //   selectedLogo: "",
-    //   backgroundColor: store.backgroundColor ? store.backgroundColor : '#4b5563', //gray
-    //   headerColor: '#2563eb', //blue
-    //   textColor: '#16a34a' //green
-    // });
+    const currentOrganization = computed(() => {
+      const organization = authStore.organization;
+      return typeof organization?.name != 'undefined' ? organization?.name : "-";
+    });
+
+    const userId = computed(() => {
+      const user = authStore.user;
+      return typeof user?.userId != 'undefined' ? user?.userId : "0";
+    });
 
     const settings = ref({
       logo: "",
       selectedLogo: "",
       backgroundColor: "", //gray
       headerColor: "", //blue
-      textColor: "" //green
+      textColor: "", //green
     });
-
-    // watch(() => settings.value.textColor, (newColor) => {
-    //   document.documentElement.style.setProperty('--custom-text-color', newColor);
-    // });
 
     watch(
       [() => settings.value.backgroundColor, () => settings.value.headerColor, () => settings.value.textColor],
@@ -137,8 +169,8 @@ export default defineComponent({
     //fetch all previous settings with page load
     const fetchGeneralSettings = async() => {
       let inputs = {
-        organizationId: '1',
-        userId: '2'
+        organizationId: currentOrganizationId.value,
+        userId: userId.value
       }
       await store.fetchUiSettings(inputs);
       const error = Object.values(store.errors);
@@ -168,13 +200,12 @@ export default defineComponent({
     };
 
     const onSubmitSettings = async (values: any) => {
-      dynamicColor.value = 'yellow';
       if (submitButton.value) {
         submitButton.value!.disabled = true;
       }
       let inputs = {
-        organizationId: '1',
-        userId: '2',
+        organizationId: currentOrganizationId.value,
+        userId: userId.value,
         backgroundColor: settings.value.backgroundColor,
         headerColor: settings.value.headerColor,
         textColor: settings.value.textColor,
@@ -250,7 +281,11 @@ export default defineComponent({
       loading,
       submitButton,
       onSubmitSettings,
-      changelogo
+      changelogo,
+      currentOrganization,
+      countries,
+      i18n,
+      selectLanguage
     }
   },
 });

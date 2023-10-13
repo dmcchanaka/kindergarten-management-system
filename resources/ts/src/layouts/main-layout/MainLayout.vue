@@ -11,13 +11,13 @@
               <!-- breadcrumb -->
               <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
                 <li class="leading-normal text-sm">
-                  <router-link to="/dashboard" class="text-slate-700 text-sm"><fa icon="home" class="h-3 w-4 text-sm mb-0.5" />&nbsp;Home</router-link>
+                  <router-link to="/dashboard" class="text-slate-700 text-sm"><fa icon="home" class="h-3 w-4 text-sm mb-0.5" />&nbsp;{{ translate('home') }}</router-link>
                 </li>
                 <template v-for="(item, i) in breadcrumbs" :key="i">
-                  <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">{{ item }}</li>
+                  <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">{{ translate(item as string) }}</li>
                 </template>
               </ol>
-              <h5 class="text-header mb-0 font-bold capitalize">{{ pageTitle }}</h5>
+              <h5 class="text-header mb-0 font-bold capitalize">{{ translate(pageTitle as string) }}</h5>
             </nav>
           </div>
           <div class="flex mt-5 lg:ml-4 lg:mt-0">
@@ -36,14 +36,16 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
+import { defineComponent, computed, ref, onMounted, watch, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 import Aside from "@/layouts/main-layout/aside/Aside.vue";
 import Topbar from "@/layouts/main-layout/header/TopBar.vue";
 import Footer from "@/layouts/main-layout/footer/Footer.vue";
 
 import { useSettingsStore, type UiSettings } from "@/stores/settings";
+import { useAuthStore } from "@/stores/auth";
 
 export default defineComponent({
   name: "main-layout",
@@ -53,8 +55,21 @@ export default defineComponent({
     Footer
   },
   setup() {
+    const { t, te } = useI18n();
     const route = useRoute();
+    const router = useRouter();
     const store = useSettingsStore();
+    const authStore = useAuthStore();
+
+    const translate = (text: string) => {
+      if (te(text)) {
+        return t(text);
+      } else {
+        return text;
+      }
+    };
+
+    const currentRoute = ref('');
 
     const backgroundColor = computed(()=> {
       return store.generalSettings?.backgroundColor || '';
@@ -64,6 +79,23 @@ export default defineComponent({
     onMounted(() => {
       document.documentElement.style.backgroundColor = backgroundColor.value;
       document.body.style.backgroundColor = backgroundColor.value;
+    });
+
+    const computedUserPermisions = computed(()=> {
+      return authStore.userPermissions || {};
+    });
+
+    watchEffect(() => {
+      currentRoute.value = route.name as string;
+      const userPermissions = computedUserPermisions.value;
+
+      // Check if the user has permission to access the current route
+      if (userPermissions.length > 0) {
+        if (!userHasPermission(userPermissions, currentRoute.value)) {
+          router.push({ name: 'dashboard' });
+        }
+      }
+      
     });
 
     const computedTextColor = computed(()=> {
@@ -79,9 +111,6 @@ export default defineComponent({
     watch(
       [() => computedHeaderColor.value, () => computedTextColor.value],
       ([newHeaderColor, newTextColor]) => {
-        console.log("Header color changed to:", newHeaderColor);
-        console.log("Text color changed to:", newTextColor);
-
         document.documentElement.style.setProperty('--custom-header-color', newHeaderColor);
         document.documentElement.style.setProperty('--custom-text-color', newTextColor);
       }
@@ -105,13 +134,18 @@ export default defineComponent({
       isSidebarOpen.value = !isSidebarOpen.value;
     }
 
+    function userHasPermission(userPermissions, requiredPermission) {
+        return userPermissions.some(permission => permission.name === requiredPermission);
+    }
+
     return {
       backgroundColor,
       sidebarToggle,
       isSidebarOpen,
       pageTitle,
       breadcrumbs,
-      closeSideBar
+      closeSideBar,
+      translate
     }
   },
 });

@@ -44,10 +44,10 @@
 
             <div class="text-sm flex justify-between items-center mt-3 text-[#002D74]">
                 <p>Change language</p>
-                <select id="language" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 blockl p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="us">ENGLISH</option>
-                    <option value="de">GERMEN</option>
-                    <option value="fr">FRENCH</option>
+                <select @click="selectLanguage" v-model="i18n.locale.value" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 blockl p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option v-for="(country, code) in countries" :key="code" :value="code">
+                        {{ country.name }}
+                    </option>
                 </select>
             </div>
         </div>
@@ -66,18 +66,39 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
 import { useAuthStore, type User } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.js";
-
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "sign-in",
   setup() {
     const store = useAuthStore();
     const router = useRouter();
+    const i18n = useI18n();
+
+    //languages with country flags
+    const countries = {
+      en: {
+        flag: "media/flags/united-states.svg",
+        name: "English",
+      },
+      de: {
+        flag: "media/flags/germany.svg",
+        name: "German",
+      },
+      fr: {
+        flag: "media/flags/france.svg",
+        name: "French",
+      },
+    };
+
+    i18n.locale.value = localStorage.getItem("lang")
+      ? (localStorage.getItem("lang") as string)
+      : "en";
 
     const submitButton = ref<HTMLButtonElement | null>(null);
     const loading = ref(false);
@@ -85,6 +106,12 @@ export default defineComponent({
     const login = ref({
         username: "",
         password: ""
+    });
+
+    onMounted(() => {
+      if (store.isAuthenticated) {
+        router.push({ name: "dashboard" });
+      }
     });
 
     const onSubmitLogin = async (values: any) => {
@@ -125,12 +152,21 @@ export default defineComponent({
       loading.value = false;
     }
 
+    //select induvidual language
+    const selectLanguage = (event) => {
+      localStorage.setItem("lang", event.target.value);
+      i18n.locale.value = event.target.value;
+    };
+
     return {
         login,
         onSubmitLogin,
         getAssetPath,
         submitButton,
-        loading
+        loading,
+        selectLanguage,
+        i18n,
+        countries
     }
   },
 });

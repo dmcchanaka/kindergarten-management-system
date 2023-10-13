@@ -30,8 +30,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "dashboard",
                 component: () => import("@/views/Dashboard.vue"),
                 meta: {
-                  pageTitle: "Dashboard",
-                  breadcrumbs: ["Dashboard"],
+                  pageTitle: "dashboard",
+                  breadcrumbs: ["dashboard"],
                 },
             },
             {
@@ -39,8 +39,27 @@ const routes: Array<RouteRecordRaw> = [
                 name: "user-roles",
                 component: () => import("@/views/user-roles/UserRoleList.vue"),
                 meta: {
-                  pageTitle: "User Roles",
-                  breadcrumbs: ["User Roles"],
+                  pageTitle: "userRoles",
+                  breadcrumbs: ["userRoles"],
+                },
+            },
+            {
+                path: "/add-user-role",
+                name: "add-user-role",
+                component: () => import("@/components/user-roles/forms/AddUserRole.vue"),
+                meta: {
+                  pageTitle: "addUserRole",
+                  breadcrumbs: ["userRoles", "addUserRole"],
+                },
+            },
+            {
+                path: "/edit-user-role",
+                name: "edit-user-role",
+                component: () => import("@/components/user-roles/forms/EditUserRole.vue"),
+                meta: {
+                  pageTitle: "Edit User Role",
+                  breadcrumbs: ["User Roles", "Edit User Role"],
+
                 },
             },
             {
@@ -71,25 +90,6 @@ const routes: Array<RouteRecordRaw> = [
                 }
             },
             {
-                path: "/add-user-role",
-                name: "add-user-role",
-                component: () => import("@/components/user-roles/forms/AddUserRole.vue"),
-                meta: {
-                  pageTitle: "Add User Role",
-                  breadcrumbs: ["User Roles", "Add User Role"],
-                },
-            },
-            {
-                path: "/edit-user-role",
-                name: "edit-user-role",
-                component: () => import("@/components/user-roles/forms/EditUserRole.vue"),
-                meta: {
-                  pageTitle: "Edit User Role",
-                  breadcrumbs: ["User Roles", "Edit User Role"],
-
-                },
-            },
-            {
                 path: "/users",
                 name: "users",
                 component: () => import("@/views/users/UsersList.vue"),
@@ -118,7 +118,26 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
         ]
-    }
+    },
+    {
+        path: "/",
+        component: () => import("@/layouts/SystemLayout.vue"),
+        children: [
+            {
+                path: "/404",
+                name: "404",
+                component: () =>
+                    import("@/views/auth/Error404.vue"),
+                meta: {
+                    pageTitle: "Error 404",
+                },
+            },
+        ]
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        redirect: "/404",
+    },
 ];
 
 const router = createRouter({
