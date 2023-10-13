@@ -66,7 +66,7 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
 import { useAuthStore, type User } from "@/stores/auth";
 import { useRouter } from "vue-router";
@@ -85,6 +85,12 @@ export default defineComponent({
     const login = ref({
         username: "",
         password: ""
+    });
+
+    onMounted(() => {
+      if (store.isAuthenticated) {
+        router.push({ name: "dashboard" });
+      }
     });
 
     const onSubmitLogin = async (values: any) => {

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw, } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
-import { computed } from 'vue';
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -49,8 +48,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "add-user-role",
                 component: () => import("@/components/user-roles/forms/AddUserRole.vue"),
                 meta: {
-                  pageTitle: "Add User Role",
-                  breadcrumbs: ["User Roles", "Add User Role"],
+                  pageTitle: "addUserRole",
+                  breadcrumbs: ["userRoles", "addUserRole"],
                 },
             },
             {
@@ -157,7 +156,7 @@ router.beforeEach((to, from, next) => {
     const requiredPermission = to.name;
      // before page access check if page requires authentication
     if (to.meta.middleware == "auth") {
-        if (authStore.isAuthenticated && hasPermission(authStore.userPermissions, requiredPermission)) {
+        if (authStore.isAuthenticated) {
         next();
         } else {
         next({ name: "sign-in" });
@@ -166,10 +165,6 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
-
-function hasPermission(userPermissions, requiredPermission) {
-    return userPermissions.some(permission => permission.name === requiredPermission);
-}
 
 export default router;
 

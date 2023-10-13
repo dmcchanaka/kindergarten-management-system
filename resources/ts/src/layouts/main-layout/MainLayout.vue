@@ -36,8 +36,8 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
+import { defineComponent, computed, ref, onMounted, watch, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 import Aside from "@/layouts/main-layout/aside/Aside.vue";
@@ -45,6 +45,7 @@ import Topbar from "@/layouts/main-layout/header/TopBar.vue";
 import Footer from "@/layouts/main-layout/footer/Footer.vue";
 
 import { useSettingsStore, type UiSettings } from "@/stores/settings";
+import { useAuthStore } from "@/stores/auth";
 
 export default defineComponent({
   name: "main-layout",
@@ -56,7 +57,9 @@ export default defineComponent({
   setup() {
     const { t, te } = useI18n();
     const route = useRoute();
+    const router = useRouter();
     const store = useSettingsStore();
+    const authStore = useAuthStore();
 
     const translate = (text: string) => {
       if (te(text)) {
@@ -66,6 +69,8 @@ export default defineComponent({
       }
     };
 
+    const currentRoute = ref('');
+
     const backgroundColor = computed(()=> {
       return store.generalSettings?.backgroundColor || '';
     });
@@ -74,6 +79,23 @@ export default defineComponent({
     onMounted(() => {
       document.documentElement.style.backgroundColor = backgroundColor.value;
       document.body.style.backgroundColor = backgroundColor.value;
+    });
+
+    const computedUserPermisions = computed(()=> {
+      return authStore.userPermissions || {};
+    });
+
+    watchEffect(() => {
+      currentRoute.value = route.name as string;
+      const userPermissions = computedUserPermisions.value;
+
+      // Check if the user has permission to access the current route
+      if (userPermissions.length > 0) {
+        if (!userHasPermission(userPermissions, currentRoute.value)) {
+          router.push({ name: 'dashboard' });
+        }
+      }
+      
     });
 
     const computedTextColor = computed(()=> {
@@ -110,6 +132,10 @@ export default defineComponent({
 
     const closeSideBar = () => {
       isSidebarOpen.value = !isSidebarOpen.value;
+    }
+
+    function userHasPermission(userPermissions, requiredPermission) {
+        return userPermissions.some(permission => permission.name === requiredPermission);
     }
 
     return {
