@@ -30,11 +30,12 @@
       <div class="border-black/12.5 shadow-soft-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4 mb-5">
         <div class="relative z-10 flex flex-col flex-auto h-full p-4">
           <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select language</label>
-          <select id="small" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <select id="small" @click="selectLanguage" v-model="i18n.locale.value" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option selected>Choose language</option>
-            <option value="US">ENGLISH</option>
-            <option value="FR">FRENCH</option>
-            <option value="DE">GERMEN</option>
+            <option v-for="(country, code) in countries" :key="code" :value="code">
+              <img :src="country.flag" class="w-4 h-4 inline-block mr-2" alt="">
+              {{ country.name }}
+            </option>
           </select>
         </div>
       </div>
@@ -87,6 +88,7 @@ import { getAssetPath } from "@/core/helpers/assets";
 import { useAuthStore } from "@/stores/auth";
 import { useSettingsStore, type UiSettings, FormLogo } from "@/stores/settings";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useI18n } from "vue-i18n";
 
 import { CloudArrowUpIcon } from '@heroicons/vue/24/solid';
 
@@ -98,6 +100,35 @@ export default defineComponent({
   setup() {
     const authStore = useAuthStore();
     const store = useSettingsStore();
+    const i18n = useI18n();
+
+    //languages with country flags
+    const countries = {
+      en: {
+        flag: "media/flags/united-states.svg",
+        name: "English",
+      },
+      de: {
+        flag: "media/flags/germany.svg",
+        name: "German",
+      },
+      fr: {
+        flag: "media/flags/france.svg",
+        name: "French",
+      },
+    };
+
+    i18n.locale.value = localStorage.getItem("lang")
+      ? (localStorage.getItem("lang") as string)
+      : "en";
+
+    //select induvidual language
+    const selectLanguage = (event) => {
+      console.log(event.target.value);
+      localStorage.setItem("lang", event.target.value);
+      i18n.locale.value = event.target.value;
+    };
+
     const submitButton = ref<HTMLButtonElement | null>(null);
     const loading = ref(false);
 
@@ -253,7 +284,10 @@ export default defineComponent({
       submitButton,
       onSubmitSettings,
       changelogo,
-      currentOrganization
+      currentOrganization,
+      countries,
+      i18n,
+      selectLanguage
     }
   },
 });
