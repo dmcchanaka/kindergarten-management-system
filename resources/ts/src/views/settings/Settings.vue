@@ -33,7 +33,6 @@
           <select id="small" @click="selectLanguage" v-model="i18n.locale.value" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option selected>Choose language</option>
             <option v-for="(country, code) in countries" :key="code" :value="code">
-              <img :src="country.flag" class="w-4 h-4 inline-block mr-2" alt="">
               {{ country.name }}
             </option>
           </select>
@@ -124,7 +123,6 @@ export default defineComponent({
 
     //select induvidual language
     const selectLanguage = (event) => {
-      console.log(event.target.value);
       localStorage.setItem("lang", event.target.value);
       i18n.locale.value = event.target.value;
     };
