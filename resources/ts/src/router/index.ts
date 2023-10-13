@@ -146,14 +146,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    console.log(from);
-    console.log(to);
     const authStore = useAuthStore();
 
     // verify auth token before each page change
     authStore.verifyAuth();
 
-    const requiredPermission = to.name;
      // before page access check if page requires authentication
     if (to.meta.middleware == "auth") {
         if (authStore.isAuthenticated) {
