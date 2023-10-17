@@ -108,4 +108,40 @@ class ClassRoomController extends Controller
             ],500);
         }
     }
+
+    public function classRoomList(Request $request){
+        try {
+            $user = Auth::user();
+            $classRoomQuery = ClassRoom::with(['teachers']);
+            $classRooms = $classRoomQuery->get();
+            // return $classRooms;
+            $classRooms->transform(function($cls){
+                $teachers = $cls->teachers->map(function($teacher){
+                    return [
+                        'id' => $teacher->id,
+                        'name' => $teacher->name,
+                    ];
+                });
+
+                return [
+                    'id'=>$cls->id,
+                    'name'=>$cls->name,
+                    'phone_number'=>$cls->phone_number,
+                    'email'=>$cls->email,
+                    'created_at'=> date('d/m/Y', strtotime($cls->created_at)),
+                    'teachers'=> $teachers
+                ];
+            });
+            return response()->json([
+                'result'=>true,
+                'classRoomList' => $classRooms
+            ],200);
+        } catch(Exception $e){
+            return response()->json([
+                'result' => false,
+                'errors' => 'Database connection error: ' . $e->getMessage()
+            ], 500);
+        }
+        
+    }
 }

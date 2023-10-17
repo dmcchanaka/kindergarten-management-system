@@ -14,26 +14,36 @@ export interface Teacher {
     description: string;
 }
 
+export interface ClassRoom {
+    id: number;
+    name: string;
+    phone_number: string;
+    email: string;
+    created_at: string;
+    teachers: Teacher[]
+}
+
 export const useClassRoomStore = defineStore("classRoom", () => {
     const errors = ref({});
     const formDataErrors = ref({});
     const teachersList = ref<Teacher[]>([]);
+    const classRoomList = ref<ClassRoom[]>([]);
 
     //Fetch permission list
     function fetchTeachers() {
-    return ApiService.post("/teachers-list", {})
-        .then(({ data }) => {
-            setTeachers(data.teachers);
-        })
-        .catch(({ response }) => {
-            if (response.status !== 200) {
-                const error = {
-                    message : response.data.errors,
-                    status : response.status,
+        return ApiService.post("/teachers-list", {})
+            .then(({ data }) => {
+                setTeachers(data.teachers);
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
                 }
-                setError(error);
-            }
-        });
+            });
     }
 
     function setTeachers(teachers: Teacher[]) {
@@ -89,11 +99,34 @@ export const useClassRoomStore = defineStore("classRoom", () => {
         formDataErrors.value = { ...error };
     }
 
+    function fetchClassRoomList(){
+        return ApiService.post("/class-room-list", {})
+            .then(({ data }) => {
+                setClassRoom(data.classRoomList);
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
+    function setClassRoom(classes: ClassRoom[]) {
+        classRoomList.value = classes;
+        errors.value = {};
+    }
+
     return {
         fetchTeachers,
         teachersList,
         classRoomRegistration,
         errors,
         formDataErrors,
+        classRoomList,
+        fetchClassRoomList
     }
 });

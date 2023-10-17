@@ -22,12 +22,41 @@
             :checkbox-enabled="false"
             checkbox-label="id"
         >
+            <template v-slot:id="{ row: cls }">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.id }}</a>
+            </template>
+            <template v-slot:name="{ row: cls }">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.name }}</a>
+            </template>
+            <template v-slot:email="{ row: cls }">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.email }}</a>
+            </template>
+            <template v-slot:phone_number="{ row: cls }">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.phone_number }}</a>
+            </template>
+            <template v-slot:created_at="{ row: cls }">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.created_at }}</a>
+            </template>
+            <template v-slot:teachers="{ row: cls }">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6" v-for="(item, index) in cls.teachers">
+                    <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">{{ item.name }}</span>
+                </a>
+            </template>
+            <template v-slot:actions="{ row: cls }">
+                <a class="mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
+                    <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
+                </a>
+                <a class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
+                    <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
+                </a>
+            </template>
         </Datatable>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useClassRoomStore, type Teacher, ClassRoomForm, ClassRoom } from "@/stores/classRoom";
 
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import arraySort from "array-sort";
@@ -41,10 +70,85 @@ export default defineComponent({
     },
     setup(){
         const authStore = useAuthStore();
+        const store = useClassRoomStore();
 
         const selectedIds = ref<Array<number>>([]);
-        const tableHeader = ref([]);
-        const tableData = ref<Array<any>>([]);
+        const tableHeader = ref([
+            {
+                columnName: "#",
+                columnLabel: "id",
+                sortEnabled: true,
+                columnWidth: 20,
+                textAlign: "text-left",
+            },
+            {
+                columnName: "Name",
+                columnLabel: "name",
+                sortEnabled: true,
+                columnWidth: 250,
+                textAlign: "text-left",
+            },
+            {
+                columnName: "Email",
+                columnLabel: "email",
+                sortEnabled: true,
+                columnWidth: 250,
+                textAlign: "text-left",
+            },
+            {
+                columnName: "Telephone",
+                columnLabel: "phone_number",
+                sortEnabled: true,
+                columnWidth: 100,
+                textAlign: "text-left",
+            },
+            {
+                columnName: "Registered at",
+                columnLabel: "created_at",
+                sortEnabled: true,
+                columnWidth: 100,
+                textAlign: "text-center",
+            },
+            {
+                columnName: "Teachers",
+                columnLabel: "teachers",
+                sortEnabled: true,
+                columnWidth: 100,
+                textAlign: "text-center",
+            },
+            {
+                columnName: "Actions",
+                columnLabel: "actions",
+                sortEnabled: false,
+                columnWidth: 50,
+                textAlign: "text-center",
+            },
+        ]);
+        const classRoomsList = ref<Array<ClassRoom>>([]);
+        const tableData = ref<Array<ClassRoom>>([]);
+
+        onMounted(async () => {
+            await fetchClassRoomList();
+        });
+
+        const fetchClassRoomList = async() => {
+            await store.fetchClassRoomList();
+            const error = Object.values(store.errors);
+            if (error.length === 0) {
+                classRoomsList.value.splice(0, classRoomsList.value.length, ...store.classRoomList);
+                tableData.value.splice(0, tableData.value.length, ...store.classRoomList);
+            } else {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try again!'
+                }).then((result) => {
+                    store.errors = {};
+                })
+            }
+        }
 
         const search = ref<string>("");
     

@@ -13,4 +13,9 @@ class ClassRoom extends Model
     protected $fillable = [
         'name', 'phone_number', 'email'
     ];
+
+    public function teachers()
+    {
+        return $this->belongsToMany(User::class, 'class_room_teachers', 'cls_room_id', 'teacher_id')->withTimestamps();
+    }
 }

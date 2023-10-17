@@ -38,4 +38,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //class room
     Route::post('teachers-list', [ClassRoomController::class, 'teachersList']);
     Route::post('class-room-registration', [ClassRoomController::class, 'classRoomRegistration']);
+    Route::post('class-room-list', [ClassRoomController::class, 'classRoomList']);
 });
