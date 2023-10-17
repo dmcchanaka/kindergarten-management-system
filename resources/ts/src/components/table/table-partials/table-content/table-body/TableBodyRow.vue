@@ -16,7 +16,7 @@
           </div>
         </td>
         <template v-for="(properties, j) in header" :key="j">
-          <td class="py-3 px-6 text-left whitespace-nowrap"
+          <td class="py-1 px-6 text-left whitespace-nowrap" style="border: 1px solid #f0f3f8;"
           :class="{ 
             'text-left': properties.textAlign === 'text-left',
             'text-center': properties.textAlign === 'text-center',

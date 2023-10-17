@@ -34,13 +34,13 @@
             <template v-slot:phone_number="{ row: cls }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.phone_number }}</a>
             </template>
-            <template v-slot:created_at="{ row: cls }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.created_at }}</a>
-            </template>
             <template v-slot:teachers="{ row: cls }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6" v-for="(item, index) in cls.teachers">
                     <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">{{ item.name }}</span>
                 </a>
+            </template>
+            <template v-slot:created_at="{ row: cls }">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.created_at }}</a>
             </template>
             <template v-slot:actions="{ row: cls }">
                 <a class="mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
@@ -103,15 +103,15 @@ export default defineComponent({
                 textAlign: "text-left",
             },
             {
-                columnName: "Registered at",
-                columnLabel: "created_at",
+                columnName: "Teachers",
+                columnLabel: "teachers",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-center",
             },
             {
-                columnName: "Teachers",
-                columnLabel: "teachers",
+                columnName: "Registered at",
+                columnLabel: "created_at",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-center",
