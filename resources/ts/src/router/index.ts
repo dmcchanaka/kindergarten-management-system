@@ -63,6 +63,24 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+                path: "/users",
+                name: "users",
+                component: () => import("@/views/users/UsersList.vue"),
+                meta: {
+                  pageTitle: "Users",
+                  breadcrumbs: ["User List"],
+                },
+            },
+            {
+                path: "/add-user",
+                name: "add-user",
+                component: () => import("@/components/users/forms/AddUser.vue"),
+                meta: {
+                  pageTitle: "Users",
+                  breadcrumbs: ["Users", "Add User"],
+                },
+            },
+            {
                 path: "/organizations",
                 name: "organizations",
                 component: () => import("@/views/organizations/OrganizationsList.vue"),
@@ -90,21 +108,21 @@ const routes: Array<RouteRecordRaw> = [
                 }
             },
             {
-                path: "/users",
-                name: "users",
-                component: () => import("@/views/users/UsersList.vue"),
+                path: "/class-rooms",
+                name: "class-rooms",
+                component: () => import("@/views/class-rooms/ClassRoomList.vue"),
                 meta: {
-                  pageTitle: "Users",
-                  breadcrumbs: ["User List"],
+                  pageTitle: "Class Rooms",
+                  breadcrumbs: ["Class Rooms List"],
                 },
             },
             {
-                path: "/add-user",
-                name: "add-user",
-                component: () => import("@/components/users/forms/AddUser.vue"),
+                path: "/add-class-room",
+                name: "add-class-room",
+                component: () => import("@/components/class-rooms/forms/AddClassRoom.vue"),
                 meta: {
-                  pageTitle: "Users",
-                  breadcrumbs: ["Users", "Add User"],
+                  pageTitle: "Class Rooms",
+                  breadcrumbs: ["Class Rooms", "Add Class Room"],
                 },
             },
             {

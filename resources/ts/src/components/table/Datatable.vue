@@ -16,7 +16,7 @@
           <slot :name="name" :row="item" />
         </template>
       </TableContent>
-      <TableFooter
+      <TableFooter v-if="data.length > 0"
         @page-change="pageChange"
         :current-page="currentPage"
         v-model:itemsPerPage="itemsInTable"

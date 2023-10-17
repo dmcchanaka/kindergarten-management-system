@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\V1\OrganizationController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\UserRoleController;
+use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\GeneralSettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,4 +34,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('save-logo', [GeneralSettingsController::class, 'saveLogo']);
     Route::post('fetch-general-settings', [GeneralSettingsController::class, 'fetchGeneralSettings']);
     Route::post('save-ui-settings', [GeneralSettingsController::class, 'saveUiSettings']);
+
+    //class room
+    Route::post('teachers-list', [ClassRoomController::class, 'teachersList']);
+    Route::post('class-room-registration', [ClassRoomController::class, 'classRoomRegistration']);
 });
