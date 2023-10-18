@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
 
 export interface ClassRoomForm {
+    org_id: number | null;
     name: string;
     phone_number: string;
     email: string;
@@ -14,22 +15,52 @@ export interface Teacher {
     description: string;
 }
 
+export interface Organization {
+    id: number;
+    name: string;
+}
+
 export interface ClassRoom {
     id: number;
     name: string;
     phone_number: string;
     email: string;
     created_at: string;
-    teachers: Teacher[]
+    teachers: Teacher[];
+    organization: Organization;
 }
 
 export const useClassRoomStore = defineStore("classRoom", () => {
     const errors = ref({});
     const formDataErrors = ref({});
+    const organizationsList = ref<Organization[]>([]);
     const teachersList = ref<Teacher[]>([]);
     const classRoomList = ref<ClassRoom[]>([]);
+    const idClassRoom = ref(0);
 
-    //Fetch permission list
+    //Fetch organization list
+    function fetchOrganizations() {
+        return ApiService.post("/organization-list", {})
+            .then(({ data }) => {
+                setOrganizations(data.organizations);
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
+    function setOrganizations(organizations: Organization[]) {
+        organizationsList.value = organizations;
+        errors.value = {};
+    }
+
+    //Fetch teachers list
     function fetchTeachers() {
         return ApiService.post("/teachers-list", {})
             .then(({ data }) => {
@@ -56,7 +87,6 @@ export const useClassRoomStore = defineStore("classRoom", () => {
     }
 
     function classRoomRegistration(classRoomForm: ClassRoomForm) {
-        console.log(classRoomForm);
         return ApiService.post("/class-room-registration", classRoomForm)
             .then(({ data }) => {
                
@@ -76,22 +106,6 @@ export const useClassRoomStore = defineStore("classRoom", () => {
                     setError(error);
                     setFormDataErrors(response.data.errors);
                 }
-                // console.log(typeof response.data.errors);
-                
-                // if (response.status !== 200) {
-                //     let errorMsg = '';
-                //     if (typeof response.data.errors === 'object') {
-                //         errorMsg = 'Some fields are missing';
-                //     } else {
-                //         errorMsg = response.data.errors;
-                //     }
-                //     const error = {
-                //         message : errorMsg,
-                //         status : response.status,
-                //     }
-                //     setError(error);
-                //     setFormDataErrors(response.data.errors);
-                // }
             });
     }
 
@@ -120,13 +134,45 @@ export const useClassRoomStore = defineStore("classRoom", () => {
         errors.value = {};
     }
 
+    function saveClassRoomId(classRoomId) {
+        idClassRoom.value = classRoomId;
+    }
+
+    function classRoomModification(classRoomForm: ClassRoomForm){
+        return ApiService.post("/class-room-update", classRoomForm)
+        .then(({ data }) => {
+           
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                let errorMsg = '';
+                if (typeof response.data.errors === 'object') {
+                    errorMsg = 'Some fields are missing';
+                } else {
+                    errorMsg = response.data.errors;
+                }
+                const error = {
+                    message : errorMsg,
+                    status : response.status,
+                }
+                setError(error);
+                setFormDataErrors(response.data.errors);
+            }
+        });
+    }
+
     return {
+        fetchOrganizations,
         fetchTeachers,
         teachersList,
+        organizationsList,
         classRoomRegistration,
         errors,
         formDataErrors,
         classRoomList,
-        fetchClassRoomList
+        fetchClassRoomList,
+        saveClassRoomId,
+        idClassRoom,
+        classRoomModification
     }
 });

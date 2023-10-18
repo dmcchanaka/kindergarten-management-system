@@ -126,6 +126,15 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+                path: "/edit-class-room",
+                name: "edit-class-room",
+                component: () => import("@/components/class-rooms/forms/EditClassRoom.vue"),
+                meta: {
+                  pageTitle: "Class Rooms",
+                  breadcrumbs: ["Class Rooms", "Edit Class Room"],
+                },
+            },
+            {
                 path: "/settings",
                 name: "settings",
                 component: () => import("@/views/settings/Settings.vue"),

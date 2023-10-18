@@ -36,7 +36,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('save-ui-settings', [GeneralSettingsController::class, 'saveUiSettings']);
 
     //class room
+    Route::post('organization-list', [ClassRoomController::class, 'organizationList']);
     Route::post('teachers-list', [ClassRoomController::class, 'teachersList']);
     Route::post('class-room-registration', [ClassRoomController::class, 'classRoomRegistration']);
     Route::post('class-room-list', [ClassRoomController::class, 'classRoomList']);
+    Route::post('class-room-update', [ClassRoomController::class, 'classRoomUpdate']);
 });

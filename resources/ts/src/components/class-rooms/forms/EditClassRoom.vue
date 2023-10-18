@@ -42,7 +42,7 @@
                                                     :searchable="true" 
                                                     :create-option="true" 
                                                     :options="organizationList" />
-                                                    <ErrorLabel v-if="formErrors.org_id" :error="formErrors.org_id"></ErrorLabel>
+                                                    <ErrorLabel v-if="formErrors.org_id" :error="formErrors.org_id.toString()"></ErrorLabel>
                                                 </div>
                                                 <div>
                                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Class Room Name</label>
@@ -119,32 +119,35 @@
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { useClassRoomStore, type Teacher, Organizaion, ClassRoomForm } from "@/stores/classRoom";
+import { useClassRoomStore, type Teacher, Organizaion, ClassRoomForm, ClassRoom } from "@/stores/classRoom";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useRouter } from "vue-router";
 
 import Multiselect from '@vueform/multiselect';
 import ErrorLabel from "@/components/global/ErrorLabel.vue";
-
 export default defineComponent({
-    name: "add-class-room",
+    name: "edit-class-room",
     components: {
         Multiselect,
         ErrorLabel
     },
     setup(){
         const store = useClassRoomStore();
+        const router = useRouter();
 
         const submitButton = ref<HTMLButtonElement | null>(null);
 
         const organizationList = ref<Array<Organizaion>>([]);
         const teachersList = ref<Array<Teacher>>([]);
+        const classRoomInfo = ref<Array<ClassRoom>>([]);
 
         const classRoom = ref({
-            org_id: null,
+            id: "",
+            org_id: null as number | null,
             name: "",
             phone_number: "",
             email: "",
-            teachers: [],
+            teachers: [] as number[],
             loading: false
         });
 
@@ -159,6 +162,7 @@ export default defineComponent({
         onMounted(async () => {
             await fetchOrganizationList();
             await fetchTeachesList();
+            await getClassRoomInfo();
         });
 
         const fetchOrganizationList = async() => {
@@ -197,8 +201,30 @@ export default defineComponent({
             }
         }
 
+        const getClassRoomInfo = async() => {
+            if(store.idClassRoom){
+                classRoomInfo.value.splice(0, classRoomInfo.value.length, ...store.classRoomList);
+                let results = classRoomInfo.value.filter((item) => {
+                    return item.id.toString() == store.idClassRoom.toString();
+                });
+                classRoomInfo.value.splice(0,classRoomInfo.value.length,...results);
+                
+                classRoom.value.id = classRoomInfo?.value[0].id.toString() || "";
+                classRoom.value.org_id = classRoomInfo?.value[0].organization?.id;
+                classRoom.value.name = classRoomInfo?.value[0].name || "";
+                classRoom.value.email = classRoomInfo?.value[0].email || "";
+                classRoom.value.phone_number = classRoomInfo?.value[0].phone_number || "";
+
+                const allocatedTeachers = classRoomInfo?.value[0].teachers.map(teacher => teacher.id);
+                classRoom.value.teachers = allocatedTeachers
+            } else {
+                router.go(-1);
+            }
+        }
+
         const submitClassRoom = async() => {
             const inputs = {
+                id: classRoom.value.id,
                 org_id: classRoom.value.org_id,
                 name: classRoom.value.name,
                 phone_number: classRoom.value.phone_number,
@@ -209,22 +235,17 @@ export default defineComponent({
             if (submitButton.value) { 
                 submitButton.value!.disabled = true;
             }
-            await store.classRoomRegistration(inputs);
+            await store.classRoomModification(inputs);
             const error = Object.values(store.errors);
             formErrors.value = Object(store.formDataErrors);
             if (error.length === 0) {
                 Swal.fire({
                     title: 'Good job!',
-                    text: 'Record has been successfuly added',
+                    text: 'Record has been successfuly updated',
                     icon: 'success',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Ok, got it!'
                 }).then(() => {
-                    classRoom.value.org_id = null;
-                    classRoom.value.name = "";
-                    classRoom.value.phone_number = "";
-                    classRoom.value.email = "";
-                    classRoom.value.teachers = [];
                     classRoom.value.loading = false;
                 });
             } else {
@@ -242,14 +263,15 @@ export default defineComponent({
             submitButton.value!.disabled = false;
             classRoom.value.loading = false;
         }
+        
 
         return {
-            classRoom,
+            submitButton,
             organizationList,
             teachersList,
-            submitButton,
-            submitClassRoom,
-            formErrors
+            classRoom,
+            formErrors,
+            submitClassRoom
         }
     }
 });

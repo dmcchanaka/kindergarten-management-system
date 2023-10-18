@@ -25,6 +25,9 @@
             <template v-slot:id="{ row: cls }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.id }}</a>
             </template>
+            <template v-slot:organization="{ row: cls }">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.organization.name }}</a>
+            </template>
             <template v-slot:name="{ row: cls }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.name }}</a>
             </template>
@@ -43,12 +46,14 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.created_at }}</a>
             </template>
             <template v-slot:actions="{ row: cls }">
-                <a class="mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
+                <a v-if="isPermittedRoute('edit-class-room')" @click="editClassRoom(cls.id)" class="cursor-pointer mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
                     <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
                 </a>
-                <a class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
+                <span v-else>&nbsp;</span>
+                <a v-if="isPermittedRoute('delete-class-room')" class="cursor-pointer text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
                     <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
                 </a>
+                <span v-else>&nbsp;</span>
             </template>
         </Datatable>
     </div>
@@ -57,6 +62,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useClassRoomStore, type Teacher, ClassRoomForm, ClassRoom } from "@/stores/classRoom";
+import { useRouter } from "vue-router";
 
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import arraySort from "array-sort";
@@ -71,6 +77,7 @@ export default defineComponent({
     setup(){
         const authStore = useAuthStore();
         const store = useClassRoomStore();
+        const router = useRouter();
 
         const selectedIds = ref<Array<number>>([]);
         const tableHeader = ref([
@@ -79,6 +86,13 @@ export default defineComponent({
                 columnLabel: "id",
                 sortEnabled: true,
                 columnWidth: 20,
+                textAlign: "text-left",
+            },
+            {
+                columnName: "Organization",
+                columnLabel: "organization",
+                sortEnabled: true,
+                columnWidth: 250,
                 textAlign: "text-left",
             },
             {
@@ -180,12 +194,18 @@ export default defineComponent({
             }
         }
 
+        const editClassRoom = (classRoomId) => {
+            store.saveClassRoomId(classRoomId);
+            router.push({ name: "edit-class-room" });
+        }
+
         return {
             tableHeader,
             tableData,
             sort,
             onItemSelect,
-            isPermittedRoute
+            isPermittedRoute,
+            editClassRoom
         }
     }
 });

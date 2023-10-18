@@ -11,8 +11,12 @@ class ClassRoom extends Model
     use HasFactory, SoftDeletes;
     
     protected $fillable = [
-        'name', 'phone_number', 'email'
+        'org_id', 'name', 'phone_number', 'email'
     ];
+
+    public function organization(){
+        return $this->belongsTo(Organization::class, 'org_id', 'id');
+    }
 
     public function teachers()
     {

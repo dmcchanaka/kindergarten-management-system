@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('class_rooms', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('org_id')->nullable();
+            $table->foreign('org_id')->references('id')->on('organizations');
             $table->string('name')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();

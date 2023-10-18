@@ -58,6 +58,32 @@ Trait UserAllocation {
         return $organizationInfo;
     }
 
+    //get User Allocated Organization
+    public function getUserAllocatedAllOrganizations($user){
+        $organizationQuery = Organization::query();
+
+        // Use a switch statement for better readability and maintainability.
+        switch ($user->u_tp_id) {
+            case config('kindergarten.type_super_admin'):
+                $organizations = $organizationQuery->get();
+                break;
+            case config('kindergarten.type_principal'):
+                $organizationQuery->where('principal_id', $user->getKey());
+                $organizations = $organizationQuery->get();
+                break;
+            default:
+                $organizations = $organizationQuery->get();
+        }
+
+        if (!$organizations) {
+            throw new \Exception("Don't have allocated organizations");
+        }
+
+        $organizationInfo = $organizations;
+
+        return $organizationInfo;
+    }
+
     //get general settings by logged user
     public function getGeneralSettingsByUser($user){
         $defaultSettings = [
