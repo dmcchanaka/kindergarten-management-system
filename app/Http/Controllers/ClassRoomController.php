@@ -229,9 +229,8 @@ class ClassRoomController extends Controller
             $classRoom->email = $request['email'];
             $classRoom->save();
 
-            if (isset($request['teachers']) && sizeof($request['teachers']) > 0) {
-                $classRoom->teachers()->sync($request['teachers']); // This will handle sync of teacher relationships
-            }
+            // This will handle sync of teacher relationships
+            $classRoom->teachers()->sync($request['teachers']);
             DB::commit();
 
             return response()->json([
@@ -240,6 +239,32 @@ class ClassRoomController extends Controller
             ], 200);
         } catch(Exception $e){
             DB::rollBack();
+            return response()->json([
+                'result'=>false,
+                'errors' => $e->getMessage()
+            ],500);
+        }
+    }
+
+    public function classRoomRemove(Request $request){
+        try {
+            DB::beginTransaction();
+    
+            $classRoom = ClassRoom::findOrFail($request['classRoomId']);
+    
+            if ($classRoom->teachers()->count() > 0) {
+                throw new \Exception("Cannot delete the classroom as it has associated teachers. Reassign or delete the teachers first.");
+            }
+    
+            $classRoom->delete();
+    
+            DB::commit();
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfuly removed'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
             return response()->json([
                 'result'=>false,
                 'errors' => $e->getMessage()

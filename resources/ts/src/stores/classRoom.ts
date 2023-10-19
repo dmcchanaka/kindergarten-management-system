@@ -161,6 +161,22 @@ export const useClassRoomStore = defineStore("classRoom", () => {
         });
     }
 
+    function removeClassRoom(input){
+        return ApiService.post("/class-room-remove", input)
+            .then(({ data }) => {
+                setClassRoom(data.classRoomList);
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
     return {
         fetchOrganizations,
         fetchTeachers,
@@ -173,6 +189,7 @@ export const useClassRoomStore = defineStore("classRoom", () => {
         fetchClassRoomList,
         saveClassRoomId,
         idClassRoom,
-        classRoomModification
+        classRoomModification,
+        removeClassRoom
     }
 });

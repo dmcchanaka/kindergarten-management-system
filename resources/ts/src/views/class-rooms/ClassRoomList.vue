@@ -38,9 +38,10 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.phone_number }}</a>
             </template>
             <template v-slot:teachers="{ row: cls }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6" v-for="(item, index) in cls.teachers">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6" v-if="cls.teachers.length > 0" v-for="(item, index) in cls.teachers">
                     <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">{{ item.name }}</span>
                 </a>
+                <span v-else>&nbsp</span>
             </template>
             <template v-slot:created_at="{ row: cls }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ cls.created_at }}</a>
@@ -50,7 +51,7 @@
                     <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
                 </a>
                 <span v-else>&nbsp;</span>
-                <a v-if="isPermittedRoute('delete-class-room')" class="cursor-pointer text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
+                <a v-if="isPermittedRoute('delete-class-room')" @click="removeClassRoom(cls.id)" class="cursor-pointer text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
                     <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
                 </a>
                 <span v-else>&nbsp;</span>
@@ -199,13 +200,55 @@ export default defineComponent({
             router.push({ name: "edit-class-room" });
         }
 
+        const removeClassRoom = async(classRoomId) => {
+            await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then(async(result: any) => {
+                if (result.isConfirmed) {
+                    const inputs = {
+                        classRoomId: classRoomId,
+                    };
+                    await store.removeClassRoom(inputs);
+                    const error = Object.values(store.errors);
+                    if (error.length === 0) {
+                        Swal.fire({
+                            title: 'Good job!',
+                            text: 'Record has been successfuly deleted',
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Ok, got it!'
+                        }).then(async() => {
+                            await fetchClassRoomList();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: error[0] as string,
+                            icon: 'error',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Try again!'
+                        }).then((result) => {
+                            store.errors = {};
+                        })
+                    }
+                }
+            });
+        }
+
         return {
             tableHeader,
             tableData,
             sort,
             onItemSelect,
             isPermittedRoute,
-            editClassRoom
+            editClassRoom,
+            removeClassRoom
         }
     }
 });
