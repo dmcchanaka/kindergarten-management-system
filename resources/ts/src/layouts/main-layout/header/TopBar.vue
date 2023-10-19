@@ -60,7 +60,7 @@
                     class="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
                     <ul>
                       <li v-for="(country, code) in countries" :key="code" :class="{ 'bg-gray-100': i18n.locale.value === code }">
-                        <a @click="selectLanguage(code)" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                        <a @click="selectLanguage(code)" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">
                           <img :src="country.flag" class="w-4 h-4 inline-block mr-2" alt="">
                           {{ country.name }}
                         </a>
@@ -135,10 +135,6 @@ export default defineComponent({
       de: {
         flag: "media/flags/germany.svg",
         name: "German",
-      },
-      fr: {
-        flag: "media/flags/france.svg",
-        name: "French",
       },
     };
 

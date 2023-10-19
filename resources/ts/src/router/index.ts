@@ -112,8 +112,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "class-rooms",
                 component: () => import("@/views/class-rooms/ClassRoomList.vue"),
                 meta: {
-                  pageTitle: "Class Rooms",
-                  breadcrumbs: ["Class Rooms List"],
+                  pageTitle: "classRooms",
+                  breadcrumbs: ["classRoomsList"],
                 },
             },
             {
@@ -121,8 +121,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "add-class-room",
                 component: () => import("@/components/class-rooms/forms/AddClassRoom.vue"),
                 meta: {
-                  pageTitle: "Class Rooms",
-                  breadcrumbs: ["Class Rooms", "Add Class Room"],
+                  pageTitle: "classRooms",
+                  breadcrumbs: ["classRooms", "addClassRoom"],
                 },
             },
             {
@@ -130,8 +130,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "edit-class-room",
                 component: () => import("@/components/class-rooms/forms/EditClassRoom.vue"),
                 meta: {
-                  pageTitle: "Class Rooms",
-                  breadcrumbs: ["Class Rooms", "Edit Class Room"],
+                  pageTitle: "classRooms",
+                  breadcrumbs: ["classRooms", "editClassRoom"],
                 },
             },
             {

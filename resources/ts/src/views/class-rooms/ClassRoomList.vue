@@ -3,11 +3,11 @@
         <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
             <div class="flex flex-wrap -mx-3">
                 <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                    <h6 class="mb-0">Class Rooms List</h6>
+                    <h6 class="mb-0">{{ translate('classRoomsList') }}</h6>
                 </div>
                 <div class="flex-none w-1/2 max-w-full px-0 mb-2 text-right">
                     <router-link v-if="isPermittedRoute('add-class-room')" to="/add-class-room" class="inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
-                        <fa icon="plus" />&nbsp;&nbsp;Add Class Room
+                        <fa icon="plus" />&nbsp;&nbsp;{{ translate('addClassRoom') }}
                     </router-link>
                 </div>
             </div>
@@ -60,13 +60,14 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useClassRoomStore, type Teacher, ClassRoomForm, ClassRoom } from "@/stores/classRoom";
 import { useRouter } from "vue-router";
 
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import arraySort from "array-sort";
+import { useI18n } from "vue-i18n";
 
 import Datatable from "@/components/table/Datatable.vue";
 
@@ -76,9 +77,18 @@ export default defineComponent({
         Datatable
     },
     setup(){
+        const { t, te } = useI18n();
         const authStore = useAuthStore();
         const store = useClassRoomStore();
         const router = useRouter();
+
+        const translate = (text: string) => {
+            if (te(text)) {
+                return t(text);
+            } else {
+                return text;
+            }
+        };
 
         const selectedIds = ref<Array<number>>([]);
         const tableHeader = ref([
@@ -90,49 +100,49 @@ export default defineComponent({
                 textAlign: "text-left",
             },
             {
-                columnName: "Organization",
+                columnName: computed(()=>{ return translate('organization') }),
                 columnLabel: "organization",
                 sortEnabled: true,
                 columnWidth: 250,
                 textAlign: "text-left",
             },
             {
-                columnName: "Name",
+                columnName: computed(()=>{ return translate('name') }),
                 columnLabel: "name",
                 sortEnabled: true,
                 columnWidth: 250,
                 textAlign: "text-left",
             },
             {
-                columnName: "Email",
+                columnName: computed(()=>{ return translate('email') }),
                 columnLabel: "email",
                 sortEnabled: true,
                 columnWidth: 250,
                 textAlign: "text-left",
             },
             {
-                columnName: "Telephone",
+                columnName: computed(()=>{ return translate('telephone') }),
                 columnLabel: "phone_number",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
             },
             {
-                columnName: "Teachers",
+                columnName: computed(()=>{ return translate('teachers') }),
                 columnLabel: "teachers",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-center",
             },
             {
-                columnName: "Registered at",
+                columnName: computed(()=>{ return translate('registeredAt') }),
                 columnLabel: "created_at",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-center",
             },
             {
-                columnName: "Actions",
+                columnName: computed(()=>{ return translate('actions') }),
                 columnLabel: "actions",
                 sortEnabled: false,
                 columnWidth: 50,
@@ -248,7 +258,8 @@ export default defineComponent({
             onItemSelect,
             isPermittedRoute,
             editClassRoom,
-            removeClassRoom
+            removeClassRoom,
+            translate
         }
     }
 });

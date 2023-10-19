@@ -4,12 +4,12 @@
             <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
                 <div class="flex flex-wrap mx-3">
                     <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                        <h6 class="mb-0">Class Rooms</h6>
+                        <h6 class="mb-0">{{ translate('classRooms') }}</h6>
                     </div>
                     <div class="flex-none w-1/2 max-w-full px-3 text-right">
                         <router-link to="/class-rooms" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
                             <fa icon="arrow-left" />
-                            &nbsp;&nbsp;Back
+                            &nbsp;&nbsp;{{ translate('back') }}
                         </router-link>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
                         <div class="p-6 px-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
                             <div class="flex flex-wrap -mx-3">
                                 <div class="max-w-full px-3 md:w-1/2 md:flex-none">
-                                    <h6 class="mb-0">Basic Information</h6>
+                                    <h6 class="mb-0">{{ translate('basicInformation') }}</h6>
                                 </div>
                                 <div class="flex items-center justify-end max-w-full px-3 md:w-1/2 md:flex-none">
                                     &nbsp;
@@ -34,7 +34,7 @@
                                         <form>
                                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                                 <div>
-                                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization</label>
+                                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('organization') }}</label>
                                                     <Multiselect 
                                                     v-model="classRoom.org_id"
                                                     placeholder="Choose organization"
@@ -45,17 +45,17 @@
                                                     <ErrorLabel v-if="formErrors.org_id" :error="formErrors.org_id.toString()"></ErrorLabel>
                                                 </div>
                                                 <div>
-                                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Class Room Name</label>
+                                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('classRoomName') }}</label>
                                                     <input type="text" v-model="classRoom.name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Class Room Name" required>
                                                     <ErrorLabel v-if="formErrors.name" :error="formErrors.name"></ErrorLabel>
                                                 </div>
                                                 <div>
-                                                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('email') }}</label>
                                                     <input type="email" v-model="classRoom.email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Email Address" required>
                                                     <ErrorLabel v-if="formErrors.email" :error="formErrors.email"></ErrorLabel>
                                                 </div>
                                                 <div>
-                                                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number</label>
+                                                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('telephone') }}</label>
                                                     <input type="tel" v-model="classRoom.phone_number" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Phone Number" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
                                                     <ErrorLabel v-if="formErrors.phone_number" :error="formErrors.phone_number"></ErrorLabel>
                                                 </div>
@@ -66,9 +66,9 @@
                                                 @click.prevent="submitClassRoom"
                                                 :disabled="classRoom.loading"
                                                 class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
-                                                <span v-if="!classRoom.loading">Submit</span>
+                                                <span v-if="!classRoom.loading">{{ translate('submit') }}</span>
                                                 <span v-if="classRoom.loading">
-                                                Please wait...
+                                                    {{ translate('pleaseWait') }}...
                                                 </span>
                                             </button>
                                         </form>
@@ -83,7 +83,7 @@
                         <div class="p-6 px-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
                             <div class="flex flex-wrap -mx-3">
                                 <div class="max-w-full px-3 md:w-1/2 md:flex-none">
-                                    <h6 class="mb-0">Teachers Information</h6>
+                                    <h6 class="mb-0">{{ translate('teachersInformation') }}</h6>
                                 </div>
                                 <div class="flex items-center justify-end max-w-full px-3 md:w-1/2 md:flex-none">
                                     &nbsp;
@@ -96,7 +96,7 @@
                                     <div class="w-full">
                                         <form>
                                             <div class="grid gap-6 mb-6 md:grid-cols-1">
-                                                <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">Teachers</label>
+                                                <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('teachers') }}</label>
                                                 <Multiselect 
                                                     v-model="classRoom.teachers"
                                                     placeholder="Choose teachers" 
@@ -119,9 +119,10 @@
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { useClassRoomStore, type Teacher, Organizaion, ClassRoomForm, ClassRoom } from "@/stores/classRoom";
+import { useClassRoomStore, type Teacher, Organization, ClassRoomForm, ClassRoom } from "@/stores/classRoom";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 import Multiselect from '@vueform/multiselect';
 import ErrorLabel from "@/components/global/ErrorLabel.vue";
@@ -132,12 +133,21 @@ export default defineComponent({
         ErrorLabel
     },
     setup(){
+        const { t, te } = useI18n();
         const store = useClassRoomStore();
         const router = useRouter();
 
+        const translate = (text: string) => {
+            if (te(text)) {
+                return t(text);
+            } else {
+                return text;
+            }
+        };
+
         const submitButton = ref<HTMLButtonElement | null>(null);
 
-        const organizationList = ref<Array<Organizaion>>([]);
+        const organizationList = ref<Array<Organization>>([]);
         const teachersList = ref<Array<Teacher>>([]);
         const classRoomInfo = ref<Array<ClassRoom>>([]);
 
@@ -271,7 +281,8 @@ export default defineComponent({
             teachersList,
             classRoom,
             formErrors,
-            submitClassRoom
+            submitClassRoom,
+            translate
         }
     }
 });

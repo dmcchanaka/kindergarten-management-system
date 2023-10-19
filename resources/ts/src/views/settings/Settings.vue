@@ -111,10 +111,6 @@ export default defineComponent({
         flag: "media/flags/germany.svg",
         name: "German",
       },
-      fr: {
-        flag: "media/flags/france.svg",
-        name: "French",
-      },
     };
 
     i18n.locale.value = localStorage.getItem("lang")
