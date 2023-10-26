@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\V1;
 
+use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
 use App\Models\ClassRoomTeacher;
 use App\Models\Organization;
@@ -147,37 +148,45 @@ class ClassRoomController extends Controller
     }
 
     public function classRoomList(Request $request){
+        $user = Auth::user();
         try {
-            $user = Auth::user();
-            $classRoomQuery = ClassRoom::with(['organization','teachers']);
-            $classRooms = $classRoomQuery->get();
-            $classRooms->transform(function($cls){
-                $teachers = $cls->teachers->map(function($teacher){
+            $organizationInfo = $this->getUserAllocatedAllOrganizations($user);
+            if(!$organizationInfo->isEmpty()){
+                $classRooms = ClassRoom::with(['organization','teachers'])->whereIn('org_id', $organizationInfo->pluck('id')->all())->get();
+                $classRooms->transform(function($cls){
+                    $teachers = $cls->teachers->map(function($teacher){
+                        return [
+                            'id' => $teacher->id,
+                            'name' => $teacher->name,
+                        ];
+                    });
+    
+                    $organization = $cls->organization ? [
+                        'id' => $cls->organization->id,
+                        'name' => $cls->organization->name,
+                    ] : (object)[];
+    
                     return [
-                        'id' => $teacher->id,
-                        'name' => $teacher->name,
+                        'id'=>$cls->id,
+                        'name'=>$cls->name,
+                        'phone_number'=>$cls->phone_number,
+                        'email'=>$cls->email,
+                        'created_at'=> date('d/m/Y', strtotime($cls->created_at)),
+                        'teachers'=> $teachers,
+                        'organization'=> $organization
                     ];
                 });
+                return response()->json([
+                    'result'=>true,
+                    'classRoomList' => $classRooms
+                ],200);
 
-                $organization = $cls->organization ? [
-                    'id' => $cls->organization->id,
-                    'name' => $cls->organization->name,
-                ] : (object)[];
-
-                return [
-                    'id'=>$cls->id,
-                    'name'=>$cls->name,
-                    'phone_number'=>$cls->phone_number,
-                    'email'=>$cls->email,
-                    'created_at'=> date('d/m/Y', strtotime($cls->created_at)),
-                    'teachers'=> $teachers,
-                    'organization'=> $organization
-                ];
-            });
-            return response()->json([
-                'result'=>true,
-                'classRoomList' => $classRooms
-            ],200);
+            } else {
+                return response()->json([
+                    'result' => false,
+                    'errors' => ['Dont have allocated organizations']
+                ], 400);
+            }
         } catch(Exception $e){
             return response()->json([
                 'result' => false,

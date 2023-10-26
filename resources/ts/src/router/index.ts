@@ -135,6 +135,42 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+                path: "/parents",
+                name: "parents",
+                component: () => import("@/views/parents/ParentsList.vue"),
+                meta: {
+                  pageTitle: "parents",
+                  breadcrumbs: ["parentsList"],
+                },
+            },
+            {
+                path: "/add-parent",
+                name: "add-parent",
+                component: () => import("@/components/parents/forms/AddParent.vue"),
+                meta: {
+                  pageTitle: "parents",
+                  breadcrumbs: ["parents", "addParent"],
+                },
+            },
+            {
+                path: "/students",
+                name: "students",
+                component: () => import("@/views/students/StudentsList.vue"),
+                meta: {
+                  pageTitle: "students",
+                  breadcrumbs: ["studentsList"],
+                },
+            },
+            {
+                path: "/add-student",
+                name: "add-student",
+                component: () => import("@/components/students/AddStudent.vue"),
+                meta: {
+                  pageTitle: "students",
+                  breadcrumbs: ["students", "addStudent"],
+                },
+            },
+            {
                 path: "/settings",
                 name: "settings",
                 component: () => import("@/views/settings/Settings.vue"),

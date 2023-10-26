@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\API\V1\OrganizationController;
+use App\Http\Controllers\API\V1\ParentController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\UserRoleController;
-use App\Http\Controllers\ClassRoomController;
-use App\Http\Controllers\GeneralSettingsController;
+use App\Http\Controllers\API\V1\ClassRoomController;
+use App\Http\Controllers\API\V1\GeneralSettingsController;
+use App\Http\Controllers\API\V1\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [UserController::class, 'login'])->name('login');
@@ -42,4 +44,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('class-room-list', [ClassRoomController::class, 'classRoomList']);
     Route::post('class-room-update', [ClassRoomController::class, 'classRoomUpdate']);
     Route::post('class-room-remove', [ClassRoomController::class, 'classRoomRemove']);
+
+    //parents
+    Route::post('class-room-list-associate-with-organization', [ParentController::class, 'classRoomsAssociatedWithOrganization']);
+    Route::post('parent-registration', [ParentController::class, 'parentRegistration']);
+    Route::post('parents-list', [ParentController::class, 'fetchParentsList']);
+
+    //students
+    Route::post('parents-lookup', [StudentController::class, 'parentLookUp']);
+    Route::post('student-registration', [StudentController::class, 'studentRegistration']);
+    Route::post('students-list', [StudentController::class, 'fetchStudentsList']);
 });

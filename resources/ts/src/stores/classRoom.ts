@@ -190,6 +190,6 @@ export const useClassRoomStore = defineStore("classRoom", () => {
         saveClassRoomId,
         idClassRoom,
         classRoomModification,
-        removeClassRoom
+        removeClassRoom,
     }
 });

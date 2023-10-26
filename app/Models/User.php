@@ -20,14 +20,14 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'username',
-        'contact_num',
         'email',
         'u_tp_id',
         'username',
         'password',
         'first_name',
         'last_name',
-        'address'
+        'address',
+        'phone_number'
     ];
 
     /**
@@ -57,5 +57,10 @@ class User extends Authenticatable
     public function userRole(){
         $userType = UserType::find($this->u_tp_id);
         return ($userType)?$userType->user_type:"-";
+    }
+
+    public function classRooms()
+    {
+        return $this->belongsToMany(ClassRoom::class, 'class_room_teachers', 'teacher_id', 'cls_room_id')->withTimestamps();
     }
 }
