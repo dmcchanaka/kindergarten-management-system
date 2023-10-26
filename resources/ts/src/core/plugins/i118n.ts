@@ -24,7 +24,19 @@ const messages = {
         classRoomName: "Class Room Name",
         submit: "Submit",
         pleaseWait: "Please wait",
-        editClassRoom: "Edit Class Room"
+        editClassRoom: "Edit Class Room",
+        parentsList: "Parents List",
+        parents: "Parents",
+        addParent: "Add Parent",
+        userRole: "User Role",
+        address: "Address",
+        searchParents: "Search Parents",
+        firstName: "First Name",
+        lastName: "Last Name",
+        phoneNumber: "Phone Number",
+        username: "Username",
+        password: "Password",
+        confirmPassword: "Confirm Password"
     },
     de: {
         home: "Heim",
@@ -49,7 +61,19 @@ const messages = {
         classRoomName: "Name des Klassenzimmers",
         submit: "Einreichen",
         pleaseWait: "Bitte warten",
-        editClassRoom: "Klassenzimmer bearbeiten"
+        editClassRoom: "Klassenzimmer bearbeiten",
+        parentsList: "Lijst van ouders",
+        parents: "Ouders",
+        addParent: "Ouder toevoegen",
+        userRole: "Gebruikersrol",
+        address: "Adres",
+        searchParents: "Zoek ouders",
+        firstName: "Voornaam",
+        lastName: "Achternaam",
+        phoneNumber: "Telefoonnummer",
+        username: "Gebruikersnaam",
+        password: "Wachtwoord",
+        confirmPassword: "bevestig wachtwoord"
     },
 };
 

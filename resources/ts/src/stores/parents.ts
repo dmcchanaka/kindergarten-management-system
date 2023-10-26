@@ -19,11 +19,13 @@ export interface ParentForm {
 }
 
 export interface Parent {
+    id: string,
     first_name: string,
     last_name: string,
     email: string,
     phone_number: string,
     address: string,
+    username: string;
 }
 
 export const useParentStore = defineStore("parent", () => {
@@ -31,6 +33,7 @@ export const useParentStore = defineStore("parent", () => {
     const formDataErrors = ref({});
     const classRoomList = ref<ClassRoom[]>([]);
     const parentList = ref<Parent[]>([]);
+    const idParent = ref(0);
 
     function lookupClassRooms(input){
         return ApiService.post("/class-room-list-associate-with-organization", input)
@@ -60,11 +63,9 @@ export const useParentStore = defineStore("parent", () => {
     function parentRegistration(parentForm: ParentForm) {
         return ApiService.post("/parent-registration", parentForm)
             .then(({ data }) => {
-               
+                return data;
             })
             .catch(({ response }) => {
-                console.log(typeof response.data.errors);
-                
                 if (response.status !== 200) {
                     let errorMsg = '';
                     if (typeof response.data.errors === 'object') {
@@ -107,6 +108,49 @@ export const useParentStore = defineStore("parent", () => {
         errors.value = {};
     }
 
+    function saveParentId(parentId) {
+        idParent.value = parentId;
+    }
+
+    function updateParentInfo(parentForm: ParentForm){
+        return ApiService.post("/update-parent", parentForm)
+            .then(({ data }) => {
+               return data;
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    let errorMsg = '';
+                    if (typeof response.data.errors === 'object') {
+                        errorMsg = 'Some fields are missing';
+                    } else {
+                        errorMsg = response.data.errors;
+                    }
+                    const error = {
+                        message : errorMsg,
+                        status : response.status,
+                    }
+                    setError(error);
+                    setFormDataErrors(response.data.errors);
+                }
+            });
+    }
+
+    function removeParent(input){
+        return ApiService.post("/parent-remove", input)
+            .then(({ data }) => {
+                return data;
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
     return {
         lookupClassRooms,
         classRoomList,
@@ -114,6 +158,10 @@ export const useParentStore = defineStore("parent", () => {
         errors,
         formDataErrors,
         fetchParentList,
-        parentList
+        parentList,
+        saveParentId,
+        idParent,
+        updateParentInfo,
+        removeParent
     }
 });

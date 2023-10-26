@@ -153,6 +153,15 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+                path: "/edit-parent",
+                name: "edit-parent",
+                component: () => import("@/components/parents/forms/EditParent.vue"),
+                meta: {
+                  pageTitle: "parents",
+                  breadcrumbs: ["parents", "editParent"],
+                },
+            },
+            {
                 path: "/students",
                 name: "students",
                 component: () => import("@/views/students/StudentsList.vue"),
