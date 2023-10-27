@@ -62,7 +62,7 @@ class StudentController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['required'],
-            'age' => ['required', 'string', 'numeric'],
+            'age' => ['required', 'numeric'],
             'gender' => ['required'],
             'org_id' => ['required'],
             'class_room_id' => ['required'],
@@ -183,6 +183,78 @@ class StudentController extends Controller
                 'result' => false,
                 'errors' => ['An error occurred: ' . $e->getMessage()]
             ], 500);
+        }
+    }
+
+    public function updateStudent(Request $request){
+        $data = $request->all();
+
+        $rules = [
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
+            'date_of_birth' => ['required'],
+            'age' => ['required', 'numeric'],
+            'gender' => ['required'],
+            'org_id' => ['required'],
+            'class_room_id' => ['required'],
+            'parent_id' => ['required'],
+        ];
+
+        $attributes = [
+            'first_name' => 'first name',
+            'last_name' => 'last name',
+            'address' => 'address',
+            'date_of_birth' => 'date of birth',
+            'age' => 'age',
+            'gender' => 'gender',
+            'org_id' => 'organization',
+            'class_room_id' => 'class room',
+            'parent_id' => 'guardian',
+        ];
+
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
+
+        try {
+            DB::beginTransaction();
+            $student = Student::findOrFail($request['id']);
+            $student->org_id = $request['org_id'];
+            $student->class_room_id = $request['class_room_id'];
+            $student->guardian_id = $request['parent_id'];
+            $student->first_name = $request['first_name'];
+            $student->last_name = $request['last_name'];
+            $student->date_of_birth = date('Y-m-d', strtotime($request['date_of_birth']));
+            $student->age = $request['age']; 
+            $student->gender = $request['gender'];
+            $student->address = $request['address'];
+            $student->special_notice = $request['special_notice'];
+            $student->save();
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfuly updated'
+            ], 200);
+        } catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'result'=>false,
+                'errors' => $e->getMessage()
+            ],500);
         }
     }
 }

@@ -77,6 +77,12 @@
                                                 </div>
                                             </div>
                                             <button 
+                                                type="button" 
+                                                @click="resetForm"
+                                                class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-purple-800 to-pink-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                                                {{ translate('reset') }}
+                                            </button>
+                                            <button 
                                                 ref="submitButton" 
                                                 type="submit" 
                                                 @click.prevent="submitStudent"
@@ -165,13 +171,14 @@
 import { defineComponent, onMounted, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useRouter } from "vue-router";
 
 import Datepicker from 'vue3-datepicker';
 import Multiselect from '@vueform/multiselect';
 import ErrorLabel from "@/components/global/ErrorLabel.vue";
 
 import { useClassRoomStore, type Organization } from "@/stores/classRoom";
-import { useStudentStore, type ClassRoom, Parent, StudentForm } from "@/stores/students";
+import { useStudentStore, type ClassRoom, Parent, StudentForm, Student } from "@/stores/students";
 
 export default defineComponent({
     name: "add-student",
@@ -181,6 +188,7 @@ export default defineComponent({
         ErrorLabel
     },
     setup(){
+        const router = useRouter();
         const store = useStudentStore();
         const classRoomStore = useClassRoomStore();
 
@@ -195,11 +203,13 @@ export default defineComponent({
 
         const submitButton = ref<HTMLButtonElement | null>(null);
 
+        const studentInfo = ref<Array<Student>>([]);
         const organizationList = ref<Array<Organization>>([]);
         const classRoomList = ref<Array<ClassRoom>>([]);
         const parentsList = ref<Array<Parent>>([]);
 
         const studentForm = ref({
+            studentId: "",
             firstName: "",
             lastName: "",
             age: "",
@@ -244,6 +254,7 @@ export default defineComponent({
         onMounted(async () => {
             await fetchOrganizationList();
             await fetchParentList();
+            await getStudentInfo();
         });
 
         const fetchOrganizationList = async() => {
@@ -304,8 +315,37 @@ export default defineComponent({
             }
         }
 
+        const getStudentInfo = async () => {
+            if (store.idStudent) {
+                studentInfo.value.splice(0, studentInfo.value.length, ...store.studentList);
+                let results = studentInfo.value.filter((item) => {
+                    return item.id.toString() == store.idStudent.toString();
+                });
+                studentInfo.value.splice(0, studentInfo.value.length, ...results);
+
+                studentForm.value.studentId = studentInfo?.value[0].id.toString() || "";
+                studentForm.value.firstName = studentInfo?.value[0].first_name || "";
+                studentForm.value.lastName = studentInfo?.value[0].last_name || "";
+                studentForm.value.dateOfBirth = new Date(studentInfo?.value[0].date_of_birth) || new Date();
+                studentForm.value.age = studentInfo?.value[0].age || "";
+                studentForm.value.gender = studentInfo?.value[0].gender || "";
+                studentForm.value.address = studentInfo?.value[0].address || "";
+                studentForm.value.specialNotice = studentInfo?.value[0].special_notice || "";
+
+                studentForm.value.orgId = studentInfo?.value[0].organization.id.toString() || "";
+                if(studentInfo?.value[0].organization.id.toString()!= ""){
+                    await selectOrganization(studentInfo?.value[0].organization.id.toString());
+                }
+                studentForm.value.classRoomId = studentInfo?.value[0].class_room.id.toString() || "";
+                studentForm.value.parentId = studentInfo?.value[0].guardian.id.toString() || "";
+            } else {
+                router.go(-1);
+            }
+        }
+
         const submitStudent = async() => {
             const inputs = {
+                id: studentForm.value.studentId,
                 first_name: studentForm.value.firstName,
                 last_name: studentForm.value.lastName,
                 date_of_birth: studentForm.value.dateOfBirth.toISOString(),
@@ -321,7 +361,7 @@ export default defineComponent({
             if (submitButton.value) { 
                 submitButton.value!.disabled = true;
             }
-            let response = await store.studentRegistration(inputs);
+            let response = await store.studentModification(inputs);
             const error = Object.values(store.errors);
             formErrors.value = Object(store.formDataErrors);
             if (error.length === 0) {
@@ -332,16 +372,6 @@ export default defineComponent({
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Ok, got it!'
                 }).then(() => {
-                    studentForm.value.firstName = "";
-                    studentForm.value.lastName = "";
-                    studentForm.value.age = "";
-                    studentForm.value.dateOfBirth = new Date();
-                    studentForm.value.address = "";
-                    studentForm.value.specialNotice = "";
-                    studentForm.value.gender = "";
-                    studentForm.value.orgId = "";
-                    studentForm.value.classRoomId = "";
-                    studentForm.value.parentId = "";
                     studentForm.value.loading = false;
                 });
             } else {
@@ -360,17 +390,22 @@ export default defineComponent({
             studentForm.value.loading = false;
         }
 
+        const resetForm = async() => {
+            await getStudentInfo();
+        }
+
         return {
             translate,
             studentForm,
+            formErrors,
+            submitButton,
             genderList,
             organizationList,
-            selectOrganization,
             classRoomList,
             parentsList,
-            submitButton,
             submitStudent,
-            formErrors
+            resetForm,
+            selectOrganization
         }
     }
 });

@@ -26,6 +26,7 @@ export interface StudentForm {
 }
 
 export interface Student {
+    id: string,
     first_name: string,
     last_name: string,
     date_of_birth: string,
@@ -54,6 +55,7 @@ export const useStudentStore = defineStore("student", () => {
     const classRoomList = ref<ClassRoom[]>([]);
     const parentsList = ref<Parent[]>([]);
     const studentList = ref<Student[]>([]);
+    const idStudent = ref(0);
 
 
     function lookupClassRooms(input){
@@ -153,6 +155,33 @@ export const useStudentStore = defineStore("student", () => {
         errors.value = {};
     }
 
+    function saveStudentId(studentId) {
+        idStudent.value = studentId;
+    }
+
+    function studentModification(studentForm: StudentForm){
+        return ApiService.post("/update-student", studentForm)
+            .then(({ data }) => {
+               return data;
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    let errorMsg = '';
+                    if (typeof response.data.errors === 'object') {
+                        errorMsg = 'Some fields are missing';
+                    } else {
+                        errorMsg = response.data.errors;
+                    }
+                    const error = {
+                        message : errorMsg,
+                        status : response.status,
+                    }
+                    setError(error);
+                    setFormDataErrors(response.data.errors);
+                }
+            });
+    }
+
     return {
         lookupClassRooms,
         classRoomList,
@@ -162,6 +191,9 @@ export const useStudentStore = defineStore("student", () => {
         studentRegistration,
         formDataErrors,
         fetchStudentList,
-        studentList
+        studentList,
+        saveStudentId,
+        idStudent,
+        studentModification
     }
 });

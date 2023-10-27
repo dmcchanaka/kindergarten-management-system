@@ -52,6 +52,7 @@ const messages = {
         chooseOrganization: "Choose organization",
         chooseClassRoom: "Choose classroom",
         chooseGuardian: "Choose Guardian",
+        reset: "Reset"
     },
     de: {
         home: "Heim",
@@ -104,6 +105,7 @@ const messages = {
         chooseOrganization: "Kies organisatie",
         chooseClassRoom: "Kies klaslokaal",
         chooseGuardian: "Kies Voogd",
+        reset: "Opnieuw instellen"
     },
 };
 

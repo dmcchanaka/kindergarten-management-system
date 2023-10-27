@@ -173,10 +173,19 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: "/add-student",
                 name: "add-student",
-                component: () => import("@/components/students/AddStudent.vue"),
+                component: () => import("@/components/students/forms/AddStudent.vue"),
                 meta: {
                   pageTitle: "students",
                   breadcrumbs: ["students", "addStudent"],
+                },
+            },
+            {
+                path: "/edit-student",
+                name: "edit-student",
+                component: () => import("@/components/students/forms/EditStudent.vue"),
+                meta: {
+                  pageTitle: "students",
+                  breadcrumbs: ["students", "editStudent"],
                 },
             },
             {
