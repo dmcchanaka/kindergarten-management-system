@@ -36,7 +36,17 @@ const messages = {
         phoneNumber: "Phone Number",
         username: "Username",
         password: "Password",
-        confirmPassword: "Confirm Password"
+        confirmPassword: "Confirm Password",
+        studentsList: "Students List",
+        addStudent: "Add Student",
+        students: "Students",
+        searchStudents: "Search students",
+        dateOfBirth: "Date of birth",
+        age: "Age",
+        classRoom: "Class Room",
+        guardian: "Guardian",
+        gender: "Gender",
+        specialNotice: "Special Notice"
     },
     de: {
         home: "Heim",
@@ -73,7 +83,17 @@ const messages = {
         phoneNumber: "Telefoonnummer",
         username: "Gebruikersnaam",
         password: "Wachtwoord",
-        confirmPassword: "bevestig wachtwoord"
+        confirmPassword: "bevestig wachtwoord",
+        studentsList: "Studentenlijst",
+        addStudent: "Leerling toevoegen",
+        students: "Studenten",
+        searchStudents: "Zoek studenten",
+        dateOfBirth: "Geboortedatum",
+        age: "Leeftijd",
+        classRoom: "Klaslokaal",
+        guardian: "Voogd",
+        gender: "Geslacht",
+        specialNotice: "Speciale mededeling"
     },
 };
 

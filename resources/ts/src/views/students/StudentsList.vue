@@ -7,8 +7,8 @@
             </div>
             <div class="flex-none w-1/2 max-w-full px-3 mb-2 flex items-center justify-end">
                 <input type="text" v-model="search" @input="searchItems()"
-                    class="flex-grow bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search students" />
+                    class="flex-grow border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    :placeholder="translate('searchStudents')" />
                 <router-link v-if="isPermittedRoute('add-student')" to="/add-student"
                     class="ml-3 inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
                     <fa icon="plus" />&nbsp;&nbsp;{{ translate('addStudent') }}
@@ -105,77 +105,77 @@ export default defineComponent({
                 textAlign: "text-left",
             },
             {
-                columnName: "First Name",
+                columnName: computed(()=> { return translate("firstName") }),
                 columnLabel: "first_name",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
             },
             {
-                columnName: "Last Name",
+                columnName: computed(()=> { return translate("lastName") }),
                 columnLabel: "last_name",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
             },
             {
-                columnName: "Date Of Birth",
+                columnName: computed(()=> { return translate("dateOfBirth") }),
                 columnLabel: "date_of_birth",
                 sortEnabled: true,
                 columnWidth: 30,
                 textAlign: "text-left",
             },
             {
-                columnName: "Age",
+                columnName: computed(()=> { return translate("age") }),
                 columnLabel: "age",
                 sortEnabled: true,
                 columnWidth: 20,
                 textAlign: "text-left",
             },
             {
-                columnName: "Organization",
+                columnName: computed(()=> { return translate("organization") }),
                 columnLabel: "organization",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
             },
             {
-                columnName: "Class Room",
+                columnName: computed(()=> { return translate("classRoom") }),
                 columnLabel: "class_room",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
             },
             {
-                columnName: "Guardian",
+                columnName: computed(()=> { return translate("guardian") }),
                 columnLabel: "guardian",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
             },
             {
-                columnName: "Gender",
+                columnName: computed(()=> { return translate("gender") }),
                 columnLabel: "gender",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-center",
             },
             {
-                columnName: "Address",
+                columnName: computed(()=> { return translate("address") }),
                 columnLabel: "address",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
             },
             {
-                columnName: "Special Notice",
+                columnName: computed(()=> { return translate("specialNotice") }),
                 columnLabel: "special_notice",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
             },
             {
-                columnName: "Actions",
+                columnName: computed(()=> { return translate("actions") }),
                 columnLabel: "actions",
                 sortEnabled: false,
                 columnWidth: 50,
