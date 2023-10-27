@@ -182,6 +182,22 @@ export const useStudentStore = defineStore("student", () => {
             });
     }
 
+    function removeStudent(input){
+        return ApiService.post("/student-remove", input)
+            .then(({ data }) => {
+                return data;
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
     return {
         lookupClassRooms,
         classRoomList,
@@ -194,6 +210,7 @@ export const useStudentStore = defineStore("student", () => {
         studentList,
         saveStudentId,
         idStudent,
-        studentModification
+        studentModification,
+        removeStudent
     }
 });

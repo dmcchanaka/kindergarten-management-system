@@ -257,4 +257,25 @@ class StudentController extends Controller
             ],500);
         }
     }
+
+    public function studentRemove(Request $request){
+        try {
+            DB::beginTransaction();
+    
+            $student = Student::findOrFail($request['studentId']);
+            $student->delete();
+    
+            DB::commit();
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfuly removed'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'result'=>false,
+                'errors' => $e->getMessage()
+            ],500);
+        }
+    }
 }

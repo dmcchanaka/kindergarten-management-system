@@ -250,8 +250,45 @@ export default defineComponent({
         }
 
         //delete student details
-        const deleteStudent = (studentId) => {
-            
+        const deleteStudent = async(studentId) => {
+            await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then(async(result: any) => {
+                if (result.isConfirmed) {
+                    const inputs = {
+                        studentId: studentId,
+                    };
+                    let response = await store.removeStudent(inputs);
+                    const error = Object.values(store.errors);
+                    if (error.length === 0) {
+                        Swal.fire({
+                            title: 'Good job!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Ok, got it!'
+                        }).then(async() => {
+                            await fetchStudentList();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: error[0] as string,
+                            icon: 'error',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Try again!'
+                        }).then((result) => {
+                            store.errors = {};
+                        })
+                    }
+                }
+            });
         }
 
         return {
