@@ -34,27 +34,27 @@
                                         <form>
                                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                                 <div>
-                                                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
-                                                    <input type="text" v-model="studentForm.firstName" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="First Name" required>
+                                                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('firstName') }}</label>
+                                                    <input type="text" v-model="studentForm.firstName" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" :placeholder="translate('firstName')" required>
                                                     <ErrorLabel v-if="formErrors.first_name" :error="formErrors.first_name"></ErrorLabel>
                                                 </div>
                                                 <div>
-                                                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
-                                                    <input type="text" v-model="studentForm.lastName" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Last Name" required>
+                                                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('lastName') }}</label>
+                                                    <input type="text" v-model="studentForm.lastName" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" :placeholder="translate('lastName')" required>
                                                     <ErrorLabel v-if="formErrors.last_name" :error="formErrors.last_name"></ErrorLabel>
                                                 </div>
                                                 <div>
-                                                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of birth</label>
+                                                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('dateOfBirth') }}</label>
                                                     <Datepicker v-model="studentForm.dateOfBirth" placeholder="Date of birth" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                                     <ErrorLabel v-if="formErrors.date_of_birth" :error="formErrors.date_of_birth"></ErrorLabel>
                                                 </div>
                                                 <div>
-                                                    <label for="age" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Age</label>
-                                                    <input type="text" v-model="studentForm.age" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Age" required>
+                                                    <label for="age" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('age') }}</label>
+                                                    <input type="text" v-model="studentForm.age" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" :placeholder="translate('age')" required>
                                                     <ErrorLabel v-if="formErrors.age" :error="formErrors.age"></ErrorLabel>
                                                 </div>
                                                 <div>
-                                                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
+                                                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('gender') }}</label>
                                                     <Multiselect 
                                                         v-model="studentForm.gender"
                                                         placeholder="Choose gender"
@@ -64,15 +64,15 @@
                                                     <ErrorLabel v-if="formErrors.gender" :error="formErrors.gender"></ErrorLabel>
                                                 </div>
                                                 <div>
-                                                    <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                                                    <textarea id="address" v-model="studentForm.address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Address" required></textarea>
+                                                    <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('address') }}</label>
+                                                    <textarea id="address" v-model="studentForm.address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" :placeholder="translate('address')" required></textarea>
                                                     <ErrorLabel v-if="formErrors.address" :error="formErrors.address"></ErrorLabel>
                                                 </div>
                                             </div>
                                             <div class="grid gap-6 mb-6 md:grid-cols-1">
                                                 <div>
-                                                    <label for="specialNotice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Special Information</label>
-                                                    <textarea id="specialNotice" v-model="studentForm.specialNotice" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Special Information" required></textarea>
+                                                    <label for="specialNotice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('specialNotice') }}</label>
+                                                    <textarea id="specialNotice" v-model="studentForm.specialNotice" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" :placeholder="translate('specialNotice')" required></textarea>
                                                     
                                                 </div>
                                             </div>
@@ -82,9 +82,9 @@
                                                 @click.prevent="submitStudent"
                                                 :disabled="studentForm.loading"
                                                 class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
-                                                <span v-if="!studentForm.loading">Submit</span>
+                                                <span v-if="!studentForm.loading">{{ translate('submit') }}</span>
                                                 <span v-if="studentForm.loading">
-                                                Please wait...
+                                                {{ translate('pleaseWait') }}...
                                                 </span>
                                             </button>
                                         </form>
@@ -112,21 +112,21 @@
                                     <div class="w-full">
                                         <form>
                                             <div class="grid gap-6 mb-6 md:grid-cols-1">
-                                                <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('organizations') }}</label>
+                                                <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('organization') }}</label>
                                                 <Multiselect 
                                                     @select="selectOrganization"
                                                     v-model="studentForm.orgId"
-                                                    placeholder="Choose organization"
+                                                    :placeholder="translate('chooseOrganization')"
                                                     :close-on-select="true"
                                                     :searchable="true" 
                                                     :options="organizationList" />
                                                     <ErrorLabel v-if="formErrors.org_id" :error="formErrors.org_id"></ErrorLabel>
                                             </div>
                                             <div class="grid gap-6 mb-6 md:grid-cols-1">
-                                                <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('classRooms') }}</label>
+                                                <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('classRoom') }}</label>
                                                 <Multiselect
                                                     v-model="studentForm.classRoomId"
-                                                    placeholder="Choose class room"
+                                                    :placeholder="translate('chooseClassRoom')"
                                                     :close-on-select="true"
                                                     :searchable="true" 
                                                     :options="classRoomList" />
@@ -141,10 +141,10 @@
                                     <div class="w-full">
                                         <form>
                                             <div class="grid gap-6 mb-6 md:grid-cols-1">
-                                                <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('guardians') }}</label>
+                                                <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('guardian') }}</label>
                                                 <Multiselect 
                                                     v-model="studentForm.parentId"
-                                                    placeholder="Choose organization"
+                                                    :placeholder="translate('chooseGuardian')"
                                                     :close-on-select="true"
                                                     :searchable="true" 
                                                     :options="parentsList" />
