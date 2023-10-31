@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\API\V1\OrganizationController;
+use App\Http\Controllers\API\V1\ParentController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\UserRoleController;
-use App\Http\Controllers\GeneralSettingsController;
+use App\Http\Controllers\API\V1\ClassRoomController;
+use App\Http\Controllers\API\V1\GeneralSettingsController;
+use App\Http\Controllers\API\V1\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [UserController::class, 'login'])->name('login');
@@ -33,4 +36,26 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('save-logo', [GeneralSettingsController::class, 'saveLogo']);
     Route::post('fetch-general-settings', [GeneralSettingsController::class, 'fetchGeneralSettings']);
     Route::post('save-ui-settings', [GeneralSettingsController::class, 'saveUiSettings']);
+
+    //class room
+    Route::post('organization-list', [ClassRoomController::class, 'organizationList']);
+    Route::post('teachers-list', [ClassRoomController::class, 'teachersList']);
+    Route::post('class-room-registration', [ClassRoomController::class, 'classRoomRegistration']);
+    Route::post('class-room-list', [ClassRoomController::class, 'classRoomList']);
+    Route::post('class-room-update', [ClassRoomController::class, 'classRoomUpdate']);
+    Route::post('class-room-remove', [ClassRoomController::class, 'classRoomRemove']);
+
+    //parents
+    Route::post('class-room-list-associate-with-organization', [ParentController::class, 'classRoomsAssociatedWithOrganization']);
+    Route::post('parent-registration', [ParentController::class, 'parentRegistration']);
+    Route::post('parents-list', [ParentController::class, 'fetchParentsList']);
+    Route::post('update-parent', [ParentController::class, 'updateParent']);
+    Route::post('parent-remove', [ParentController::class, 'parentRemove']);
+
+    //students
+    Route::post('parents-lookup', [StudentController::class, 'parentLookUp']);
+    Route::post('student-registration', [StudentController::class, 'studentRegistration']);
+    Route::post('students-list', [StudentController::class, 'fetchStudentsList']);
+    Route::post('update-student', [StudentController::class, 'updateStudent']);
+    Route::post('student-remove', [StudentController::class, 'studentRemove']);
 });

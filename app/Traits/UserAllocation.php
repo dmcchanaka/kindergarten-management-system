@@ -1,9 +1,13 @@
 <?php 
 namespace App\Traits;
 
+use App\Models\ClassRoom;
+use App\Models\ClassRoomTeacher;
 use App\Models\GeneralSetting;
 use App\Models\Organization;
 use App\Models\Permission;
+use App\Models\Student;
+use App\Models\User;
 use App\Models\UserPermission;
 
 Trait UserAllocation {
@@ -15,6 +19,14 @@ Trait UserAllocation {
         if (config('kindergarten.type_super_admin') != $user->u_tp_id) {
             if (config('kindergarten.type_principal') == $user->u_tp_id) {
                 $organizationQuery->where('principal_id', $user->getKey());
+            } elseif (config('kindergarten.type_teacher') == $user->u_tp_id) {
+                $classRooms = $user->classRooms;
+                if($classRooms->isNotEmpty()){
+                    $organizationQuery->whereIn('id',  $classRooms->pluck('org_id')->all());
+                    $organization = $organizationQuery->latest()->first();
+                } else {
+                    throw new \Exception("This teacher is not associated with any class room.");
+                }
             }
         }
 
@@ -42,6 +54,14 @@ Trait UserAllocation {
                 $organizationQuery->where('principal_id', $user->getKey());
                 $organization = $organizationQuery->latest()->first();
                 break;
+            case config('kindergarten.type_teacher'):
+                $classRooms = $user->classRooms;
+                if($classRooms->isNotEmpty()){
+                    $organizationQuery->whereIn('id',  $classRooms->pluck('org_id')->all());
+                    $organization = $organizationQuery->latest()->first();
+                } else {
+                    throw new \Exception("This teacher is not associated with any class room.");
+                }
             default:
                 $organization = $organizationQuery->latest()->first();
         }
@@ -58,6 +78,41 @@ Trait UserAllocation {
         return $organizationInfo;
     }
 
+    //get User Allocated Organization
+    public function getUserAllocatedAllOrganizations($user){
+        $organizationQuery = Organization::query();
+
+        // Use a switch statement for better readability and maintainability.
+        switch ($user->u_tp_id) {
+            case config('kindergarten.type_super_admin'):
+                $organizations = $organizationQuery->get();
+                break;
+            case config('kindergarten.type_principal'):
+                $organizationQuery->where('principal_id', $user->getKey());
+                $organizations = $organizationQuery->get();
+                break;
+            case config('kindergarten.type_teacher'):
+                $classRooms = $user->classRooms;
+                if($classRooms->isNotEmpty()){
+                    $organizationQuery->whereIn('id',  $classRooms->pluck('org_id')->all());
+                    $organizations = $organizationQuery->get();
+                } else {
+                    throw new \Exception("This teacher is not associated with any class room.");
+                }
+                break;
+            default:
+                $organizations = $organizationQuery->get();
+        }
+
+        if (!$organizations) {
+            throw new \Exception("Don't have allocated organizations");
+        }
+
+        $organizationInfo = $organizations;
+
+        return $organizationInfo;
+    }
+
     //get general settings by logged user
     public function getGeneralSettingsByUser($user){
         $defaultSettings = [
@@ -68,7 +123,7 @@ Trait UserAllocation {
         ];
 
         $organization = $this->getUserAllocatedOrganization($user);
-        $organizationId = $organization['id'];
+        $organizationId = isset($organization['id'])?$organization['id']:"";
 
         $generalSettings = null;
         $settingsQuery = GeneralSetting::query();
@@ -140,5 +195,62 @@ Trait UserAllocation {
         $uniqueAllocatedMenu = $menuCollection->unique('heading')->values()->all();
 
         return $uniqueAllocatedMenu;
+    }
+
+    //get user related students
+    public function getUserRoleRelatedStudents($user){
+        $studentQuery = Student::query();
+        switch ($user->u_tp_id) {
+            case config('kindergarten.type_super_admin'):
+                $students = $studentQuery->get();
+                break;
+            case config('kindergarten.type_principal'):
+                $organizations = $this->getUserAllocatedAllOrganizations($user);
+                if(!$organizations->isEmpty()){
+                    $students = $studentQuery->whereIn('org_id', $organizations->pluck('id')->all())->get();
+                } else {
+                    $students = collect([]);
+                }
+                break;
+            case config('kindergarten.type_teacher'):
+                $classRooms = ClassRoomTeacher::where('teacher_id', $user->getKey())->get();
+                if(!$classRooms->isEmpty()){
+                    $students = $studentQuery->whereIn('class_room_id', $classRooms->pluck('cls_room_id')->all())->get();
+                } else {
+                    $students = collect([]);
+                }
+                break;
+            case config('kindergarten.type_parent'):
+                $students = $studentQuery->where('guardian_id', $user->getKey())->get();
+                break;
+            default:
+                $students = $studentQuery->get();
+        }
+        if (!$students) {
+            throw new \Exception("Don't have registered students");
+        }
+        return $students;
+    }
+
+    //get logged user related class rooms
+    public function getUserRelatedClassRooms($user){
+        $classRoomsQuery = ClassRoom::query();
+        switch ($user->u_tp_id) {
+            case config('kindergarten.type_super_admin'):
+                $classRooms = $classRoomsQuery->get();
+                break;
+            case config('kindergarten.type_principal'):
+                    $organizations = $this->getUserAllocatedAllOrganizations($user);
+                    if(!$organizations->isEmpty()){
+                        $classRooms = $classRoomsQuery->whereIn('org_id', $organizations->pluck('id')->all())->get();
+                    } else {
+                        $classRooms = collect([]);
+                    }
+                    break;
+        }
+        if (!$classRooms) {
+            throw new \Exception("Don't have allocated class rooms");
+        }
+        return $classRooms;
     }
 }

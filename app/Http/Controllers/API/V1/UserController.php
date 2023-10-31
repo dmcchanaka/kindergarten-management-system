@@ -244,22 +244,5 @@ class UserController extends Controller {
                 'errors' => $e->getMessage()
             ],500);
         }
-
-        // $validator = Validator::make($request->all(), [
-        //     'first_name' => ['required', 'string', 'max:255'],
-        //     'last_name' => ['required', 'string', 'max:255'],
-        //     'address' => ['required', 'string', 'max:255'],
-        //     'u_tp_id' => ['required'],
-        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        //     'username' => ['required', 'string', 'max:255', 'unique:users'],
-        //     'password' => ['required', 'string', 'min:3', 'confirmed'],
-        // ]);
-
-        // if ($validator->fails()) {
-        //     return response()->json([
-        //         'result' => false,
-        //         "errors" => $validator->errors(),
-        //     ], 403);
-        // }
     }
 }

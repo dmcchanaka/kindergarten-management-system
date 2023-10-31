@@ -1,16 +1,18 @@
 <template>
     <div
         class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-        <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-            <div class="flex flex-wrap -mx-3">
-                <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                    <h6 class="mb-0">User List</h6>
-                </div>
-                <div class="flex-none w-1/2 max-w-full px-0 mb-2 text-right">
-                    <router-link v-if="isPermittedRoute('add-user')" to="/add-user" class="inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"> 
-                        <fa icon="plus" />&nbsp;&nbsp;Add User
-                    </router-link>
-                </div>
+        <div class="flex flex-wrap -mx-3">
+            <div class="flex items-center flex-none w-1/2 max-w-full px-3">
+                <h6 class="mb-0">User List</h6>
+            </div>
+            <div class="flex-none w-1/2 max-w-full px-3 mb-2 flex items-center justify-end">
+                <input type="text" v-model="search" @input="searchItems()"
+                    class="flex-grow bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search Users" />
+                <router-link v-if="isPermittedRoute('add-user')" to="/add-user"
+                    class="ml-3 inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                    <fa icon="plus" />&nbsp;&nbsp;Add User
+                </router-link>
             </div>
         </div>
         <Datatable
@@ -141,13 +143,18 @@ export default defineComponent({
         const searchItems = () => {
             tableData.value.splice(0, tableData.value.length, ...userList.value);
             if (search.value !== "") {
-            let results: Array<Users> = [];
-            for (let j = 0; j < tableData.value.length; j++) {
-                if (searchingFunc(tableData.value[j], search.value.toLowerCase())) {
-                results.push(tableData.value[j]);
-                }
-            }
-            tableData.value.splice(0, tableData.value.length, ...results);
+                const regex = new RegExp(search.value, 'i');
+                let results = userList.value.filter((item) => {
+                    for (const key in item) {
+                        if (Object.prototype.hasOwnProperty.call(item, key)) {
+                            if (regex.test(item[key])) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                });
+                tableData.value.splice(0, tableData.value.length, ...results);
             }
         };
     
@@ -207,7 +214,8 @@ export default defineComponent({
             searchItems,
             sort,
             onItemSelect,
-            isPermittedRoute
+            isPermittedRoute,
+            search
         }
     }
 });

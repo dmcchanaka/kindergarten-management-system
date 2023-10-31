@@ -63,6 +63,24 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+                path: "/users",
+                name: "users",
+                component: () => import("@/views/users/UsersList.vue"),
+                meta: {
+                  pageTitle: "Users",
+                  breadcrumbs: ["User List"],
+                },
+            },
+            {
+                path: "/add-user",
+                name: "add-user",
+                component: () => import("@/components/users/forms/AddUser.vue"),
+                meta: {
+                  pageTitle: "Users",
+                  breadcrumbs: ["Users", "Add User"],
+                },
+            },
+            {
                 path: "/organizations",
                 name: "organizations",
                 component: () => import("@/views/organizations/OrganizationsList.vue"),
@@ -90,21 +108,84 @@ const routes: Array<RouteRecordRaw> = [
                 }
             },
             {
-                path: "/users",
-                name: "users",
-                component: () => import("@/views/users/UsersList.vue"),
+                path: "/class-rooms",
+                name: "class-rooms",
+                component: () => import("@/views/class-rooms/ClassRoomList.vue"),
                 meta: {
-                  pageTitle: "Users",
-                  breadcrumbs: ["User List"],
+                  pageTitle: "classRooms",
+                  breadcrumbs: ["classRoomsList"],
                 },
             },
             {
-                path: "/add-user",
-                name: "add-user",
-                component: () => import("@/components/users/forms/AddUser.vue"),
+                path: "/add-class-room",
+                name: "add-class-room",
+                component: () => import("@/components/class-rooms/forms/AddClassRoom.vue"),
                 meta: {
-                  pageTitle: "Users",
-                  breadcrumbs: ["Users", "Add User"],
+                  pageTitle: "classRooms",
+                  breadcrumbs: ["classRooms", "addClassRoom"],
+                },
+            },
+            {
+                path: "/edit-class-room",
+                name: "edit-class-room",
+                component: () => import("@/components/class-rooms/forms/EditClassRoom.vue"),
+                meta: {
+                  pageTitle: "classRooms",
+                  breadcrumbs: ["classRooms", "editClassRoom"],
+                },
+            },
+            {
+                path: "/parents",
+                name: "parents",
+                component: () => import("@/views/parents/ParentsList.vue"),
+                meta: {
+                  pageTitle: "parents",
+                  breadcrumbs: ["parentsList"],
+                },
+            },
+            {
+                path: "/add-parent",
+                name: "add-parent",
+                component: () => import("@/components/parents/forms/AddParent.vue"),
+                meta: {
+                  pageTitle: "parents",
+                  breadcrumbs: ["parents", "addParent"],
+                },
+            },
+            {
+                path: "/edit-parent",
+                name: "edit-parent",
+                component: () => import("@/components/parents/forms/EditParent.vue"),
+                meta: {
+                  pageTitle: "parents",
+                  breadcrumbs: ["parents", "editParent"],
+                },
+            },
+            {
+                path: "/students",
+                name: "students",
+                component: () => import("@/views/students/StudentsList.vue"),
+                meta: {
+                  pageTitle: "students",
+                  breadcrumbs: ["studentsList"],
+                },
+            },
+            {
+                path: "/add-student",
+                name: "add-student",
+                component: () => import("@/components/students/forms/AddStudent.vue"),
+                meta: {
+                  pageTitle: "students",
+                  breadcrumbs: ["students", "addStudent"],
+                },
+            },
+            {
+                path: "/edit-student",
+                name: "edit-student",
+                component: () => import("@/components/students/forms/EditStudent.vue"),
+                meta: {
+                  pageTitle: "students",
+                  breadcrumbs: ["students", "editStudent"],
                 },
             },
             {

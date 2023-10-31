@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Organization extends Model
+class ClassRoomTeacher extends Model
 {
     use HasFactory, SoftDeletes;
-
-    protected $table = 'organizations';
-    protected $fillable = ['name', 'address', 'contact_num', 'email', 'principal_id'];
-
+    
+    protected $fillable = [
+        'cls_room_id', 'teacher_id'
+    ];
 }

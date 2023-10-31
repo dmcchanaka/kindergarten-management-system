@@ -28,7 +28,7 @@
       </TableBodyRow>
       <template v-else>
         <tr class="odd">
-          <td colspan="7" class="dataTables_empty">
+          <td :colspan="header.length" class="dataTables_empty">
             {{ emptyTableText }}
           </td>
         </tr>
