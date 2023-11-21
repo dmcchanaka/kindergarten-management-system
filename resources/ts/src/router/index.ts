@@ -81,6 +81,15 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+              path: "/edit-user",
+              name: "edit-user",
+              component: () => import("@/components/users/forms/EditUser.vue"),
+              meta: {
+                pageTitle: "Users",
+                breadcrumbs: ["Users", "Edit User"],
+              },
+          },
+            {
                 path: "/organizations",
                 name: "organizations",
                 component: () => import("@/views/organizations/OrganizationsList.vue"),

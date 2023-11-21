@@ -47,10 +47,11 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.address }}</a>
             </template>
             <template v-slot:actions="{ row: users }">
-                <a class="mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
+                <a v-if="isPermittedRoute('edit-user')" @click="editUser(users.id)" class="cursor-pointer mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
                     <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
                 </a>
-                <a class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
+                <span v-else>&nbsp;</span>
+                <a class="cursor-pointer text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
                     <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
                 </a>
             </template>
@@ -60,11 +61,13 @@
 <style lang="scss"></style>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref, computed } from "vue";
 import { useUserStore, type Users } from "@/stores/users";
 import { useAuthStore } from "@/stores/auth";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import arraySort from "array-sort";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
 import Datatable from "@/components/table/Datatable.vue";
 export default defineComponent({
@@ -73,8 +76,18 @@ export default defineComponent({
         Datatable
     },
     setup() {
+        const { t, te } = useI18n();
         const authStore = useAuthStore();
         const store = useUserStore();
+        const router = useRouter();
+
+        const translate = (text: string) => {
+            if (te(text)) {
+                return t(text);
+            } else {
+                return text;
+            }
+        };
 
         const selectedIds = ref<Array<number>>([]);
         const userList = ref<Array<Users>>([]);
@@ -89,49 +102,49 @@ export default defineComponent({
                 textAlign: "text-left",
             },
             {
-                columnName: "First Name",
+                columnName: computed(()=>{ return translate('firstName') }),
                 columnLabel: "first_name",
                 sortEnabled: true,
                 columnWidth: 250,
                 textAlign: "text-left",
             },
             {
-                columnName: "Last Name",
+                columnName: computed(()=>{ return translate('lastName') }),
                 columnLabel: "last_name",
                 sortEnabled: true,
                 columnWidth: 250,
                 textAlign: "text-left",
             },
             {
-                columnName: "Email",
+                columnName: computed(()=>{ return translate('email') }),
                 columnLabel: "email",
                 sortEnabled: true,
                 columnWidth: 250,
                 textAlign: "text-left",
             },
             {
-                columnName: "Telephone",
+                columnName: computed(()=>{ return translate('telephone') }),
                 columnLabel: "telephone",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
             },
             {
-                columnName: "User Role",
+                columnName: computed(()=>{ return translate('userRole') }),
                 columnLabel: "user-role",
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-center",
             },
             {
-                columnName: "Address",
+                columnName: computed(()=>{ return translate('address') }),
                 columnLabel: "address",
                 sortEnabled: true,
                 columnWidth: 100,
-                textAlign: "text-center",
+                textAlign: "text-left",
             },
             {
-                columnName: "Actions",
+                columnName: computed(()=>{ return translate('actions') }),
                 columnLabel: "actions",
                 sortEnabled: false,
                 columnWidth: 50,
@@ -208,6 +221,11 @@ export default defineComponent({
             }
         }
 
+        const editUser = (userId) => {
+            store.saveUserId(userId);
+            router.push({ name: "edit-user" });
+        }
+
         return {
             tableData,
             tableHeader,
@@ -215,7 +233,9 @@ export default defineComponent({
             sort,
             onItemSelect,
             isPermittedRoute,
-            search
+            search,
+            editUser,
+            translate
         }
     }
 });
