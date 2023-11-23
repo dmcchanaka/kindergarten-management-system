@@ -5,6 +5,7 @@ use App\Http\Controllers\API\V1\ParentController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\UserRoleController;
 use App\Http\Controllers\API\V1\ClassRoomController;
+use App\Http\Controllers\API\V1\GalleryController;
 use App\Http\Controllers\API\V1\GeneralSettingsController;
 use App\Http\Controllers\API\V1\StudentController;
 use Illuminate\Support\Facades\Route;
@@ -58,4 +59,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('students-list', [StudentController::class, 'fetchStudentsList']);
     Route::post('update-student', [StudentController::class, 'updateStudent']);
     Route::post('student-remove', [StudentController::class, 'studentRemove']);
+
+    //content area
+    Route::post('gallery-registration', [GalleryController::class, 'galleryRegistration']);
+    Route::post('gallery-update', [GalleryController::class, 'galleryUpdate']);
+    Route::post('gallery-remove', [GalleryController::class, 'galleryRemove']);
+
+    Route::post('content-list', [GalleryController::class, 'fetchContentList']);
 });

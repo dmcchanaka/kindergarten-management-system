@@ -81,6 +81,15 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+              path: "/edit-user",
+              name: "edit-user",
+              component: () => import("@/components/users/forms/EditUser.vue"),
+              meta: {
+                pageTitle: "Users",
+                breadcrumbs: ["Users", "Edit User"],
+              },
+          },
+            {
                 path: "/organizations",
                 name: "organizations",
                 component: () => import("@/views/organizations/OrganizationsList.vue"),
@@ -187,6 +196,51 @@ const routes: Array<RouteRecordRaw> = [
                   pageTitle: "students",
                   breadcrumbs: ["students", "editStudent"],
                 },
+            },
+            {
+              path: "/gallery",
+              name: "gallery",
+              component: () => import("@/views/gallery/GalleryList.vue"),
+              meta: {
+                pageTitle: "gallery",
+                breadcrumbs: ["galleryList"],
+              },
+            },
+            {
+              path: "/add-gallery",
+              name: "add-gallery",
+              component: () => import("@/components/gallery/forms/AddGallery.vue"),
+              meta: {
+                pageTitle: "gallery",
+                breadcrumbs: ["gallery", "addGallery"],
+              },
+            },
+            {
+              path: "/edit-gallery",
+              name: "edit-gallery",
+              component: () => import("@/components/gallery/forms/EditGallery.vue"),
+              meta: {
+                pageTitle: "gallery",
+                breadcrumbs: ["gallery", "editGallery"],
+              },
+            },
+            {
+              path: "/news-feed",
+              name: "news-feed",
+              component: () => import("@/views/news-feed/NewsFeed.vue"),
+              meta: {
+                pageTitle: "classRoomActivities",
+                breadcrumbs: ["newsFeed"],
+              },
+            },
+            {
+              path: "/news-feed-content",
+              name: "news-feed-content",
+              component: () => import("@/views/news-feed/NewsFeedDetails.vue"),
+              meta: {
+                pageTitle: "classRoomActivities",
+                breadcrumbs: ["newsFeed"],
+              },
             },
             {
                 path: "/settings",

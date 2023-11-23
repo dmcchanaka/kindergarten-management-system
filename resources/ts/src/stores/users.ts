@@ -4,11 +4,14 @@ import ApiService from "@/core/services/ApiService";
 
 export interface Users {
     token: string;
-    userId: number;
-    name: string;
-    email: string;
-    userRoleId: number;
-    userRole: string;
+    id: number;
+    first_name: string;
+    last_name: string;
+    contact_number: string;
+    email: number;
+    username: string;
+    user_role: string;
+    address: string;
 }
 
 export interface UserForm {
@@ -26,6 +29,7 @@ export const useUserStore = defineStore("user", () => {
     const errors = ref({});
     const formDataErrors = ref({});
     const userList = ref<Users[]>([]);
+    const idUser = ref(0);
 
     function setError(error: any) {
         errors.value = { ...error };
@@ -81,11 +85,17 @@ export const useUserStore = defineStore("user", () => {
         formDataErrors.value = { ...error };
     }
 
+    function saveUserId(userId) {
+        idUser.value = userId;
+    }
+
     return {
         fetchUserList,
         errors,
         userList,
         userRegistration,
-        formDataErrors
+        formDataErrors,
+        saveUserId,
+        idUser
     }
 });

@@ -100,6 +100,15 @@ Trait UserAllocation {
                     throw new \Exception("This teacher is not associated with any class room.");
                 }
                 break;
+            case config('kindergarten.type_parent'):
+                $children = $user->childern;
+                if($children->isNotEmpty()){
+                    $organizationQuery->whereIn('id',  $children->pluck('org_id')->all());
+                    $organizations = $organizationQuery->get();
+                } else {
+                    throw new \Exception("This parent does not have any children.");
+                }
+                break;
             default:
                 $organizations = $organizationQuery->get();
         }
@@ -240,13 +249,30 @@ Trait UserAllocation {
                 $classRooms = $classRoomsQuery->get();
                 break;
             case config('kindergarten.type_principal'):
-                    $organizations = $this->getUserAllocatedAllOrganizations($user);
-                    if(!$organizations->isEmpty()){
-                        $classRooms = $classRoomsQuery->whereIn('org_id', $organizations->pluck('id')->all())->get();
-                    } else {
-                        $classRooms = collect([]);
-                    }
-                    break;
+                $organizations = $this->getUserAllocatedAllOrganizations($user);
+                if(!$organizations->isEmpty()){
+                    $classRooms = $classRoomsQuery->whereIn('org_id', $organizations->pluck('id')->all())->get();
+                } else {
+                    $classRooms = collect([]);
+                }
+                break;
+            case config('kindergarten.type_teacher'):
+                $teacherClassRooms = ClassRoomTeacher::where('teacher_id', $user->getKey())->get();
+                if(!$teacherClassRooms->isEmpty()){
+                    $classRooms = $classRoomsQuery->whereIn('id', $teacherClassRooms->pluck('cls_room_id')->all())->get();
+                } else {
+                    $classRooms = collect([]);
+                }
+                break;
+            case config('kindergarten.type_parent'):
+                $children = $user->childern;
+                if($children->isNotEmpty()){
+                    $classRoomsQuery->whereIn('id',  $children->pluck('class_room_id')->all());
+                    $classRooms = $classRoomsQuery->get();
+                } else {
+                    $classRooms = collect([]);
+                }
+                break;
         }
         if (!$classRooms) {
             throw new \Exception("Don't have allocated class rooms");

@@ -275,7 +275,7 @@ export default defineComponent({
                 organizationId: selectedOrganization,
             };
             await store.lookupClassRooms(inputs);
-            const error = Object.values(classRoomStore.errors);
+            const error = Object.values(store.errors);
             if (error.length === 0) {
                 classRoomList.value.splice(0, classRoomList.value.length, ...store.classRoomList);
                 studentForm.value.classRoomId = "";

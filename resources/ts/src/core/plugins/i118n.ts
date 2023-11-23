@@ -52,7 +52,18 @@ const messages = {
         chooseOrganization: "Choose organization",
         chooseClassRoom: "Choose classroom",
         chooseGuardian: "Choose Guardian",
-        reset: "Reset"
+        reset: "Reset",
+        title: "Title",
+        featureImage: "Feature Image",
+        gallery: "Gallery",
+        galleryList: "Gallery List",
+        addGallery: "Add Gallery",
+        contentImages: "Content Images",
+        newsFeed: "News Feed",
+        latestClassRoomActivity: "Latest ClassRoom Activity",
+        classRoomActivities: "ClassRoom Activities",
+        previousPosts: "Previous Posts",
+        readMore: "Read More"
     },
     de: {
         home: "Heim",
@@ -105,7 +116,18 @@ const messages = {
         chooseOrganization: "Kies organisatie",
         chooseClassRoom: "Kies klaslokaal",
         chooseGuardian: "Kies Voogd",
-        reset: "Opnieuw instellen"
+        reset: "Opnieuw instellen",
+        title: "Titel",
+        featureImage: "Functieafbeelding",
+        gallery: "Galerij",
+        galleryList: "Galerijlijst",
+        addGallery: "Galerij toevoegen",
+        contentImages: "Inhoud afbeeldingen",
+        newsFeed: "Nieuwsfeed",
+        latestClassRoomActivity: "Nieuwste klasactiviteit",
+        classRoomActivities: "Klaslokaal activiteiten",
+        previousPosts: "Vorige berichten",
+        readMore: "Lees verder"
     },
 };
 

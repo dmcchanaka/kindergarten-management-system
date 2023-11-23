@@ -106,7 +106,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useUserStore, type Users, UserForm } from "@/stores/users";
 import { useUserRoleStore, type UserRole, Permission, SaveUserRole } from "@/stores/userRole";
 export default defineComponent({
-    name: "add-user-role",
+    name: "add-user",
     props: {
     },
     components: {},
