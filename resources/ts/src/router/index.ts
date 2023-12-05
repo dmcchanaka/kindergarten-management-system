@@ -243,6 +243,16 @@ const routes: Array<RouteRecordRaw> = [
               },
             },
             {
+              path: "/chat",
+              name: "chat",
+              component: () => import("@/views/chats/Chat.vue"),
+              meta: {
+                pageTitle: "Chat",
+                breadcrumbs: ["Chat"],
+
+              },
+          },
+            {
                 path: "/settings",
                 name: "settings",
                 component: () => import("@/views/settings/Settings.vue"),

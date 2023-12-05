@@ -1,5 +1,5 @@
 <template>
-    <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
+    <div class="items-center block w-auto max-h-screen h-sidenav grow basis-full">
       <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full" v-for="(item, i) in mainMenu" :key="i">
               <router-link v-if="item.route" :class="{
