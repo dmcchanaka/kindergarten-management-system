@@ -270,6 +270,21 @@ const routes: Array<RouteRecordRaw> = [
         ]
     },
     {
+      path: "/attendance-form",
+      component: () => import("@/layouts/GuestLayout.vue"),
+      children: [
+        {
+            path: "/attendance-form",
+            name: "attendance-form",
+            component: () =>
+                import("@/views/attendance/Form.vue"),
+            meta: {
+                pageTitle: "Error 404",
+            },
+        },
+    ]
+    },
+    {
         path: "/:pathMatch(.*)*",
         redirect: "/404",
     },

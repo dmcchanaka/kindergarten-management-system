@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\AttendanceController;
 use App\Http\Controllers\API\V1\OrganizationController;
 use App\Http\Controllers\API\V1\ParentController;
 use App\Http\Controllers\API\V1\UserController;
@@ -67,3 +68,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('content-list', [GalleryController::class, 'fetchContentList']);
 });
+
+//unauth access routes
+Route::post('all-students-list', [AttendanceController::class, 'fetchStudentsList']);
+Route::post('mark-student-attendance', [AttendanceController::class, 'markStudentAttendance']);
