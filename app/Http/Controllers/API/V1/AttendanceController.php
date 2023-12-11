@@ -5,13 +5,18 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Student;
+use App\Traits\UserAllocation;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class AttendanceController extends Controller
 {
+    use UserAllocation;
+
     public function fetchStudentsList(Request $request){
         try {
             $students = Student::get();
@@ -76,6 +81,83 @@ class AttendanceController extends Controller
             return response()->json([
                 'result' => true,
                 'message' => 'Record has been successfuly added'
+            ], 200);
+        } catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'result'=>false,
+                'errors' => $e->getMessage()
+            ],500);
+        }
+    }
+
+    public function fetchAttendanceList(Request $request){
+        $user = Auth::user();
+        try {
+            $studentsInfo = $this->getUserRoleRelatedStudents($user);
+            if(!$studentsInfo->isEmpty()){
+                $attendance = Attendance::whereIn('student_id', $studentsInfo->pluck('id')->all())->get();
+                $attendance->transform(function($att){
+                    $student = $att->student ? [
+                        'id' => $att->student->id,
+                        'name' => $att->student->first_name . ' '. $att->student->last_name,
+                    ] : (object)[];
+                    $organization = $att->student->organization ? [
+                        'id' => $att->student->organization->id,
+                        'name' => $att->student->organization->name,
+                    ] : (object)[];
+                    $classRoom = $att->student->class_room ? [
+                        'id' => $att->student->class_room->id,
+                        'name' => $att->student->class_room->name,
+                    ] : (object)[];
+                    return [
+                        'id'=>$att->id,
+                        'date'=>$att->att_date,
+                        'time'=>$att->att_time,
+                        'student'=>$student,
+                        'organization'=>$organization,
+                        'classRoom'=>$classRoom,
+                        'approve_status'=>($att->approved_at)?true:false
+                    ];
+                });
+                return response()->json([
+                    'result' => true,
+                    'attendance' => $attendance
+                ], 200);
+            } else {
+                return response()->json([
+                    'result' => false,
+                    'errors' => ['Dont have registered students']
+                ], 400);
+            }
+        }  catch (QueryException $e) {
+            // Handle database query exceptions
+            return response()->json([
+                'result' => false,
+                'errors' => ['Database error: ' . $e->getMessage()]
+            ], 500);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json([
+                'result' => false,
+                'errors' => ['An error occurred: ' . $e->getMessage()]
+            ], 500);
+        }
+    }
+
+    public function approveStudentAttendance(Request $request) {
+        $user = Auth::user();
+        try {
+            DB::beginTransaction();
+            $attendance = Attendance::findOrFail($request['attId']);
+            $attendance->approved_at = date('Y-m-d H:i:s');
+            $attendance->approved_by = $user->getKey();
+            $attendance->save();
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfuly verified'
             ], 200);
         } catch(Exception $e){
             DB::rollBack();

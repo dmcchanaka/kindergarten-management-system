@@ -243,6 +243,16 @@ const routes: Array<RouteRecordRaw> = [
               },
             },
             {
+              path: "/attendance",
+              name: "attendance",
+              component: () => import("@/views/attendance/AttendanceList.vue"),
+              meta: {
+                pageTitle: "attendance",
+                breadcrumbs: ["attendanceList"],
+
+              },
+          },
+            {
                 path: "/settings",
                 name: "settings",
                 component: () => import("@/views/settings/Settings.vue"),
