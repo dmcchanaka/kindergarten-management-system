@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\AttendanceController;
 use App\Http\Controllers\API\V1\OrganizationController;
 use App\Http\Controllers\API\V1\ParentController;
 use App\Http\Controllers\API\V1\UserController;
@@ -66,4 +67,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('gallery-remove', [GalleryController::class, 'galleryRemove']);
 
     Route::post('content-list', [GalleryController::class, 'fetchContentList']);
+
+    //attendance
+    Route::post('attendance-list', [AttendanceController::class, 'fetchAttendanceList']);
 });
+
+//unauth access routes
+Route::post('all-students-list', [AttendanceController::class, 'fetchStudentsList']);
+Route::post('mark-student-attendance', [AttendanceController::class, 'markStudentAttendance']);
+Route::post('approve-student-attendance', [AttendanceController::class, 'approveStudentAttendance']);

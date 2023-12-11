@@ -243,6 +243,16 @@ const routes: Array<RouteRecordRaw> = [
               },
             },
             {
+              path: "/attendance",
+              name: "attendance",
+              component: () => import("@/views/attendance/AttendanceList.vue"),
+              meta: {
+                pageTitle: "attendance",
+                breadcrumbs: ["attendanceList"],
+
+              },
+          },
+            {
                 path: "/settings",
                 name: "settings",
                 component: () => import("@/views/settings/Settings.vue"),
@@ -268,6 +278,21 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
         ]
+    },
+    {
+      path: "/attendance-form",
+      component: () => import("@/layouts/GuestLayout.vue"),
+      children: [
+        {
+            path: "/attendance-form",
+            name: "attendance-form",
+            component: () =>
+                import("@/views/attendance/Form.vue"),
+            meta: {
+                pageTitle: "Error 404",
+            },
+        },
+    ]
     },
     {
         path: "/:pathMatch(.*)*",

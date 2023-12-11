@@ -198,6 +198,22 @@ export const useStudentStore = defineStore("student", () => {
             });
     }
 
+    function fetchAllStudentList() {
+        return ApiService.post("/all-students-list", {})
+            .then(({ data }) => {
+                setStudents(data.students);
+            })
+            .catch(({ response }) => {
+                if (response.status === 404) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
     return {
         lookupClassRooms,
         classRoomList,
@@ -211,6 +227,7 @@ export const useStudentStore = defineStore("student", () => {
         saveStudentId,
         idStudent,
         studentModification,
-        removeStudent
+        removeStudent,
+        fetchAllStudentList
     }
 });
