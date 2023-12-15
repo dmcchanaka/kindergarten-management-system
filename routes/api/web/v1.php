@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\ChatController;
 use App\Http\Controllers\API\V1\OrganizationController;
 use App\Http\Controllers\API\V1\ParentController;
 use App\Http\Controllers\API\V1\UserController;
@@ -66,4 +67,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('gallery-remove', [GalleryController::class, 'galleryRemove']);
 
     Route::post('content-list', [GalleryController::class, 'fetchContentList']);
+
+    //chat
+    Route::post('chat-user-list', [ChatController::class, 'chatUserList']);
+    Route::post('user-messages', [ChatController::class, 'userMessages']);
+    Route::post('user-old-messages', [ChatController::class, 'userOldMessages']);
+    Route::post('send-message', [ChatController::class, 'sendMessage']);
+    Route::post('update-message-seen', [ChatController::class, 'updateMessageSeen']);
 });

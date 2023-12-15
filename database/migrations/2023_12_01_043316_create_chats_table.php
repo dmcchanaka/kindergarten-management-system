@@ -18,11 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('receiver_id')->nullable();
             $table->foreign('receiver_id')->references('id')->on('users');
             $table->longText('message')->nullable();
-            $table->boolean('is_read')->default(false);
-            $table->boolean('is_edited')->default(false);
-            $table->boolean('is_deleted')->default(false);
-            $table->boolean('deleted_from_sender')->default(false);
-            $table->boolean('deleted_from_receiver')->default(false);
+            $table->boolean('seen')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

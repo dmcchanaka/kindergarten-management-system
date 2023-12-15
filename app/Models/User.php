@@ -68,4 +68,10 @@ class User extends Authenticatable
     public function childern(){
         return $this->hasMany(Student::class, 'guardian_id', 'id');
     }
+
+    public function unSeenMessages(){
+        return $this->hasMany(Chat::class, 'sender_id')
+                ->where('seen', 1)
+                ->where('receiver_id', auth()->user()->id);
+    }
 }
