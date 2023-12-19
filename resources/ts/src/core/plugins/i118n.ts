@@ -63,7 +63,10 @@ const messages = {
         latestClassRoomActivity: "Latest ClassRoom Activity",
         classRoomActivities: "ClassRoom Activities",
         previousPosts: "Previous Posts",
-        readMore: "Read More"
+        readMore: "Read More",
+        attendance: "Attendance",
+        attendanceList: "Attendance List",
+        searchAttendace: "Search Attendance"
     },
     de: {
         home: "Heim",
@@ -127,7 +130,10 @@ const messages = {
         latestClassRoomActivity: "Nieuwste klasactiviteit",
         classRoomActivities: "Klaslokaal activiteiten",
         previousPosts: "Vorige berichten",
-        readMore: "Lees verder"
+        readMore: "Lees verder",
+        attendance: "Aanwezigheid",
+        attendanceList: "Aanwezigheidslijst",
+        searchAttendace: "Zoek aanwezigheid"
     },
 };
 
