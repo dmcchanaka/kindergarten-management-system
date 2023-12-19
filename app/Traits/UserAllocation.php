@@ -66,14 +66,20 @@ Trait UserAllocation {
                 $organization = $organizationQuery->latest()->first();
         }
 
-        if (!$organization) {
+        if(config('kindergarten.type_super_admin') != $user->u_tp_id && !$organization){
             throw new \Exception("Don't have allocated organization");
         }
+        
 
-        $organizationInfo = [
-            'id' => $organization->id,
-            'name' => $organization->name,
-        ];
+        if($organization){
+            $organizationInfo = [
+                'id' => $organization->id,
+                'name' => $organization->name,
+            ];
+        } else {
+            $organizationInfo = [];
+        }
+        
 
         return $organizationInfo;
     }
