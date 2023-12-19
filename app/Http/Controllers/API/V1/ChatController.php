@@ -7,20 +7,19 @@ use App\Events\NewChatMessage;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\User;
+use App\Traits\UserAllocation;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+    use UserAllocation;
+
     public function chatUserList(Request $request){
         try {
             $user = Auth::user();
-            $userQuery = User::with('unSeenMessages');
-            if(config('kindergarten.type_super_admin') != $user->u_tp_id){
-                $userQuery->whereNotIn('u_tp_id', [config('kindergarten.type_super_admin')])->where('id', '!=', $user->getKey());
-            }
-            $users = $userQuery->get();
+            $users = $this->getChatUserList($user);
             $users->transform(function($user){
                 return [
                     'id'=>$user->id,

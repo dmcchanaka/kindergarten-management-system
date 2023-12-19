@@ -62,6 +62,16 @@ Trait UserAllocation {
                 } else {
                     throw new \Exception("This teacher is not associated with any class room.");
                 }
+            // case config('kindergarten.type_parent'):
+                // $children = $user->childern;
+                // return $children;
+                // if($children->isNotEmpty()){
+                //     $organizationQuery->whereIn('id',  $children->pluck('org_id')->all());
+                //     $organization = $organizationQuery->latest()->first();
+                // } else {
+                //     throw new \Exception("This parent does not have any children.");
+                // }
+                // break;
             default:
                 $organization = $organizationQuery->latest()->first();
         }
@@ -284,5 +294,88 @@ Trait UserAllocation {
             throw new \Exception("Don't have allocated class rooms");
         }
         return $classRooms;
+    }
+
+    //get logged user related class rooms
+    public function getChatUserList($user){
+        $userQuery = User::with('unSeenMessages')->where('id', '!=', $user->getKey());
+        switch ($user->u_tp_id) {
+            case config('kindergarten.type_super_admin'):
+                $users = $userQuery->orderBy('u_tp_id', 'ASC')->get();
+                break;
+            case config('kindergarten.type_principal'):
+                $userIds = collect([]);
+                $organizations = $this->getUserAllocatedAllOrganizations($user);
+                if(!$organizations->isEmpty()){
+                    //teachers
+                    $teacherIds = ClassRoom::whereIn('org_id', $organizations->pluck('id'))
+                        ->with('teachers:id')
+                        ->get()
+                        ->pluck('teachers.*.id')
+                        ->flatten()
+                        ->unique()
+                        ->values()
+                        ->all();
+                    //parents
+                    $classRooms = ClassRoom::whereIn('org_id', $organizations->pluck('id'))->get();
+                    $parents = Student::whereIn('org_id', $organizations->pluck('id'))
+                        ->whereIn('class_room_id', $classRooms->pluck('id')->all())
+                        ->get();
+                    // Filter out null values from parent IDs and merge into the collection
+                    $userIds = $userIds->merge($teacherIds)->merge($parents->pluck('guardian_id')->filter());
+                }
+                if ($userIds->isNotEmpty()) {
+                    $users = $userQuery->whereIn('id', $userIds->all())->orderBy('u_tp_id', 'ASC')->get();
+                }
+                break;
+            case config('kindergarten.type_teacher'):
+                $userIds = collect([]);
+                $organizations = $this->getUserAllocatedAllOrganizations($user);
+                if(!$organizations->isEmpty()){
+                    //teachers in my organization
+                    $teacherIds = ClassRoom::whereIn('org_id', $organizations->pluck('id'))
+                    ->with('teachers:id')
+                    ->get()
+                    ->pluck('teachers.*.id')
+                    ->flatten()
+                    ->unique()
+                    ->values()
+                    ->all();
+                    //parents
+                    $classRooms = ClassRoom::whereIn('org_id', $organizations->pluck('id'))->get();
+                    $parents = Student::whereIn('org_id', $organizations->pluck('id'))
+                        ->whereIn('class_room_id', $classRooms->pluck('id')->all())
+                        ->get();
+                    // Filter out null values from parent IDs and merge into the collection
+                    $userIds = $userIds->merge($teacherIds)->merge($parents->pluck('guardian_id')->filter());
+                }
+                if ($userIds->isNotEmpty()) {
+                    $users = $userQuery->whereIn('id', $userIds->all())->orderBy('u_tp_id', 'ASC')->get();
+                }
+                break;
+            case config('kindergarten.type_parent'):
+                $userIds = collect([]);
+                $organizations = $this->getUserAllocatedAllOrganizations($user);
+                if(!$organizations->isEmpty()){
+                    $teacherIds = ClassRoom::whereIn('org_id', $organizations->pluck('id'))
+                    ->with('teachers:id')
+                    ->get()
+                    ->pluck('teachers.*.id')
+                    ->flatten()
+                    ->unique()
+                    ->values()
+                    ->all();
+                    
+                    $userIds = $userIds->merge($teacherIds);
+                }
+                if ($userIds->isNotEmpty()) {
+                    $users = $userQuery->whereIn('id', $userIds->all())->orderBy('u_tp_id', 'ASC')->get();
+                }
+                break;
+        }
+        if (!$users) {
+            throw new \Exception("Don't have access to user list");
+        }
+        return $users;
     }
 }
