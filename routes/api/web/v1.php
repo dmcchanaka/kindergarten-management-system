@@ -68,6 +68,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('gallery-remove', [GalleryController::class, 'galleryRemove']);
 
     Route::post('content-list', [GalleryController::class, 'fetchContentList']);
+
+    //attendance
+    Route::post('attendance-list', [AttendanceController::class, 'fetchAttendanceList']);
+    
+    //chat
+    Route::post('chat-user-list', [ChatController::class, 'chatUserList']);
+    Route::post('user-messages', [ChatController::class, 'userMessages']);
+    Route::post('user-old-messages', [ChatController::class, 'userOldMessages']);
+    Route::post('send-message', [ChatController::class, 'sendMessage']);
+    Route::post('update-message-seen', [ChatController::class, 'updateMessageSeen']);
 });
 
 //unauth access routes
