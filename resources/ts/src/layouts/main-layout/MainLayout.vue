@@ -90,10 +90,8 @@ export default defineComponent({
       const userPermissions = computedUserPermisions.value;
 
       // Check if the user has permission to access the current route
-      if (userPermissions.length > 0) {
-        if (!userHasPermission(userPermissions, currentRoute.value)) {
-          router.push({ name: 'dashboard' });
-        }
+      if (!userHasPermission(userPermissions, currentRoute.value)) {
+        router.push({ name: 'dashboard' });
       }
       
     });
