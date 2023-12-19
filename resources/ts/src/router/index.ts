@@ -253,6 +253,16 @@ const routes: Array<RouteRecordRaw> = [
               },
           },
             {
+              path: "/chat",
+              name: "chat",
+              component: () => import("@/views/chats/Chat.vue"),
+              meta: {
+                pageTitle: "Chat",
+                breadcrumbs: ["Chat"],
+
+              },
+          },
+            {
                 path: "/settings",
                 name: "settings",
                 component: () => import("@/views/settings/Settings.vue"),
@@ -305,11 +315,11 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
 
     // verify auth token before each page change
-    authStore.verifyAuth();
+    await authStore.verifyAuth();
 
      // before page access check if page requires authentication
     if (to.meta.middleware == "auth") {

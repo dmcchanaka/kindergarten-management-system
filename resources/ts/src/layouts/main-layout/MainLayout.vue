@@ -1,7 +1,7 @@
 <template>
   <div :style="{ backgroundColor: backgroundColor }" class="min-h-screen m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
     <Aside @close-sidebar="closeSideBar" :class="{ 'translate-x-0': isSidebarOpen, 'shadow-soft-xl': isSidebarOpen }" :style="{ 'margin-left': isSidebarOpen ? null : '0rem' }"></Aside>
-    <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200 pt-2">
+    <main class="ease-soft-in-out xl:ml-68.5 relative h-full min-h-screen rounded-xl transition-all duration-200 pt-2">
       <Topbar @sidebarToggle="sidebarToggle"></Topbar>
 
       <div class="w-full px-6 py-6 mx-auto">
@@ -82,20 +82,25 @@ export default defineComponent({
     });
 
     const computedUserPermisions = computed(()=> {
-      return authStore.userPermissions || {};
+      return authStore.userPermissions;
     });
 
     watchEffect(() => {
       currentRoute.value = route.name as string;
       const userPermissions = computedUserPermisions.value;
-
-      // Check if the user has permission to access the current route
-      if (userPermissions.length > 0) {
+      // Check if the userPermissions is initially empty
+      if (userPermissions.length === 0) {
+        setTimeout(() => {
+          if (computedUserPermisions.value.length === 0) {
+            // If userPermissions is still empty, redirect to the dashboard
+            router.push({ name: 'dashboard' });
+          }
+        }, 500);
+      } else {
         if (!userHasPermission(userPermissions, currentRoute.value)) {
           router.push({ name: 'dashboard' });
         }
       }
-      
     });
 
     const computedTextColor = computed(()=> {

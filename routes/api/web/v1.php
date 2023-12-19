@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\ChatController;
 use App\Http\Controllers\API\V1\AttendanceController;
 use App\Http\Controllers\API\V1\OrganizationController;
 use App\Http\Controllers\API\V1\ParentController;
@@ -67,9 +68,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('gallery-remove', [GalleryController::class, 'galleryRemove']);
 
     Route::post('content-list', [GalleryController::class, 'fetchContentList']);
-
-    //attendance
-    Route::post('attendance-list', [AttendanceController::class, 'fetchAttendanceList']);
 });
 
 //unauth access routes

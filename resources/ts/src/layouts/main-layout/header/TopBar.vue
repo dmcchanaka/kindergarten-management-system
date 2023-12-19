@@ -167,7 +167,7 @@ export default defineComponent({
 
     const currentOrganization = computed(() => {
       const organization = store.organization;
-      return typeof organization?.name != 'undefined' ? organization?.name : "-";
+      return typeof organization?.name != 'undefined' ? organization?.name : "";
     });
 
     const toggleSideBar = () => {
