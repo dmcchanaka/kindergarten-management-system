@@ -290,11 +290,11 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
 
     // verify auth token before each page change
-    authStore.verifyAuth();
+    await authStore.verifyAuth();
 
      // before page access check if page requires authentication
     if (to.meta.middleware == "auth") {

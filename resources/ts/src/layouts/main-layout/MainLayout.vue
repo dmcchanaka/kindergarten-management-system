@@ -82,18 +82,25 @@ export default defineComponent({
     });
 
     const computedUserPermisions = computed(()=> {
-      return authStore.userPermissions || {};
+      return authStore.userPermissions;
     });
 
     watchEffect(() => {
       currentRoute.value = route.name as string;
       const userPermissions = computedUserPermisions.value;
-
-      // Check if the user has permission to access the current route
-      if (!userHasPermission(userPermissions, currentRoute.value)) {
-        router.push({ name: 'dashboard' });
+      // Check if the userPermissions is initially empty
+      if (userPermissions.length === 0) {
+        setTimeout(() => {
+          if (computedUserPermisions.value.length === 0) {
+            // If userPermissions is still empty, redirect to the dashboard
+            router.push({ name: 'dashboard' });
+          }
+        }, 500);
+      } else {
+        if (!userHasPermission(userPermissions, currentRoute.value)) {
+          router.push({ name: 'dashboard' });
+        }
       }
-      
     });
 
     const computedTextColor = computed(()=> {
