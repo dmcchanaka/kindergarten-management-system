@@ -84,55 +84,50 @@ class UserController extends Controller {
     }
 
     public function verifyToken(Request $request){
-        if (Auth::check()) {
-            return response()->json(['message' => 'Token is valid']);
-        } else {
-            return response()->json(['message' => 'Token is invalid'], 401);
+        try {
+            $user = $request->user();
+    
+            if ($user) {
+                $userInfo = [
+                    'token' => $request->api_token,
+                    'userId' => $user->getKey(),
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'userAccessLevel' => $user->u_tp_id,
+                    'userRole' => $user->userRole()
+                ];
+    
+                /**Organization info */
+                $organizationInfo = $this->getUserAllocatedOrganization($user);
+                /**General settings info */
+                $settings = $this->getGeneralSettingsByUser($user);
+                /**User Permissions */
+                $permissions = $this->getAllocatedPermissionsByUser($user);
+                /**User Menu */
+                $menuItems = $this->getAllocatedMainMenuByUser($user);
+    
+                return response()->json([
+                    'result' => true,
+                    'userInfo' => $userInfo,
+                    'userPermissions' => $permissions,
+                    'settings' => $settings,
+                    'organizationInfo' => $organizationInfo,
+                    'userMenu' => $menuItems
+                ], 200);
+            } else {
+                return response()->json([
+                    'result' => false,
+                    'errors' => 'The Entered Password is incorrect'
+                ], 404);
+            }
+        } catch (\Exception $e) {
+    
+            // Return a generic error response to the client
+            return response()->json([
+                'result' => false,
+                'errors' => $e->getMessage()
+            ], 500);
         }
-        // try {
-        //     $user = $request->user();
-    
-        //     if ($user) {
-        //         $userInfo = [
-        //             'token' => $request->api_token,
-        //             'userId' => $user->getKey(),
-        //             'name' => $user->name,
-        //             'email' => $user->email,
-        //             'userAccessLevel' => $user->u_tp_id,
-        //             'userRole' => $user->userRole()
-        //         ];
-    
-        //         /**Organization info */
-        //         $organizationInfo = $this->getUserAllocatedOrganization($user);
-        //         /**General settings info */
-        //         $settings = $this->getGeneralSettingsByUser($user);
-        //         /**User Permissions */
-        //         $permissions = $this->getAllocatedPermissionsByUser($user);
-        //         /**User Menu */
-        //         $menuItems = $this->getAllocatedMainMenuByUser($user);
-    
-        //         return response()->json([
-        //             'result' => true,
-        //             'userInfo' => $userInfo,
-        //             'userPermissions' => $permissions,
-        //             'settings' => $settings,
-        //             'organizationInfo' => $organizationInfo,
-        //             'userMenu' => $menuItems
-        //         ], 200);
-        //     } else {
-        //         return response()->json([
-        //             'result' => false,
-        //             'errors' => 'The Entered Password is incorrect'
-        //         ], 404);
-        //     }
-        // } catch (\Exception $e) {
-    
-        //     // Return a generic error response to the client
-        //     return response()->json([
-        //         'result' => false,
-        //         'errors' => $e->getMessage()
-        //     ], 500);
-        // }
     }
 
     // Get users by type
