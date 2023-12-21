@@ -33,6 +33,7 @@ class ApiService {
     axiosInstance.defaults.headers.common["Authorization"] = `Token ${JwtService.getToken()}`;
     // Set Accept header
     axiosInstance.defaults.headers.common["Accept"] = "application/json";
+    axiosInstance.defaults.headers.common["Content-Type"] = "application/json";
   }
 
   /**
