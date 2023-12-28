@@ -131,8 +131,26 @@ class GalleryController extends Controller
         $user = Auth::user();
         try {
             $classRoomInfo = $this->getUserRelatedClassRooms($user);
+            $studentInfo = $this->getUserRoleRelatedStudents($user);
             if(!$classRoomInfo->isEmpty()){
-                $activities = Activity::with('activity_images', 'class_room', 'organization')->whereIn('org_id', $classRoomInfo->pluck('org_id')->all())->whereIn('class_room_id', $classRoomInfo->pluck('id')->all())->orderBy('id','desc')->get();
+                //common contents
+                $commonActivities = Activity::with('activity_images', 'class_room', 'organization')
+                    ->whereIn('org_id', $classRoomInfo->pluck('org_id')->all())
+                    ->whereIn('class_room_id', $classRoomInfo->pluck('id')->all())
+                    ->whereNull('student_id')
+                    ->orderBy('id','desc')->get();
+                
+                //student related contents
+                $studentActivitiesQuery = Activity::with('activity_images', 'class_room', 'organization')
+                    ->whereIn('org_id', $classRoomInfo->pluck('org_id')->all())
+                    ->whereIn('class_room_id', $classRoomInfo->pluck('id')->all());
+                if($user->u_tp_id == config('kindergarten.type_parent')){
+                    $studentActivitiesQuery->whereIn('student_id', $studentInfo->pluck('id')->all());
+                }
+                $studentActivities = $studentActivitiesQuery->orderBy('id','desc')->get();
+                
+                $activities = $commonActivities->merge($studentActivities);
+                
                 $activities->transform(function($act){
                     $activityImages = $act->activity_images->map(function($image){
                         return [
