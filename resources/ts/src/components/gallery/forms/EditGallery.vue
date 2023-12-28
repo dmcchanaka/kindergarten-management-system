@@ -124,12 +124,30 @@
                                             <div class="grid gap-6 mb-6 md:grid-cols-1">
                                                 <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('classRoom') }}</label>
                                                 <Multiselect
+                                                    @select="selectClassRoom"
                                                     v-model="galleryForm.classRoomId"
                                                     :placeholder="translate('chooseClassRoom')"
                                                     :close-on-select="true"
                                                     :searchable="true" 
                                                     :options="classRoomList" />
                                                     <ErrorLabel v-if="formErrors.class_room_id" :error="formErrors.class_room_id"></ErrorLabel>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="flex flex-col pl-0 mb-0 rounded-lg">
+                                <li class="relative flex p-6 mb-2 border-0 rounded-t-inherit rounded-xl bg-gray-50">
+                                    <div class="w-full">
+                                        <form>
+                                            <div class="grid gap-6 mb-6 md:grid-cols-1">
+                                                <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('students') }}</label>
+                                                <Multiselect
+                                                    v-model="galleryForm.studentId"
+                                                    :placeholder="translate('chooseStudents')"
+                                                    :close-on-select="true"
+                                                    :searchable="true" 
+                                                    :options="studentList" />
                                             </div>
                                         </form>
                                     </div>
@@ -151,7 +169,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import ErrorLabel from "@/components/global/ErrorLabel.vue";
 import Multiselect from '@vueform/multiselect';
 
-import { useGalleryStore, type Gallery } from "@/stores/gallery";
+import { useGalleryStore, type Gallery, Student } from "@/stores/gallery";
 import { useClassRoomStore, type Organization } from "@/stores/classRoom";
 import { useStudentStore, type ClassRoom, Parent, StudentForm } from "@/stores/students";
 
@@ -186,6 +204,7 @@ export default defineComponent({
             content_images_label: [] as string[],
             orgId: "",
             classRoomId: "",
+            studentId: "",
             loading: false
         });
         
@@ -201,6 +220,7 @@ export default defineComponent({
 
         const organizationList = ref<Array<Organization>>([]);
         const classRoomList = ref<Array<ClassRoom>>([]);
+        const studentList = ref<Array<Student>>([]);
         const contentInfo = ref<Array<Gallery>>([]);
 
         onMounted(async () => {
@@ -224,6 +244,13 @@ export default defineComponent({
                 if(contentInfo?.value[0].organization.id.toString() != ""){
                     await selectOrganization(contentInfo?.value[0].organization.id.toString());
                     galleryForm.value.classRoomId = contentInfo?.value[0].class_room.id.toString() || "";
+                }
+
+                if(contentInfo?.value[0].class_room.id.toString() != ""){
+                    await selectClassRoom(contentInfo?.value[0].class_room.id.toString());
+                    if(typeof contentInfo?.value[0].student.id != "undefined"){
+                        galleryForm.value.studentId = contentInfo?.value[0].student.id.toString() || "";
+                    }
                 }
                 
                 // Convert feature_image to blob
@@ -271,7 +298,6 @@ export default defineComponent({
         }
 
         const selectOrganization = async (selectedOrganization) => {
-            console.log(selectedOrganization);
             const inputs = {
                 organizationId: selectedOrganization,
             };
@@ -280,6 +306,7 @@ export default defineComponent({
             if (error.length === 0) {
                 classRoomList.value.splice(0, classRoomList.value.length, ...studentStore.classRoomList);
                 galleryForm.value.classRoomId = "";
+                galleryForm.value.studentId = "";
             } else {
                 Swal.fire({
                 title: 'Oops...',
@@ -289,6 +316,30 @@ export default defineComponent({
                 confirmButtonText: 'Try again!'
                 }).then((result) => {
                 classRoomStore.errors = {};
+                })
+            }
+        }
+
+        const selectClassRoom = async(selectedClassRoom) => {
+            const inputs = {
+                organizationId: galleryForm.value.orgId,
+                classRoomId: selectedClassRoom,
+            };
+            await store.lookupClassRoomStudents(inputs);
+            const error = Object.values(store.errors);
+            if (error.length === 0) {
+                studentList.value.splice(0, studentList.value.length, ...store.studentList);
+                galleryForm.value.studentId = "";
+            } else {
+                galleryForm.value.studentId = "";
+                Swal.fire({
+                title: 'Oops...',
+                text: error[0] as string,
+                icon: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Try again!'
+                }).then((result) => {
+                    store.errors = {};
                 })
             }
         }
@@ -320,8 +371,6 @@ export default defineComponent({
                     tmpArray.push(file); // Adding the new images to the content_images array
                 }
             }
-            console.log("imageUrls:", imageUrls); // Check the value of imageUrls
-            console.log("tmpArray:", tmpArray); // Check the value of tmpArray
             galleryForm.value.content_images = tmpArray;
             galleryForm.value.content_images_label = imageUrls;
         }
@@ -342,11 +391,11 @@ export default defineComponent({
             }
             formData.append('org_id', galleryForm.value.orgId);
             formData.append('class_room_id', galleryForm.value.classRoomId);
+            formData.append('student_id', galleryForm.value.studentId);
             galleryForm.value.loading = true;
             if (submitButton.value) { 
                 submitButton.value!.disabled = true;
             }
-            console.log(formData);
             let response = await store.modifyGallery(formData);
             const error = Object.values(store.errors);
             formErrors.value = Object(store.formDataErrors);
@@ -386,7 +435,9 @@ export default defineComponent({
             submitGallery,
             formErrors,
             submitButton,
-            removeContentImage
+            removeContentImage,
+            selectClassRoom,
+            studentList
         }
     }
 });

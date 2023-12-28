@@ -16,6 +16,7 @@ class Activity extends Model
         'feature_img_url',
         'org_id',
         'class_room_id',
+        'student_id'
     ];
 
     public function activity_images(){
@@ -28,5 +29,9 @@ class Activity extends Model
 
     public function organization(){
         return $this->belongsTo(Organization::class, 'org_id', 'id');
+    }
+
+    public function student(){
+        return $this->belongsTo(Student::class, 'student_id', 'id');
     }
 }

@@ -66,7 +66,8 @@ const messages = {
         readMore: "Read More",
         attendance: "Attendance",
         attendanceList: "Attendance List",
-        searchAttendace: "Search Attendance"
+        searchAttendace: "Search Attendance",
+        chooseStudents: "Choose Students"
     },
     de: {
         home: "Home",
@@ -133,7 +134,8 @@ const messages = {
         readMore: "Mehr anzeigen",
         attendance: "Anwesenheit",
         attendanceList: "Anwesenheitsliste",
-        searchAttendace: "Anwesenheit durchsuchen"
+        searchAttendace: "Anwesenheit durchsuchen",
+        chooseStudents: "Kinder wählen"
     },
 };
 

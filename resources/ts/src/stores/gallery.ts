@@ -19,6 +19,7 @@ export interface Gallery {
     content_images: any[],
     class_room: ClassRoom,
     organization: Organization;
+    student: Student;
     added_date: string,
 }
 
@@ -32,10 +33,16 @@ export interface Organization {
     name: string;
 }
 
+export interface Student {
+    id: number;
+    name: string;
+}
+
 export const useGalleryStore = defineStore("gallery", () => {
     const errors = ref({});
     const formDataErrors = ref({});
     const contentList = ref<Gallery[]>([]);
+    const studentList = ref<Student[]>([]);
     const idContent = ref(0);
 
     function galleryRegistration(formData: FormData) {
@@ -91,7 +98,6 @@ export const useGalleryStore = defineStore("gallery", () => {
 
     function saveContentId(contentId){
         idContent.value = contentId;
-        console.log('ss ' + idContent.value);
     }
     
     function modifyGallery(formData: FormData) {
@@ -133,6 +139,27 @@ export const useGalleryStore = defineStore("gallery", () => {
             });
     }
 
+    function lookupClassRoomStudents(input){
+        return ApiService.post("/student-list-associate-with-class-room", input)
+            .then(({ data }) => {
+                setStudents(data.studentsList);
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
+    function setStudents(students: Student[]) {
+        studentList.value = students;
+        errors.value = {};
+    }
+
     return {
         errors,
         formDataErrors,
@@ -142,6 +169,8 @@ export const useGalleryStore = defineStore("gallery", () => {
         saveContentId,
         idContent,
         modifyGallery,
-        removeGallery
+        removeGallery,
+        lookupClassRoomStudents,
+        studentList
     }
 });
