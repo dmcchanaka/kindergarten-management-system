@@ -47,16 +47,12 @@ class OrganizationController extends Controller
 
         $rules = [
             'name' => 'required|string|max:100',
-            'address' => 'required|string|max:255',
-            'contact_num' => 'required|digits_between:10,25',
             'email' => 'required|email|max:100|unique:users,email',
             'principal_id' => 'required|integer'
         ];
 
         $attributes = [
             'name' => 'organization name',
-            'address' => 'organization address',
-            'contact_num' => 'organization contact number',
             'email' => 'organization email',
             'principal_id' => 'principal'
         ];
@@ -101,16 +97,12 @@ class OrganizationController extends Controller
 
         $rules = [
             'name' => 'required|string|max:100',
-            'address' => 'required|string|max:255',
-            'contact_num' => 'required|digits_between:10,25',
             'email' => 'required|email|max:100|unique:users,email',
             'principal_id' => 'required|integer'
         ];
 
         $attributes = [
             'name' => 'organization name',
-            'address' => 'organization address',
-            'contact_num' => 'organization contact number',
             'email' => 'organization email',
             'principal_id' => 'principal'
         ];

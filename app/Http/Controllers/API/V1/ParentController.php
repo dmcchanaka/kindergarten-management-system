@@ -67,9 +67,9 @@ class ParentController extends Controller
         $rules = [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
+            // 'address' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone_number' => ['required', 'string', 'numeric', 'digits_between:10,25'],
+            // 'phone_number' => ['required', 'string', 'numeric', 'digits_between:10,25'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:3', 'confirmed'],
         ];
@@ -183,9 +183,9 @@ class ParentController extends Controller
         $rules = [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
+            // 'address' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($request['id'])],
-            'phone_number' => ['required', 'string', 'numeric', 'digits_between:10,25'],
+            // 'phone_number' => ['required', 'string', 'numeric', 'digits_between:10,25'],
             'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($request['id'])],
         ];
 

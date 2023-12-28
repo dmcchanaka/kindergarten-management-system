@@ -189,7 +189,6 @@ class UserController extends Controller {
         $rules = [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
             'u_tp_id' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
@@ -199,7 +198,6 @@ class UserController extends Controller {
         $attributes = [
             'first_name' => 'first name',
             'last_name' => 'last name',
-            'address' => 'address',
             'u_tp_id' => 'user role',
             'email' => 'email',
             'username' => 'username',
