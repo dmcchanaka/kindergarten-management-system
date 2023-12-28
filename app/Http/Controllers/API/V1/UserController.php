@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller {
 
@@ -154,27 +155,30 @@ class UserController extends Controller {
         try {
             $user = Auth::user();
             $userQuery = User::query();
-            if(config('kindergarten.type_super_admin') != $user->u_tp_id){
-                $userQuery->whereNotIn('u_tp_id', [config('kindergarten.type_super_admin')]);
-            }
-            $users = $userQuery->get();
-            $users->transform(function($user){
-                return [
-                    'id'=>$user->id,
-                    'first_name'=>$user->first_name,
-                    'last_name'=>$user->last_name,
-                    'contact_number'=>$user->contact_num,
-                    'email'=>$user->email,
-                    'username'=>$user->username,
-                    'user_role'=>$user->userRole(),
-                    'address'=>$user->address,
-                ];
-            });
-            return response()->json([
-                'result'=>true,
-                'userList' => $users
-            ],200);
-
+            $usersInfo = $this->getUserList($user);
+            if(!$usersInfo->isEmpty()){
+                $userQuery->whereIn('id', $usersInfo->pluck('id')->all());
+                $users = $userQuery->orderBy('u_tp_id', 'ASC')->get();
+                $users->transform(function($user){
+                    return [
+                        'id'=>$user->id,
+                        'first_name'=>$user->first_name,
+                        'last_name'=>$user->last_name,
+                        'contact_number'=>$user->contact_num,
+                        'email'=>$user->email,
+                        'username'=>$user->username,
+                        'user_role'=>$user->userRole(),
+                        'address'=>$user->address,
+                    ];
+                });
+                return response()->json([
+                    'result'=>true,
+                    'userList' => $users
+                ],200);
+            } return response()->json([
+                'result' => false,
+                'errors' => ['Dont have registered parents']
+            ], 400);
         } catch(Exception $e){
             return response()->json([
                 'result' => false,
@@ -236,7 +240,8 @@ class UserController extends Controller {
                 'password'=>Hash::make($request['password']),
                 'first_name'=>$request['first_name'],
                 'last_name'=>$request['last_name'],
-                'address'=>$request['address']
+                'address'=>$request['address'],
+                'phone_number'=>$request['phone_number']
             ]);
             DB::commit();
 
@@ -250,6 +255,78 @@ class UserController extends Controller {
                 'result'=>false,
                 'errors' => $e->getMessage()
             ],500);
+        }
+    }
+
+    public function userUpdate(Request $request){
+        $data = $request->all();
+
+        $rules = [
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'u_tp_id' => ['required'],
+            // 'address' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($request['id'])],
+            // 'phone_number' => ['required', 'string', 'numeric', 'digits_between:10,25'],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($request['id'])],
+        ];
+
+        if ($request->filled('password')) {
+            $rules['password'] = ['required', 'string', 'min:3', 'confirmed'];
+        }
+
+        $attributes = [
+            'first_name' => 'first name',
+            'last_name' => 'last name',
+            'u_tp_id' => 'user role',
+            'address' => 'address',
+            'email' => 'email',
+            'phone_number' => 'phone number',
+            'username' => 'username',
+            'password' => 'password',
+        ];
+
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
+
+        try {
+            DB::beginTransaction();
+            $user = User::findOrFail($request['id']);
+            $user->first_name = $request->input('first_name');
+            $user->last_name = $request->input('last_name');
+            $user->address = $request->input('address');
+            $user->email = $request->input('email');
+            $user->phone_number = $request->input('phone_number');
+            $user->username = $request->input('username');
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->input('password'));
+            }
+            $user->save();
+            DB::commit();
+    
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfully updated'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'result' => false,
+                'errors' => $e->getMessage()
+            ], 500);
         }
     }
 }

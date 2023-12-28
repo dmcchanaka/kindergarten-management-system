@@ -89,6 +89,29 @@ export const useUserStore = defineStore("user", () => {
         idUser.value = userId;
     }
 
+    function updateUserInfo(userForm: UserForm){
+        return ApiService.post("/user-update", userForm)
+        .then(({ data }) => {
+           return data;
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                let errorMsg = '';
+                if (typeof response.data.errors === 'object') {
+                    errorMsg = 'Some fields are missing';
+                } else {
+                    errorMsg = response.data.errors;
+                }
+                const error = {
+                    message : errorMsg,
+                    status : response.status,
+                }
+                setError(error);
+                setFormDataErrors(response.data.errors);
+            }
+        });
+    }
+
     return {
         fetchUserList,
         errors,
@@ -96,6 +119,7 @@ export const useUserStore = defineStore("user", () => {
         userRegistration,
         formDataErrors,
         saveUserId,
-        idUser
+        idUser,
+        updateUserInfo
     }
 });

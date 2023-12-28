@@ -136,6 +136,17 @@ export default defineComponent({
             loading: false
         });
 
+        const formErrors = ref<UserForm>({
+            first_name: '',
+            last_name: '',
+            email: '',
+            phone_number: '',
+            address: '',
+            u_tp_id: '',
+            username: '',
+            password: '',
+        });
+
         onMounted(async () => {
             await getUserRoleInfo();
             await getUserInfo();
@@ -181,8 +192,50 @@ export default defineComponent({
             }
         }
 
-        const submitUser = () => {
-
+        const submitUser = async () => {
+            const inputs = {
+                id: userForm.value.id,
+                first_name: userForm.value.firstName,
+                last_name: userForm.value.lastName,
+                email: userForm.value.email,
+                phone_number: userForm.value.phoneNumber,
+                address: userForm.value.address,
+                u_tp_id: userForm.value.userRole,
+                username: userForm.value.userName,
+                password: userForm.value.password,
+                password_confirmation: userForm.value.passwordConfirm,
+            };
+            userForm.value.loading = true;
+            if (submitButton.value) { 
+                submitButton.value!.disabled = true;
+            }
+            let response = await store.updateUserInfo(inputs);
+            const error = Object.values(store.errors);
+            formErrors.value = Object(store.formDataErrors);
+            if (error.length === 0) {
+                Swal.fire({
+                    title: 'Good job!',
+                    text: response.message,
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok, got it!'
+                }).then(() => {
+                    userForm.value.loading = false;
+                });
+            } else {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try again!'
+                }).then((result) => {
+                    store.errors = {};
+                    store.formDataErrors = {};
+                })
+            }
+            submitButton.value!.disabled = false;
+            userForm.value.loading = false;
         }
 
         return {
