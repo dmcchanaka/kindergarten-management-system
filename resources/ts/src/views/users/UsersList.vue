@@ -51,9 +51,6 @@
                     <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
                 </a>
                 <span v-else>&nbsp;</span>
-                <a class="cursor-pointer text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
-                    <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
-                </a>
             </template>
         </Datatable>
     </div>
