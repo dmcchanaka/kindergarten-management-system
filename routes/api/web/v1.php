@@ -35,6 +35,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('users-list', [UserController::class, 'usersList']);
     Route::post('user-registration', [UserController::class, 'userRegistration']);
     Route::post('user-update', [UserController::class, 'userUpdate']);
+    Route::post('user-profile-update', [UserController::class, 'userProfileUpdate']);
+    Route::post('user-profile-password-update', [UserController::class, 'userProfilePasswordUpdate']);
+    Route::post('user-logo-update', [UserController::class, 'userLogoUpdate']);
 
     //general settings
     Route::post('save-logo', [GeneralSettingsController::class, 'saveLogo']);

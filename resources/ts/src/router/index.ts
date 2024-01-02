@@ -262,16 +262,26 @@ const routes: Array<RouteRecordRaw> = [
 
               },
           },
-            {
-                path: "/settings",
-                name: "settings",
-                component: () => import("@/views/settings/Settings.vue"),
-                meta: {
-                  pageTitle: "General Settings",
-                  breadcrumbs: ["Settings"],
+          {
+              path: "/settings",
+              name: "settings",
+              component: () => import("@/views/settings/Settings.vue"),
+              meta: {
+                pageTitle: "General Settings",
+                breadcrumbs: ["Settings"],
 
-                },
+              },
+          },
+          {
+            path: "/my-profile",
+            name: "my-profile",
+            component: () => import("@/views/profile/MyProfile.vue"),
+            meta: {
+              pageTitle: "My Profile",
+              breadcrumbs: ["Profile"],
+
             },
+        },
         ]
     },
     {

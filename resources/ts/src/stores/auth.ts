@@ -9,9 +9,12 @@ export interface User {
     token: string;
     userId: number;
     name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     userAccessLevel: number;
     userRole: string;
+    logo: string;
 }
 
 export interface Credentials {
