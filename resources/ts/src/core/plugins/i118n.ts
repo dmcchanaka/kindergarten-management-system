@@ -67,7 +67,8 @@ const messages = {
         attendance: "Attendance",
         attendanceList: "Attendance List",
         searchAttendace: "Search Attendance",
-        chooseStudents: "Choose Students"
+        chooseStudents: "Choose Students",
+        updatePassword: "Update Password"
     },
     de: {
         home: "Home",
@@ -135,7 +136,8 @@ const messages = {
         attendance: "Anwesenheit",
         attendanceList: "Anwesenheitsliste",
         searchAttendace: "Anwesenheit durchsuchen",
-        chooseStudents: "Kinder wählen"
+        chooseStudents: "Kinder wählen",
+        updatePassword: "Kennwort aktualisieren"
     },
 };
 

@@ -29,7 +29,7 @@
             </div>
             <div class="border-black/12.5 shadow-soft-xl relative flex h-full min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4 mt-5">
                 <form class="space-y-6" @submit.prevent="onSubmitPasswordInfo">
-                    <h5 class="mb-0 font-bold capitalize">Update Password</h5>
+                    <h5 class="mb-0 font-bold capitalize">{{ translate('updatePassword') }}</h5>
                     <div>
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
@@ -61,7 +61,7 @@
         <div class="w-full h-full max-w-full px-3 lg:w-8/12 lg:flex-none">
             <div class="border-black/12.5 shadow-soft-xl relative flex h-full min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4">
                 <form class="space-y-6" @submit.prevent="onSubmitProfileInfo">
-                    <h5 class="mb-0 font-bold capitalize">Profile Information</h5>
+                    <h5 class="mb-0 font-bold capitalize">{{ translate('basicInformation') }}</h5>
                     <div>
                         <label for="first_name"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
