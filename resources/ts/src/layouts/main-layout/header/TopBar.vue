@@ -158,7 +158,7 @@ export default defineComponent({
     const currentUser = computed(() => store.user?.name || "-");
     const userRole = computed(() => store.user?.userRole || "-");
     const currentOrganization = computed(() => store.organization?.name || "");
-    const userProfileImage = computed(() => store.user?.logo);
+    const userProfileImage = computed(() => store.user?.logo || '/media/avatar/avatar.png');
 
     const toggleSideBar = () => {
       emit('sidebarToggle')
@@ -178,7 +178,14 @@ export default defineComponent({
 
     //get current language object 
     const currentLangugeLocale = computed(() => {
-      return countries[i18n.locale.value];
+      const locale = countries[i18n.locale.value];
+
+      if (!locale) {
+          localStorage.setItem("lang", "en");
+          i18n.locale.value = "en";
+          return countries['en'];
+      }
+      return locale;
     });
 
     return {

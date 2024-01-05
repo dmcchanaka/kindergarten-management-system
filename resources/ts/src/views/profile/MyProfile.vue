@@ -11,7 +11,7 @@
                             <div class="mt-3">
                             <label
                                 for="logoInput"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
                             >
                                 <input
                                 id="logoInput"
@@ -165,7 +165,7 @@ export default defineComponent({
                 userProfile.value.firstName = store.user?.firstName || '';
                 userProfile.value.lastName = store.user?.lastName || '';
                 userProfile.value.email = store.user?.email || '';
-                userProfile.value.logo = store.user?.logo || '';
+                userProfile.value.logo = store.user?.logo || '/media/avatar/avatar.png';
             } else {
                 router.push({ name: "dashboard" });
             }
