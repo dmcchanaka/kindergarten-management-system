@@ -34,6 +34,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //user management
     Route::post('users-list', [UserController::class, 'usersList']);
     Route::post('user-registration', [UserController::class, 'userRegistration']);
+    Route::post('user-update', [UserController::class, 'userUpdate']);
+    Route::post('user-profile-update', [UserController::class, 'userProfileUpdate']);
+    Route::post('user-profile-password-update', [UserController::class, 'userProfilePasswordUpdate']);
+    Route::post('user-logo-update', [UserController::class, 'userLogoUpdate']);
 
     //general settings
     Route::post('save-logo', [GeneralSettingsController::class, 'saveLogo']);
@@ -63,6 +67,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('student-remove', [StudentController::class, 'studentRemove']);
 
     //content area
+    Route::post('student-list-associate-with-class-room', [GalleryController::class, 'studentListAssociateWithClassRoom']);
     Route::post('gallery-registration', [GalleryController::class, 'galleryRegistration']);
     Route::post('gallery-update', [GalleryController::class, 'galleryUpdate']);
     Route::post('gallery-remove', [GalleryController::class, 'galleryRemove']);

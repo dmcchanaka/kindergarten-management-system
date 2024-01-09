@@ -93,14 +93,14 @@ class ClassRoomController extends Controller
         $rules = [
             'org_id' => ['required'],
             'name' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'string', 'numeric', 'digits_between:10,25'],
+            // 'phone_number' => ['required', 'string', 'numeric', 'digits_between:10,25'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ];
 
         $attributes = [
             'org_id' => 'organization',
             'name' => 'class name',
-            'phone_number' => 'phone number',
+            // 'phone_number' => 'phone number',
             'email' => 'email',
         ];
         $validator = CustomValidator::validate($data, $rules, $attributes);
@@ -202,14 +202,14 @@ class ClassRoomController extends Controller
         $rules = [
             'org_id' => ['required'],
             'name' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'string', 'numeric', 'digits_between:10,25'],
+            // 'phone_number' => ['required', 'string', 'numeric', 'digits_between:10,25'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ];
 
         $attributes = [
             'org_id' => 'organization',
             'name' => 'class name',
-            'phone_number' => 'phone number',
+            // 'phone_number' => 'phone number',
             'email' => 'email',
         ];
         $validator = CustomValidator::validate($data, $rules, $attributes);

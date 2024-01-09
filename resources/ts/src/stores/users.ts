@@ -25,11 +25,22 @@ export interface UserForm {
     password: string,
 }
 
+export interface UserMainInfo {
+    first_name: string,
+    last_name: string,
+    email: string,
+}
+
+export interface UserPasswordInfo {
+    password: string,
+}
+
 export const useUserStore = defineStore("user", () => {
     const errors = ref({});
     const formDataErrors = ref({});
     const userList = ref<Users[]>([]);
     const idUser = ref(0);
+    const logo = ref("/media/logo/logo.png");
 
     function setError(error: any) {
         errors.value = { ...error };
@@ -89,6 +100,96 @@ export const useUserStore = defineStore("user", () => {
         idUser.value = userId;
     }
 
+    function updateUserInfo(userForm: UserForm){
+        return ApiService.post("/user-update", userForm)
+        .then(({ data }) => {
+           return data;
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                let errorMsg = '';
+                if (typeof response.data.errors === 'object') {
+                    errorMsg = 'Some fields are missing';
+                } else {
+                    errorMsg = response.data.errors;
+                }
+                const error = {
+                    message : errorMsg,
+                    status : response.status,
+                }
+                setError(error);
+                setFormDataErrors(response.data.errors);
+            }
+        });
+    }
+
+    function updateUserProfile (userForm: UserMainInfo){
+        return ApiService.post("/user-profile-update", userForm)
+        .then(({ data }) => {
+           return data;
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                let errorMsg = '';
+                if (typeof response.data.errors === 'object') {
+                    errorMsg = 'Some fields are missing';
+                } else {
+                    errorMsg = response.data.errors;
+                }
+                const error = {
+                    message : errorMsg,
+                    status : response.status,
+                }
+                setError(error);
+                setFormDataErrors(response.data.errors);
+            }
+        });
+    }
+
+    function updateUserProfilePassword (userPassword: UserPasswordInfo){
+        return ApiService.post("/user-profile-password-update", userPassword)
+        .then(({ data }) => {
+           return data;
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                let errorMsg = '';
+                if (typeof response.data.errors === 'object') {
+                    errorMsg = 'Some fields are missing';
+                } else {
+                    errorMsg = response.data.errors;
+                }
+                const error = {
+                    message : errorMsg,
+                    status : response.status,
+                }
+                setError(error);
+                setFormDataErrors(response.data.errors);
+            }
+        });
+    }
+
+    function saveLogo(formData: FormData) {
+        return ApiService.post("/user-logo-update", formData)
+            .then(({ data }) => {
+                setUserProfileLogo(data);
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
+    function setUserProfileLogo(result: any) {
+        errors.value = {};
+        logo.value = result.logo_url;
+    }
+
     return {
         fetchUserList,
         errors,
@@ -96,6 +197,11 @@ export const useUserStore = defineStore("user", () => {
         userRegistration,
         formDataErrors,
         saveUserId,
-        idUser
+        idUser,
+        updateUserInfo,
+        updateUserProfile,
+        updateUserProfilePassword,
+        saveLogo,
+        logo
     }
 });

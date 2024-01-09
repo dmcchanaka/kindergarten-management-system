@@ -37,6 +37,10 @@
             <template v-slot:classRoom="{ row: gallery }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ gallery.class_room.name }}</a>
             </template>
+            <template v-slot:student="{ row: gallery }">
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6" v-if="gallery.student.name">{{ gallery.student.name }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6" v-else>All</a>
+            </template>
             <template v-slot:actions="{ row: gallery }">
                 <a v-if="isPermittedRoute('edit-gallery')" @click="editGallery(gallery.id)"
                     class="cursor-pointer mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
@@ -133,6 +137,13 @@ export default defineComponent({
                 columnLabel: "classRoom",
                 sortEnabled: true,
                 columnWidth: 100,
+                textAlign: "text-left",
+            },
+            {
+                columnName: computed(()=> { return translate("students") }),
+                columnLabel: "student",
+                sortEnabled: true,
+                columnWidth: 50,
                 textAlign: "text-left",
             },
             {

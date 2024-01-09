@@ -33,7 +33,7 @@
                     <div class="text-sm text-gray-500 dark:text-gray-400">{{ userRole }}</div>
                   </div>
                   <img class="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    :src="userProfileImage"
                     alt="" />
                 </MenuButton>
               </div>
@@ -44,8 +44,8 @@
                 <MenuItems
                   class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <MenuItem v-slot="{ active }">
-                  <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your
-                    Profile</a>
+                    <router-link to="my-profile" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your
+                    Profile</router-link>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
                   <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
@@ -155,20 +155,10 @@ export default defineComponent({
       return route.meta.breadcrumbs;
     });
 
-    const currentUser = computed(() => {
-      const user = store.user;
-      return typeof user?.name != 'undefined' ? user?.name : "-";
-    });
-
-    const userRole = computed(() => {
-      const user = store.user;
-      return typeof user?.userRole != 'undefined' ? user?.userRole : "-";
-    });
-
-    const currentOrganization = computed(() => {
-      const organization = store.organization;
-      return typeof organization?.name != 'undefined' ? organization?.name : "";
-    });
+    const currentUser = computed(() => store.user?.name || "-");
+    const userRole = computed(() => store.user?.userRole || "-");
+    const currentOrganization = computed(() => store.organization?.name || "");
+    const userProfileImage = computed(() => store.user?.logo || '/media/avatar/avatar.png');
 
     const toggleSideBar = () => {
       emit('sidebarToggle')
@@ -188,7 +178,14 @@ export default defineComponent({
 
     //get current language object 
     const currentLangugeLocale = computed(() => {
-      return countries[i18n.locale.value];
+      const locale = countries[i18n.locale.value];
+
+      if (!locale) {
+          localStorage.setItem("lang", "en");
+          i18n.locale.value = "en";
+          return countries['en'];
+      }
+      return locale;
     });
 
     return {
@@ -205,7 +202,8 @@ export default defineComponent({
       showSubMenu,
       selectLanguage,
       currentLangugeLocale,
-      i18n
+      i18n,
+      userProfileImage
     }
   },
 });

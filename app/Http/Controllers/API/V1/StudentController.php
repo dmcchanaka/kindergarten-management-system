@@ -60,7 +60,7 @@ class StudentController extends Controller
         $rules = [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
+            // 'address' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['required'],
             'age' => ['required', 'numeric'],
             'gender' => ['required'],
@@ -72,7 +72,7 @@ class StudentController extends Controller
         $attributes = [
             'first_name' => 'first name',
             'last_name' => 'last name',
-            'address' => 'address',
+            // 'address' => 'address',
             'date_of_birth' => 'date of birth',
             'age' => 'age',
             'gender' => 'gender',
@@ -192,7 +192,7 @@ class StudentController extends Controller
         $rules = [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
+            // 'address' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['required'],
             'age' => ['required', 'numeric'],
             'gender' => ['required'],
@@ -204,7 +204,7 @@ class StudentController extends Controller
         $attributes = [
             'first_name' => 'first name',
             'last_name' => 'last name',
-            'address' => 'address',
+            // 'address' => 'address',
             'date_of_birth' => 'date of birth',
             'age' => 'age',
             'gender' => 'gender',

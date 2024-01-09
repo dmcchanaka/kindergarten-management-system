@@ -5,9 +5,11 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\ActivityImage;
+use App\Models\Student;
 use App\Traits\UserAllocation;
 use App\Validators\CustomValidator;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -61,6 +63,7 @@ class GalleryController extends Controller
             $description = $request->input('description');
             $orgId = $request->input('org_id');
             $classRoomId = $request->input('class_room_id');
+            $studentId = $request->input('student_id');
 
             $featureImageUrl = "";
             $featureImage = $request->file('feature_image');
@@ -84,6 +87,7 @@ class GalleryController extends Controller
                 'feature_img_url'=>$featureImageUrl,
                 'org_id'=>$orgId,
                 'class_room_id'=>$classRoomId,
+                'student_id'=>$studentId
             ]);
 
 
@@ -127,8 +131,26 @@ class GalleryController extends Controller
         $user = Auth::user();
         try {
             $classRoomInfo = $this->getUserRelatedClassRooms($user);
+            $studentInfo = $this->getUserRoleRelatedStudents($user);
             if(!$classRoomInfo->isEmpty()){
-                $activities = Activity::with('activity_images', 'class_room', 'organization')->whereIn('org_id', $classRoomInfo->pluck('org_id')->all())->whereIn('class_room_id', $classRoomInfo->pluck('id')->all())->orderBy('id','desc')->get();
+                //common contents
+                $commonActivities = Activity::with('activity_images', 'class_room', 'organization')
+                    ->whereIn('org_id', $classRoomInfo->pluck('org_id')->all())
+                    ->whereIn('class_room_id', $classRoomInfo->pluck('id')->all())
+                    ->whereNull('student_id')
+                    ->orderBy('id','desc')->get();
+                
+                //student related contents
+                $studentActivitiesQuery = Activity::with('activity_images', 'class_room', 'organization')
+                    ->whereIn('org_id', $classRoomInfo->pluck('org_id')->all())
+                    ->whereIn('class_room_id', $classRoomInfo->pluck('id')->all());
+                if($user->u_tp_id == config('kindergarten.type_parent')){
+                    $studentActivitiesQuery->whereIn('student_id', $studentInfo->pluck('id')->all());
+                }
+                $studentActivities = $studentActivitiesQuery->orderBy('id','desc')->get();
+                
+                $activities = $commonActivities->merge($studentActivities);
+                
                 $activities->transform(function($act){
                     $activityImages = $act->activity_images->map(function($image){
                         return [
@@ -143,6 +165,10 @@ class GalleryController extends Controller
                         'id' => $act->class_room->id,
                         'name' => $act->class_room->name,
                     ] : (object)[];
+                    $student = $act->student ? [
+                        'id' => $act->student->id,
+                        'name' => $act->student->first_name .' '.$act->student->last_name,
+                    ] : (object)[];
                     return [
                         'id'=>$act->getKey(),
                         'title'=>$act->title,
@@ -151,6 +177,7 @@ class GalleryController extends Controller
                         'content_images'=>$activityImages,
                         'class_room'=>$class_room,
                         'organization'=>$organization,
+                        'student'=>$student,
                         'added_date'=>date('F d, Y', strtotime($act->created_at)),
                     ];
                 });
@@ -237,6 +264,7 @@ class GalleryController extends Controller
             $activity->description = $request->input('description');
             $activity->org_id = $request->input('org_id');
             $activity->class_room_id = $request->input('class_room_id');
+            $activity->student_id = $request->input('student_id');
 
             
 
@@ -315,6 +343,50 @@ class GalleryController extends Controller
                 'result'=>false,
                 'errors' => $e->getMessage()
             ],500);
+        }
+    }
+
+    public function studentListAssociateWithClassRoom(Request $request){
+        $user = Auth::user();
+        try {
+            $studentQuery = Student::query();
+            if(isset($request['organizationId']) && $request['organizationId'] != NULL){
+                $studentQuery->where('org_id', $request['organizationId']);
+            }
+            if(isset($request['classRoomId']) && $request['classRoomId'] != NULL){
+                $studentQuery->where('class_room_id', $request['classRoomId']);
+            }
+            $students = $studentQuery->get();
+            if($students->isNotEmpty()){
+                $students->transform(function($std){
+                    return [
+                        'value'=>$std->getKey(),
+                        'label'=>$std->first_name . ' ' .$std->last_name,
+                    ];
+                });
+                return response()->json([
+                    'result'=>true,
+                    'studentsList' => $students
+                ],200);
+            } else {
+                return response()->json([
+                    'result' => false,
+                    'errors' => ['Dont have allocated students to selected class room']
+                ], 400);
+            }
+            
+        } catch (QueryException $e) {
+            // Handle database query exceptions
+            return response()->json([
+                'result' => false,
+                'errors' => ['Database error: ' . $e->getMessage()]
+            ], 500);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json([
+                'result' => false,
+                'errors' => ['An error occurred: ' . $e->getMessage()]
+            ], 500);
         }
     }
 }

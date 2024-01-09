@@ -236,29 +236,29 @@ export default defineComponent({
             const error = Object.values(store.errors);
             formErrors.value = Object(store.formDataErrors);
             if (error.length === 0) {
-                    Swal.fire({
-                        title: 'Good job!',
-                        text: response.message,
-                        icon: 'success',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Ok, got it!'
-                    }).then(() => {
-                        parentForm.value.loading = false;
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: error[0] as string,
-                        icon: 'error',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Try again!'
-                    }).then((result) => {
-                        store.errors = {};
-                        store.formDataErrors = {};
-                    })
-                }
-                submitButton.value!.disabled = false;
-                parentForm.value.loading = false;
+                Swal.fire({
+                    title: 'Good job!',
+                    text: response.message,
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok, got it!'
+                }).then(() => {
+                    parentForm.value.loading = false;
+                });
+            } else {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try again!'
+                }).then((result) => {
+                    store.errors = {};
+                    store.formDataErrors = {};
+                })
+            }
+            submitButton.value!.disabled = false;
+            parentForm.value.loading = false;
         }
 
         return {
