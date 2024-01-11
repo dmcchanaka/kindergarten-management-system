@@ -1,8 +1,10 @@
 <template>
-    This is kindergarten management system
+    <router-view></router-view>
 </template>
 
 <style lang="scss">
+@import "sweetalert2/dist/sweetalert2.css";
+// @import "@/assets/css/soft-ui-dashboard-tailwind.css";
 </style>
 
 <script lang="ts">
