@@ -42,8 +42,8 @@
       </span>
 
     </div>
-    <div class="flex items-center justify-center w-full">
-      <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full mt-2">
+    <div class="flex flex-col items-center justify-center w-full">
+      <ul class="flex flex-row justify-end pl-0 mb-0 list-none mt-2">
         <li class="flex items-center">
           <Menu as="div" class="relative">
             <MenuItem v-slot="{ active }" @click.prevent="toggleSubMenu">
