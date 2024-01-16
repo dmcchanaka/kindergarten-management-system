@@ -86,6 +86,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 //unauth access routes
+Route::post('lookup-organization-list', [AttendanceController::class, 'lookupOrganizationList']);
+Route::post('lookup-class-room-list', [AttendanceController::class, 'lookupClassRoomList']);
+Route::post('lookup-class-room-student-list', [AttendanceController::class, 'lookupClassRoomStudentList']);
+
+Route::post('fetch-student-attendance-list', [AttendanceController::class, 'fetchStudentAttendanceList']);
 Route::post('all-students-list', [AttendanceController::class, 'fetchStudentsList']);
 Route::post('mark-student-attendance', [AttendanceController::class, 'markStudentAttendance']);
 Route::post('approve-student-attendance', [AttendanceController::class, 'approveStudentAttendance']);

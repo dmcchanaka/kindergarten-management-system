@@ -251,8 +251,8 @@ export default defineComponent({
 
       const formData = new FormData();
       formData.append('image',settings.value.selectedLogo);
-      formData.append('organizationId', '1');
-      formData.append('userId', '2');
+      formData.append('organizationId', currentOrganizationId.value);
+      formData.append('userId', userId.value);
 
       await store.saveLogo(formData);
       const error = Object.values(store.errors);
