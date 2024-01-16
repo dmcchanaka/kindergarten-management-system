@@ -16,7 +16,7 @@
             </div>
 
             <div class="text-right mt-2">
-                <a href="#" class="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700">Forgot Password?</a>
+                <!-- <a href="#" class="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700">Forgot Password?</a> -->
             </div>
 
             <button 
@@ -89,10 +89,6 @@ export default defineComponent({
       de: {
         flag: "media/flags/germany.svg",
         name: "German",
-      },
-      fr: {
-        flag: "media/flags/france.svg",
-        name: "French",
       },
     };
 
