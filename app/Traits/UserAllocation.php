@@ -146,28 +146,28 @@ Trait UserAllocation {
             'headerColor' => '#344767',
             'textColor' => '#344767'
         ];
-
+    
         $organization = $this->getUserAllocatedOrganization($user);
-        $organizationId = isset($organization['id'])?$organization['id']:"";
-
+        $organizationId = isset($organization['id']) ? $organization['id'] : "";
+    
         $generalSettings = null;
         $settingsQuery = GeneralSetting::query();
-
-        if (config('kindergarten.type_principal') == $user->u_tp_id) {
+    
+        if (config('kindergarten.type_super_admin') != $user->u_tp_id) {
             $generalSettings = $settingsQuery->where('organization_id', $organizationId)->latest()->first();
         }
-
+    
         if (!$generalSettings) {
             return $defaultSettings; // Return default settings when no settings are found.
         }
-
+    
         $settings = [
-            'logo' => url('/') . $generalSettings->logo_url,
+            'logo' => ($generalSettings->logo_url) ? url('/') . $generalSettings->logo_url : url('/'). '/media/logo/logo.png',
             'backgroundColor' => $generalSettings->background_color,
             'headerColor' => $generalSettings->heading_color,
             'textColor' => $generalSettings->text_color
         ];
-
+    
         return $settings;
     }
 
