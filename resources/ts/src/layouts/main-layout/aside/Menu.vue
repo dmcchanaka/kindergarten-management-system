@@ -30,6 +30,7 @@
     </div>
     <div class="flex flex-col items-center justify-center w-full">
       <span class="mt-0 duration-300 opacity-100 pointer-events-none ease-soft text-white">{{ userRole }}</span>
+      <span class="mt-0 duration-300 opacity-100 pointer-events-none ease-soft text-white" style="font-size: 10px;">{{ currentOrganization }}</span>
     </div>
     <div class="flex items-center justify-center w-full">
       <span class="mt-4 duration-300 opacity-100 cursor-pointer ease-soft text-white space-x-4">
