@@ -39,6 +39,7 @@ export interface ClassRoomList {
 export interface StudentList {
     value: string;
     label: string;
+    image: string;
 }
 
 export const useAttendanceStore = defineStore("attendance", () => {
@@ -66,7 +67,6 @@ export const useAttendanceStore = defineStore("attendance", () => {
                         message : errorMsg,
                         status : response.status,
                     }
-                    console.log(error);
                     setError(error);
                     setFormDataErrors(response.data.errors);
                 }
@@ -84,7 +84,6 @@ export const useAttendanceStore = defineStore("attendance", () => {
     function fetchAttendanceList() {
         return ApiService.post("/attendance-list", {})
             .then(({ data }) => {
-                console.log(data);
                 setAttendance(data.attendance);
             })
             .catch(({ response }) => {

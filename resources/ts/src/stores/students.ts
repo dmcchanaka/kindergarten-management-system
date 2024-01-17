@@ -34,6 +34,7 @@ export interface Student {
     gender: string,
     address: string,
     special_notice: string,
+    image_url: string;
     organization: Organization;
     class_room: ClassRoom;
     guardian: Guardian;
@@ -104,8 +105,8 @@ export const useStudentStore = defineStore("student", () => {
         errors.value = {};
     }
 
-    function studentRegistration(studentForm: StudentForm) {
-        return ApiService.post("/student-registration", studentForm)
+    function studentRegistration(formData: FormData) {
+        return ApiService.post("/student-registration", formData)
             .then(({ data }) => {
                return data;
             })
@@ -159,8 +160,8 @@ export const useStudentStore = defineStore("student", () => {
         idStudent.value = studentId;
     }
 
-    function studentModification(studentForm: StudentForm){
-        return ApiService.post("/update-student", studentForm)
+    function studentModification(formData: FormData){
+        return ApiService.post("/update-student", formData)
             .then(({ data }) => {
                return data;
             })

@@ -1,45 +1,47 @@
 <template>
-    <div class="ease-soft-in-out relative h-full max-h-screen transition-all duration-200">
-        <nav class="absolute z-20 flex flex-wrap items-center justify-between w-full px-6 py-2 text-white transition-all shadow-none duration-250 ease-soft-in lg:flex-nowrap lg:justify-start"
-            navbar-profile navbar-scroll="true">
-            <div class="flex items-center justify-between w-full px-6 py-1 mx-auto flex-wrap-inherit">
-                <nav>
-                    <!-- breadcrumb -->
-                    <h6 class="mb-2 ml-2 font-bold text-white capitalize">Attendance</h6>
-                </nav>
-                <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-                    <div class="flex items-center md:ml-auto md:pr-4">
-                        <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft">
-                            <span
-                                class="text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
-                                <i class="fas fa-search" aria-hidden="true"></i>
-                            </span>
+    <div class="min-h-screen m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500 relative">
+        <aside
+            class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 ml-0 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0" style="background-color: #7bcde3;">
+            <div class="">
+                <fa icon="times" class="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden"></fa>
+                <a class="block px-8 py-3 m-0 text-sm whitespace-nowrap text-slate-700 text-center" href="javascript:;" target="_blank">
+                    <img src="/media/logo/logo.png" class="inline h-full max-h-24 max-w-full transition-all duration-200 ease-nav-brand" alt="main_logo" />
+                </a>
+            </div>
+            <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+            <!-- aside menu -->
+            <div class="items-center block w-auto max-h-screen h-sidenav grow basis-full">
+                <ul class="flex flex-col pl-0 mb-0">
+                    <li class="mt-0.5 w-full">
+                        <div class="flex flex-col items-center justify-center w-full">
+                            <div>
+                                <fa class="text-white text-lg" icon="circle-check" />
+                            </div>
+                            <div>
+                                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft text-white">Anwesenheit</span>
+                            </div>
                         </div>
-                    </div>
-                    <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-                        <li class="flex items-center">
-                            <router-link  to="/sign-in"
-                                class="block px-0 py-2 font-semibold text-white transition-all ease-soft-in-out text-sm">
-                                <i class="fa fa-user sm:mr-1" aria-hidden="true"></i>
-                                <span class="hidden sm:inline">Sign In</span>
-                            </router-link>
-                        </li>
+                    </li>
                 </ul>
             </div>
-        </div>
-    </nav>
-    <div class="w-full px-6 mx-auto">
-        <div class="relative flex items-center p-0 mt-6 overflow-hidden bg-center bg-cover min-h-75 rounded-2xl" :style="`background-image: url('/media/backgrounds/curved.jpg')`" style="background-position-y: 50%">
-          <!-- <span class="absolute inset-y-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-purple-700 to-pink-500 opacity-60"></span> -->
-          <h1 class="w-full text-center mb-2 ml-2 font-bold text-white capitalize">Mark Your Attendance</h1>
-        </div>
-        <div class="relative flex flex-col flex-auto min-w-0 p-4 mx-6 -mt-16 overflow-hidden break-words border-0 shadow-blur rounded-2xl bg-white/80 bg-clip-border backdrop-blur-2xl backdrop-saturate-200">
-            <div class="flex flex-wrap -mx-3">
+            <!-- end aside menu -->
+        </aside>
+        <main class="ease-soft-in-out xl:ml-68.5 relative h-full min-h-screen rounded-xl transition-all duration-200 pt-2">
+            <div class="w-full px-6 py-1 mx-auto">
+                <div class="lg:flex lg:items-center lg:justify-between">
+                <div class="flex-1 min-w-0">
+                    <nav>
+                        <h5 class="text-header mb-0 font-bold capitalize"><fa icon="user-check" />&nbsp;Anwesenheit</h5>
+                    </nav>
+                </div>
+                <div class="flex mt-5 lg:ml-4 lg:mt-0">&nbsp;</div>
+                </div>
                 <router-view></router-view>
+                <!-- Footer -->
+                <!-- Footer -->
             </div>
-        </div>
+        </main>
     </div>
-</div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";

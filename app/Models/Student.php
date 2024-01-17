@@ -20,7 +20,8 @@ class Student extends Model
         'age', 
         'gender',
         'address',
-        'special_notice'
+        'special_notice',
+        'image_url'
     ];
 
     public function organization(){

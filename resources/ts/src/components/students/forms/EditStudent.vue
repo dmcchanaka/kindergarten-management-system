@@ -160,6 +160,17 @@
                                     </div>
                                 </li>
                             </ul>
+                            <ul class="flex flex-col pl-0 mb-0 rounded-lg">
+                                <li class="relative flex p-6 mb-2 border-0 rounded-t-inherit rounded-xl bg-gray-50">
+                                    <div>
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="multiple_files">{{ translate('image') }}</label>
+                                        <input @change="selectStudentImage" class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file">
+                                        <div v-if="studentForm.image_label">
+                                            <img :src="studentForm.image_label" class="w-12 h-12 mt-2 rounded-lg" alt="Image Preview">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -220,6 +231,8 @@ export default defineComponent({
             orgId: "",
             classRoomId: "",
             parentId: "",
+            image: "" as any,
+            image_label: "",
             loading: false
         });
 
@@ -338,30 +351,46 @@ export default defineComponent({
                 }
                 studentForm.value.classRoomId = studentInfo?.value[0].class_room.id.toString() || "";
                 studentForm.value.parentId = studentInfo?.value[0].guardian.id.toString() || "";
+
+                // Convert feature_image to blob
+                const featureImageUrl = studentInfo?.value[0].image_url;
+                const featureImageResponse = await fetch(featureImageUrl);
+                const featureImageBlob = await featureImageResponse.blob();
+                const featureImageFile = new File([featureImageBlob], 'image.jpg', { type: featureImageBlob.type });
+
+                studentForm.value.image = featureImageFile;
+                studentForm.value.image_label = studentInfo?.value[0].image_url || "";
             } else {
                 router.go(-1);
             }
         }
 
+        const selectStudentImage = (event) => {
+            const createUrl = URL.createObjectURL(event.target.files[0]);
+            URL.revokeObjectURL(event.target.files[0]);
+            studentForm.value.image_label = createUrl;
+            studentForm.value.image = event.target.files[0];
+        }
+
         const submitStudent = async() => {
-            const inputs = {
-                id: studentForm.value.studentId,
-                first_name: studentForm.value.firstName,
-                last_name: studentForm.value.lastName,
-                date_of_birth: studentForm.value.dateOfBirth.toISOString(),
-                age: studentForm.value.age,
-                gender: studentForm.value.gender,
-                address: studentForm.value.address,
-                special_notice: studentForm.value.specialNotice,
-                org_id: studentForm.value.orgId,
-                class_room_id: studentForm.value.classRoomId,
-                parent_id: studentForm.value.parentId
-            };
+            const formData = new FormData();
+            formData.append('id', studentForm.value.studentId);
+            formData.append('first_name', studentForm.value.firstName);
+            formData.append('last_name', studentForm.value.lastName);
+            formData.append('date_of_birth', studentForm.value.dateOfBirth.toISOString());
+            formData.append('age', studentForm.value.age);
+            formData.append('gender', studentForm.value.gender);
+            formData.append('address', studentForm.value.address);
+            formData.append('special_notice', studentForm.value.specialNotice);
+            formData.append('org_id', studentForm.value.orgId);
+            formData.append('class_room_id', studentForm.value.classRoomId);
+            formData.append('parent_id', studentForm.value.parentId);
+            formData.append('image', studentForm.value.image);
             studentForm.value.loading = true;
             if (submitButton.value) { 
                 submitButton.value!.disabled = true;
             }
-            let response = await store.studentModification(inputs);
+            let response = await store.studentModification(formData);
             const error = Object.values(store.errors);
             formErrors.value = Object(store.formDataErrors);
             if (error.length === 0) {
@@ -405,7 +434,8 @@ export default defineComponent({
             parentsList,
             submitStudent,
             resetForm,
-            selectOrganization
+            selectOrganization,
+            selectStudentImage
         }
     }
 });

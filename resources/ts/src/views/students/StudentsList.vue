@@ -20,6 +20,9 @@
             <template v-slot:id="{ row: users }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.id }}</a>
             </template>
+            <template v-slot:image_url="{ row: users }">
+                <img :src="users.image_url" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-soft-in-out h-9 w-9 rounded-xl" alt="xd" />
+            </template>
             <template v-slot:first_name="{ row: users }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.first_name }}</a>
             </template>
@@ -104,6 +107,13 @@ export default defineComponent({
                 columnLabel: "id",
                 sortEnabled: true,
                 columnWidth: 20,
+                textAlign: "text-left",
+            },
+            {
+                columnName: computed(()=> { return translate("image") }),
+                columnLabel: "image_url",
+                sortEnabled: true,
+                columnWidth: 100,
                 textAlign: "text-left",
             },
             {
