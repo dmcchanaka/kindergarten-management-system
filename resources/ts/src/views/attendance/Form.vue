@@ -2,7 +2,7 @@
 <div class="max-w-full px-3 mb-4 lg:mb-0 lg:w-full lg:flex-none">
     <div class="relative flex flex-col min-w-0 mt-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
         <div class="flex flex-wrap mx-3 mb-3">
-            <div class="w-full max-w-full px-3 mt-6 md:w-4/12 md:flex-none">
+            <div class="w-full max-w-full px-3 mt-6 md:w-3/12 md:flex-none">
                 <div class="relative flex flex-col h-full min-w-0 mb-6 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
                     <form>
                         <div class="grid gap-6 mb-6 md:grid-cols-1">
@@ -31,12 +31,18 @@
                             <div class="grid gap-6 mb-3 md:grid-cols-1 mx-5">
                                 <label class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">{{ translate('student') }}</label>
                                 <Multiselect
+                                    @select="selectStudent"
                                     v-model="attendanceForm.studentId"
                                     :placeholder="translate('chooseStudnet')"
                                     :close-on-select="true"
                                     :searchable="true" 
                                     :options="studentList" />
                                     <ErrorLabel v-if="formErrors.student_id" :error="formErrors.student_id"></ErrorLabel>
+                            </div>
+                            <div class="grid gap-6 mb-3 md:grid-cols-1 mx-5">
+                                <div class="flex items-center justify-center" v-if="attendanceForm.imageUrl">
+                                    <img :src="attendanceForm.imageUrl" class="text-sm text-white transition-all duration-200 ease-soft-in-out h-30 w-30 rounded-xl" alt="xd" />
+                                </div>
                             </div>
                         </div>
                         <div class="mx-5">
@@ -61,7 +67,7 @@
                     </form>
                 </div>
             </div>
-            <div class="w-full max-w-full px-3 mt-6 md:w-8/12 md:flex-none">
+            <div class="w-full max-w-full px-3 mt-6 md:w-9/12 md:flex-none">
                 <div class="relative flex flex-col h-full min-w-0 mb-6 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
                     <div class="text-center w-full mt-5 px-5">
                         <Datatable key="userId" @on-sort="sort" @on-items-select="onItemSelect" :data="tableData" :header="tableHeader"
@@ -134,6 +140,7 @@ export default defineComponent({
             orgId: "",
             classRoomId: "",
             studentId: "",
+            imageUrl: "",
             loading: false,
         });
 
@@ -223,6 +230,14 @@ export default defineComponent({
                     studentList.value = [];
                 })
             }
+        }
+
+        const selectStudent = async (event) => {
+            studentList.value.splice(0, studentList.value.length, ...store.studentList);
+            let results = studentList.value.filter((item) => {
+                return event.toString() == item.value.toString();
+            });
+            attendanceForm.value.imageUrl = results[0].image;
         }
 
         const submitAttendance = async () => {
@@ -406,6 +421,7 @@ export default defineComponent({
             sort,
             onItemSelect,
             search,
+            selectStudent
         }
     }
 });

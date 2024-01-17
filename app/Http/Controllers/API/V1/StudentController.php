@@ -12,6 +12,9 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class StudentController extends Controller
 {
@@ -99,6 +102,23 @@ class StudentController extends Controller
 
         try {
             DB::beginTransaction();
+
+            $imageUrl = "";
+            $featureImage = $request->file('image');
+            if ($featureImage) {
+                $imageName = md5(uniqid() . microtime()) . '.'.$featureImage->getClientOriginalExtension();
+                $path = storage_path('app/public/student/images/' . $imageName);
+            
+                // Resize and save the image
+                Image::make($featureImage)
+                        ->resize(500, 500, function ($constraint) {
+                            $constraint->aspectRatio();
+                            // $constraint->upsize();
+                        })
+                    ->save($path);
+                $imageUrl = Storage::url('public/student/images/'.$imageName);
+            }
+
             $student = Student::create([
                 'org_id'=>$request['org_id'],
                 'class_room_id'=>$request['class_room_id'],
@@ -109,13 +129,15 @@ class StudentController extends Controller
                 'age'=>$request['age'], 
                 'gender'=>$request['gender'],
                 'address'=>$request['address'],
-                'special_notice'=>$request['special_notice']
+                'special_notice'=>$request['special_notice'],
+                'image_url'=>$imageUrl,
             ]);
             DB::commit();
 
             return response()->json([
                 'result' => true,
-                'message' => 'Record has been successfuly added'
+                'message' => 'Record has been successfuly added',
+                'student'=> $student
             ], 200);
         } catch(Exception $e){
             DB::rollBack();
@@ -155,6 +177,7 @@ class StudentController extends Controller
                         'gender'=>$student->gender,
                         'address'=>$student->address,
                         'special_notice'=>$student->special_notice,
+                        'image_url'=>($student->image_url)?url('/') .$student->image_url:"/media/avatar/empty.png",
                         'organization'=>$organization,
                         'class_room'=>$classRoom,
                         'guardian'=>$guardian
@@ -231,7 +254,33 @@ class StudentController extends Controller
 
         try {
             DB::beginTransaction();
+            
             $student = Student::findOrFail($request['id']);
+
+            // Delete existing feature image
+            if ($student->image_url) {
+                $existingImagePath = public_path($student->image_url);
+                if (file_exists($existingImagePath)) {
+                    unlink($existingImagePath);
+                }
+            }
+
+            $imageUrl = "";
+            $featureImage = $request->file('image');
+            if ($featureImage) {
+                $imageName = md5(uniqid() . microtime()) . '.'.$featureImage->getClientOriginalExtension();
+                $path = storage_path('app/public/student/images/' . $imageName);
+            
+                // Resize and save the image
+                Image::make($featureImage)
+                        ->resize(500, 500, function ($constraint) {
+                            $constraint->aspectRatio();
+                            // $constraint->upsize();
+                        })
+                    ->save($path);
+                $imageUrl = Storage::url('public/student/images/'.$imageName);
+            }
+
             $student->org_id = $request['org_id'];
             $student->class_room_id = $request['class_room_id'];
             $student->guardian_id = $request['parent_id'];
@@ -242,6 +291,7 @@ class StudentController extends Controller
             $student->gender = $request['gender'];
             $student->address = $request['address'];
             $student->special_notice = $request['special_notice'];
+            $student->image_url = $imageUrl;
             $student->save();
             DB::commit();
 

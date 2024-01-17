@@ -95,6 +95,7 @@ class AttendanceController extends Controller
                     return [
                         'value'=>$std->getKey(),
                         'label'=>$std->first_name . ' ' .$std->last_name,
+                        'image'=>($std->image_url)?url('/') .$std->image_url:"/media/avatar/empty.png"
                     ];
                 });
                 return response()->json([
@@ -200,6 +201,20 @@ class AttendanceController extends Controller
         }
 
         try {
+
+            // Check if attendance already marked for today
+            $existingAttendance = Attendance::where([
+                'student_id' => $request['student_id'],
+                'att_date' => date('Y-m-d'),
+            ])->first();
+
+            if ($existingAttendance) {
+                return response()->json([
+                    'result' => false,
+                    'errors' => 'Attendance already marked for today',
+                ], 403);
+            }
+
             DB::beginTransaction();
             $attendance = Attendance::create([
                 'student_id'=>$request['student_id'],
