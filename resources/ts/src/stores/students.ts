@@ -160,8 +160,8 @@ export const useStudentStore = defineStore("student", () => {
         idStudent.value = studentId;
     }
 
-    function studentModification(studentForm: StudentForm){
-        return ApiService.post("/update-student", studentForm)
+    function studentModification(formData: FormData){
+        return ApiService.post("/update-student", formData)
             .then(({ data }) => {
                return data;
             })

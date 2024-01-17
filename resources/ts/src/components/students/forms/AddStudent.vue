@@ -331,18 +331,6 @@ export default defineComponent({
         }
 
         const submitStudent = async() => {
-            // const inputs = {
-            //     first_name: studentForm.value.firstName,
-            //     last_name: studentForm.value.lastName,
-            //     date_of_birth: studentForm.value.dateOfBirth.toISOString(),
-            //     age: studentForm.value.age,
-            //     gender: studentForm.value.gender,
-            //     address: studentForm.value.address,
-            //     special_notice: studentForm.value.specialNotice,
-            //     org_id: studentForm.value.orgId,
-            //     class_room_id: studentForm.value.classRoomId,
-            //     parent_id: studentForm.value.parentId
-            // };
             const formData = new FormData();
             formData.append('first_name', studentForm.value.firstName);
             formData.append('last_name', studentForm.value.lastName);
