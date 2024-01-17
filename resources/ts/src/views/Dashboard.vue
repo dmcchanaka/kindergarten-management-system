@@ -64,6 +64,9 @@
                 <tr v-for="(item, index) in studentList" :key="index">
                   <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap">
                     <div class="flex px-2 py-1">
+                      <div>
+                        <img :src="item.image_url" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-soft-in-out h-9 w-9 rounded-xl" alt="xd" />
+                      </div>
                       <div class="flex flex-col justify-center">
                         <h6 class="mb-0 text-sm leading-normal">{{ item.first_name }}</h6>
                       </div>

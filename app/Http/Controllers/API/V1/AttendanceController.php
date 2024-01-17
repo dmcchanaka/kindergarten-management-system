@@ -200,6 +200,20 @@ class AttendanceController extends Controller
         }
 
         try {
+
+            // Check if attendance already marked for today
+            $existingAttendance = Attendance::where([
+                'student_id' => $request['student_id'],
+                'att_date' => date('Y-m-d'),
+            ])->first();
+
+            if ($existingAttendance) {
+                return response()->json([
+                    'result' => false,
+                    'errors' => 'Attendance already marked for today',
+                ], 403);
+            }
+
             DB::beginTransaction();
             $attendance = Attendance::create([
                 'student_id'=>$request['student_id'],
