@@ -95,6 +95,7 @@ class AttendanceController extends Controller
                     return [
                         'value'=>$std->getKey(),
                         'label'=>$std->first_name . ' ' .$std->last_name,
+                        'image'=>($std->image_url)?url('/') .$std->image_url:"/media/avatar/empty.png"
                     ];
                 });
                 return response()->json([
