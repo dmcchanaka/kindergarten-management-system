@@ -68,7 +68,15 @@ const messages = {
         attendanceList: "Attendance List",
         searchAttendace: "Search Attendance",
         chooseStudents: "Choose Students",
-        updatePassword: "Update Password"
+        updatePassword: "Update Password",
+        login: "Login",
+        loginSubTitle: "If you have an account, please login",
+        enterUserame: "Enter Username",
+        enterPassword: "Enter Password",
+        logIn: "Log In",
+        changeLanguage: "Change language",
+        english: "English",
+        german: "German"
     },
     de: {
         home: "Home",
@@ -137,7 +145,15 @@ const messages = {
         attendanceList: "Anwesenheitsliste",
         searchAttendace: "Anwesenheit durchsuchen",
         chooseStudents: "Kinder wählen",
-        updatePassword: "Kennwort aktualisieren"
+        updatePassword: "Kennwort aktualisieren",
+        login: "Anmeldung",
+        loginSubTitle: "Falls Sie einen Account haben, melden sie sich bitte an",
+        enterUserame: "Benutzernamen eingeben",
+        enterPassword: "Passwort eingeben",
+        logIn: "Anmelden",
+        changeLanguage: "Sprache wechseln",
+        english: "Englisch",
+        german: "Deutsch"
     },
 };
 

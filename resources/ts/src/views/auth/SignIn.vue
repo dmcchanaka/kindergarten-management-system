@@ -1,17 +1,17 @@
 <template>
     <div class="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
         <div class="md:w-1/2 px-5">
-            <h2 class="text-2xl font-bold text-[#002D74]">Login</h2>
-            <p class="text-sm mt-4 text-[#002D74]">If you have an account, please login</p>
+            <h2 class="text-2xl font-bold text-[#002D74]">{{ translate('login') }}</h2>
+            <p class="text-sm mt-4 text-[#002D74]">{{ translate('loginSubTitle') }}</p>
             <form class="mt-6" @submit.prevent="onSubmitLogin">
             <div>
-                <label class="block text-gray-700">Username</label>
-                <input v-model="login.username" placeholder="Enter Username" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autofocus required>
+                <label class="block text-gray-700">{{ translate('username') }}</label>
+                <input v-model="login.username" :placeholder="translate('enterUserame')" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autofocus required>
             </div>
 
             <div class="mt-4">
-                <label class="block text-gray-700">Password</label>
-                <input v-model="login.password" placeholder="Enter Password" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
+                <label class="block text-gray-700">{{ translate('password') }}</label>
+                <input v-model="login.password" :placeholder="translate('enterPassword')" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                     focus:bg-white focus:outline-none" required>
             </div>
 
@@ -24,9 +24,9 @@
                 class="w-full block bg-blue-500 hover:bg-blue-800 focus:bg-blue-800 text-white font-semibold rounded-lg px-4 py-3 mt-6"
                 :disabled="loading"
                 >
-                <span v-if="!loading">Log In</span>
+                <span v-if="!loading">{{ translate('logIn') }}</span>
                 <span v-if="loading">
-                Please wait...
+                {{ translate('pleaseWait') }}...
                 </span>
             </button>
             </form>
@@ -43,10 +43,10 @@
             </button> -->
 
             <div class="text-sm flex justify-between items-center mt-3 text-[#002D74]">
-                <p>Change language</p>
+                <p>{{ translate('changeLanguage') }}</p>
                 <select @click="selectLanguage" v-model="i18n.locale.value" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 blockl p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option v-for="(country, code) in countries" :key="code" :value="code">
-                        {{ country.name }}
+                        {{ country.name.value }}
                     </option>
                 </select>
             </div>
@@ -66,7 +66,7 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, computed } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
 import { useAuthStore, type User } from "@/stores/auth";
 import { useRouter } from "vue-router";
@@ -79,16 +79,25 @@ export default defineComponent({
     const store = useAuthStore();
     const router = useRouter();
     const i18n = useI18n();
+    const { t, te } = useI18n();
+
+    const translate = (text: string) => {
+        if (te(text)) {
+            return t(text);
+        } else {
+            return text;
+        }
+    };
 
     //languages with country flags
     const countries = {
       en: {
         flag: "media/flags/united-states.svg",
-        name: "English",
+        name: computed(()=> { return translate("english") }),
       },
       de: {
         flag: "media/flags/germany.svg",
-        name: "German",
+        name: computed(()=> { return translate('german') }),
       },
     };
 
@@ -162,7 +171,8 @@ export default defineComponent({
         loading,
         selectLanguage,
         i18n,
-        countries
+        countries,
+        translate
     }
   },
 });
