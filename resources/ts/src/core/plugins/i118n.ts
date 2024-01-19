@@ -76,7 +76,17 @@ const messages = {
         logIn: "Log In",
         changeLanguage: "Change language",
         english: "English",
-        german: "German"
+        german: "German",
+        goodJob: "Good job",
+        successfulyLoggedIn: "You have successfully logged in",
+        okGotIt: "Ok, got it",
+        opps: "Oops",
+        theEnteredPasswordIsIncorrect: "The Entered Password is incorrect",
+        tryAgain: "Try again",
+        users: "Users",
+        organizations: "Organizations",
+        chat: "Chat",
+        settings: "Settings"
     },
     de: {
         home: "Home",
@@ -87,7 +97,7 @@ const messages = {
         description: "Beschreibung",
         actions: "Aktionen",
         classRoomsList: "Gruppen-Liste",
-        classRooms: "Gruppen",
+        classRooms: "Klassenzimmer",
         addClassRoom: "Gruppe hinzufügen",
         organization: "Kindergarten",
         name: "Name",
@@ -141,7 +151,7 @@ const messages = {
         classRoomActivities: "Aktivitäten der Gruppe",
         previousPosts: "Letzet Post",
         readMore: "Mehr anzeigen",
-        attendance: "Anwesenheit",
+        attendance: "Teilnahme",
         attendanceList: "Anwesenheitsliste",
         searchAttendace: "Anwesenheit durchsuchen",
         chooseStudents: "Kinder wählen",
@@ -153,7 +163,17 @@ const messages = {
         logIn: "Anmelden",
         changeLanguage: "Sprache wechseln",
         english: "Englisch",
-        german: "Deutsch"
+        german: "Deutsch",
+        goodJob: "Gute Arbeit",
+        successfulyLoggedIn: "Sie haben sich erfolgreich angemeldet",
+        okGotIt: "OK, verstanden",
+        opps: "Oops",
+        theEnteredPasswordIsIncorrect: "Das eingegebene Passwort ist Inkorrekt",
+        tryAgain: "Erneut versuchen",
+        users: "Benutzer",
+        organizations: "Organisierungen",
+        chat: "Chat",
+        settings: "Einstellungen"
     },
 };
 

@@ -134,21 +134,21 @@ export default defineComponent({
         const error = Object.values(store.errors);
         if (error.length === 0) {
             Swal.fire({
-                title: 'Good job!',
-                text: 'You have successfully logged in!',
+                title: translate('goodJob') + '!',
+                text: translate('successfulyLoggedIn') + '!',
                 icon: 'success',
                 confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Ok, got it!'
+                confirmButtonText: translate('okGotIt') + '!'
             }).then(() => {
                 router.push({ name: "dashboard" });
             });
       } else {
         Swal.fire({
-            title: 'Oops...',
-            text: error[0] as string,
+            title: translate('opps') + '...',
+            text: translate(error[0] as string),
             icon: 'error',
             confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Try again!'
+            confirmButtonText: translate('tryAgain') + '!'
         }).then((result) => {
             store.errors = {};
         })

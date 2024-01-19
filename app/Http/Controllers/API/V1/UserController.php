@@ -77,7 +77,7 @@ class UserController extends Controller {
             } else {
                 return response()->json([
                     'result'=>false,
-                    'errors' => 'The Entered Password is incorrect'
+                    'errors' => 'theEnteredPasswordIsIncorrect'
                 ],404);
             }
         } catch(Exception $e){
