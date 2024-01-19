@@ -13,7 +13,7 @@ class UserRoleController extends Controller {
 
     public function userRoleList(Request $request){
 
-        $userRoleList = UserType::get();
+        $userRoleList = UserType::whereNotIn('u_tp_id', [config('kindergarten.type_super_admin')])->get();
         $userRoleList->transform(function($role){
             $permissions = UserPermission::where('u_tp_id', $role->u_tp_id)->get();
             $permissions->transform(function($p){
