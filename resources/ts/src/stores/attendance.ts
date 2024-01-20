@@ -59,7 +59,7 @@ export const useAttendanceStore = defineStore("attendance", () => {
                 if (response.status !== 200) {
                     let errorMsg = '';
                     if (typeof response.data.errors === 'object') {
-                        errorMsg = 'Some fields are missing';
+                        errorMsg = 'someFieldsAreMissing';
                     } else {
                         errorMsg = response.data.errors;
                     }

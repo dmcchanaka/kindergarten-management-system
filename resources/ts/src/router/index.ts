@@ -94,8 +94,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "organizations",
                 component: () => import("@/views/organizations/OrganizationsList.vue"),
                 meta: {
-                  pageTitle: "Organizations",
-                  breadcrumbs: ["Organizations"],
+                  pageTitle: "organizations",
+                  breadcrumbs: ["organizations"],
                 },
             },
             {
