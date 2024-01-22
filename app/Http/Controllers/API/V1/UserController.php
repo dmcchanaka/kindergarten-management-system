@@ -77,7 +77,7 @@ class UserController extends Controller {
             } else {
                 return response()->json([
                     'result'=>false,
-                    'errors' => 'The Entered Password is incorrect'
+                    'errors' => 'theEnteredPasswordIsIncorrect'
                 ],404);
             }
         } catch(Exception $e){
@@ -125,7 +125,7 @@ class UserController extends Controller {
             } else {
                 return response()->json([
                     'result' => false,
-                    'errors' => 'The Entered Password is incorrect'
+                    'errors' => 'theEnteredPasswordIsIncorrect'
                 ], 404);
             }
         } catch (\Exception $e) {
@@ -396,7 +396,7 @@ class UserController extends Controller {
     
             return response()->json([
                 'result' => true,
-                'message' => 'Record has been successfully updated'
+                'message' => 'recordHasBeenSuccesfullyUpdated'
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();

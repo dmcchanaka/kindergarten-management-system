@@ -44,8 +44,8 @@
                             <div class="text-center mb-3">
                                 <fa icon="face-frown" class="text-5xl text-sm"></fa>
                             </div>
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">No Any Posts</h5>
-                            <p class="font-normal text-gray-700 dark:text-gray-400">Please wait till we publish the children's activity posts.</p>
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ translate('noAnyPosts') }}</h5>
+                            <p class="font-normal text-gray-700 dark:text-gray-400">{{ translate('newsFeedWaitMessage') }}</p>
                         </a>
                     </div>
                 </div>
@@ -68,13 +68,13 @@
                                 </a>
                             </div>
                             <div class="flex-auto px-1 pt-6">
-                                <p class="relative z-10 mb-2 leading-normal text-transparent from-gray-900 to-slate-800 text-sm bg-clip-text">Project #2</p>
+                                <p class="relative z-10 mb-2 leading-normal text-transparent from-gray-900 to-slate-800 text-sm bg-clip-text"></p>
                                 <a href="javascript:;">
                                     <h5>{{ item.title }}</h5>
                                 </a>
                                 <p class="mb-6 leading-normal text-sm">{{ truncateText(item.description) }}</p>
                                 <div class="flex items-center justify-between">
-                                    <button @click.prevent="viewContent(item?.id)" type="button" class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs hover:scale-102 active:shadow-soft-xs tracking-tight-soft border-fuchsia-500 text-fuchsia-500 hover:border-fuchsia-500 hover:bg-transparent hover:text-fuchsia-500 hover:opacity-75 hover:shadow-none active:bg-fuchsia-500 active:text-white active:hover:bg-transparent active:hover:text-fuchsia-500">Read More</button>
+                                    <button @click.prevent="viewContent(item?.id)" type="button" class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs hover:scale-102 active:shadow-soft-xs tracking-tight-soft border-fuchsia-500 text-fuchsia-500 hover:border-fuchsia-500 hover:bg-transparent hover:text-fuchsia-500 hover:opacity-75 hover:shadow-none active:bg-fuchsia-500 active:text-white active:hover:bg-transparent active:hover:text-fuchsia-500">{{ translate('readMore') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -86,8 +86,8 @@
                         <div class="text-center mb-3">
                             <fa icon="face-frown" class="text-5xl text-sm"></fa>
                         </div>
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">No Related Posts</h5>
-                        <p class="font-normal text-gray-700 dark:text-gray-400">Please wait till we publish the children's activity posts.</p>
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ translate('noRelatedPosts') }}</h5>
+                        <p class="font-normal text-gray-700 dark:text-gray-400">{{ translate('newsFeedWaitMessage') }}</p>
                     </a>
                 </div>
             </div>
@@ -130,11 +130,11 @@ export default defineComponent({
                 newsFeedList.value.splice(0, newsFeedList.value.length, ...store.contentList);
             } else {
                 Swal.fire({
-                    title: 'Oops...',
-                    text: error[0] as string,
+                    title: translate('opps') + '...',
+                    text: translate(error[0] as string),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                     store.errors = {};
                 })

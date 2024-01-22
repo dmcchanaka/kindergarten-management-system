@@ -11,7 +11,7 @@
                 class="text-white text-lg" :icon="item.icon" />
             </div>
             <div><span :class="{ 'text-header': currentActive(item.route), '': !currentActive(item.route) }"
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft text-white">{{ item.heading }}</span>
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft text-white">{{ translate(item.heading) }}</span>
             </div>
           </div>
         </router-link>
@@ -49,7 +49,7 @@
           <Menu as="div" class="relative">
             <MenuItem v-slot="{ active }" @click.prevent="toggleSubMenu">
             <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 border rounded-md']">
-              {{ currentLangugeLocale.name }}
+              {{ currentLangugeLocale.name.value }}
               <img :src="currentLangugeLocale.flag" class="w-4 h-4 inline-block mr-2" alt="">
               <span class="ml-2">&#9660;</span></a>
             </MenuItem>
@@ -60,7 +60,7 @@
                   :class="{ 'bg-gray-100': i18n.locale.value === code }">
                   <a @click="selectLanguage(code)" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">
                     <img :src="country.flag" class="w-4 h-4 inline-block mr-2" alt="">
-                    {{ country.name }}
+                    {{ country.name.value }}
                   </a>
                 </li>
               </ul>
@@ -103,6 +103,15 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const i18n = useI18n();
+    const { t, te } = useI18n();
+
+    const translate = (text: string) => {
+        if (te(text)) {
+            return t(text);
+        } else {
+            return text;
+        }
+    };
 
     const showSubMenu = ref(false);
 
@@ -110,11 +119,11 @@ export default defineComponent({
     const countries = {
       en: {
         flag: "media/flags/united-states.svg",
-        name: "English",
+        name: computed(()=> { return translate("english") }),
       },
       de: {
         flag: "media/flags/germany.svg",
-        name: "German",
+        name: computed(()=> { return translate('german') }),
       },
     };
 
@@ -178,7 +187,8 @@ export default defineComponent({
       currentLangugeLocale,
       countries,
       signOut,
-      i18n
+      i18n,
+      translate
     }
   }
 });

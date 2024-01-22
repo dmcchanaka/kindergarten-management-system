@@ -153,7 +153,8 @@ class AttendanceController extends Controller
                     'organization'=>$organization,
                     'class_room'=>$classRoom,
                     'guardian'=>$guardian,
-                    'attendance_status'=>($todayAttendance)?true:false
+                    'attendance_status'=>($todayAttendance)?true:false,
+                    'image_url'=>($student->image_url)?url('/') .$student->image_url:"/media/avatar/empty.png",
                 ];
             });
             return response()->json([

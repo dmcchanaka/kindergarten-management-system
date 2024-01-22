@@ -5,13 +5,13 @@
             <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
                 <div class="flex flex-wrap mx-3">
                     <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                        <h6 class="mb-0 text-header">User Role & Permissions</h6>
+                        <h6 class="mb-0 text-header">{{ translate('userRoleAndPermissions') }}</h6>
                     </div>
                     <div class="flex-none w-1/2 max-w-full px-3 text-right">
                         <router-link to="/user-roles"
                             class="inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
                             <ArrowLeftIcon class="w-5 h-5 text-white-600 hover:text-gray-500 hover:scale-110" />
-                            &nbsp;&nbsp;Back
+                            &nbsp;&nbsp;{{ translate('back') }}
                         </router-link>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <div
                         class="relative flex flex-col min-w-0 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
                         <div class="p-6 px-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
-                            <h6 class="mb-0">Basic Information</h6>
+                            <h6 class="mb-0">{{ translate('basicInformation') }}</h6>
                         </div>
                         <div class="flex-auto p-4 pt-6">
                             <ul class="flex flex-col pl-0 mb-0 rounded-lg">
@@ -30,11 +30,10 @@
                                         <form>
                                             <div class="mb-6">
                                                 <label
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User
-                                                    Role</label>
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('userRole') }}</label>
                                                 <input type="text"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="Enter User Role" v-model="userRoleForm.userRole" required>
+                                                    :placeholder="translate('enterUserRole')" v-model="userRoleForm.userRole" required>
                                             </div>
                                             <button 
                                                 ref="submitButton" 
@@ -42,9 +41,9 @@
                                                 @click.prevent="submitUserRole"
                                                 :disabled="userRoleForm.loading"
                                                 class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
-                                                <span v-if="!userRoleForm.loading">Submit</span>
+                                                <span v-if="!userRoleForm.loading">{{ translate('submit') }}</span>
                                                 <span v-if="userRoleForm.loading">
-                                                Please wait...
+                                                {{ translate('pleaseWait') }}...
                                                 </span>
                                             </button>
                                         </form>
@@ -60,7 +59,7 @@
                         <div class="p-6 px-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
                             <div class="flex flex-wrap -mx-3">
                                 <div class="max-w-full px-3 md:w-1/2 md:flex-none">
-                                    <h6 class="mb-0">Permission Information</h6>
+                                    <h6 class="mb-0">{{ translate('permissionInformation') }}</h6>
                                 </div>
                                 <div class="flex items-center justify-end max-w-full px-3 md:w-1/2 md:flex-none">
                                     &nbsp;
@@ -74,10 +73,10 @@
                                         <form>
                                             <div class="mb-6">
                                                 <label
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Permissions</label>
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('permissions') }}</label>
                                                 <Multiselect 
                                                     v-model="userRoleForm.selectedPermissions"
-                                                    placeholder="Choose permissions" 
+                                                    :placeholder="translate('choosePermissions')" 
                                                     mode="tags" 
                                                     :close-on-select="false"
                                                     :searchable="true" 
@@ -101,6 +100,7 @@ import { useUserRoleStore, type UserRole, Permission, SaveUserRole } from "@/sto
 
 import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useI18n } from "vue-i18n";
 
 import Multiselect from '@vueform/multiselect'
 
@@ -114,6 +114,16 @@ export default defineComponent({
     },
     setup() {
         const store = useUserRoleStore();
+        const { t, te } = useI18n();
+
+        const translate = (text: string) => {
+            if (te(text)) {
+                return t(text);
+            } else {
+                return text;
+            }
+        };
+        
         const submitButton = ref<HTMLButtonElement | null>(null);
         const permissionsList = ref<Array<Permission>>([]);
 
@@ -134,11 +144,11 @@ export default defineComponent({
                 permissionsList.value.splice(0, permissionsList.value.length, ...store.permissionsList);
             } else {
                 Swal.fire({
-                    title: 'Oops...',
+                    title: translate('opps') + '...',
                     text: error[0] as string,
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                     store.errors = {};
                 })
@@ -149,20 +159,20 @@ export default defineComponent({
 
             if(userRoleForm.value.userRole == ''){
                 Swal.fire({
-                    title: 'Oops...',
-                    text: 'Please Enter User Role Name',
+                    title: translate('opps') + '...',
+                    text: translate('pleaseEnterUserRoleName'),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                 })
             } else if(userRoleForm.value.selectedPermissions.length === 0){
                 Swal.fire({
-                    title: 'Oops...',
-                    text: 'Please select atleast one permission',
+                    title: translate('opps') + '...',
+                    text: translate('pleaseSelectAtleastOnePermission'),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                 })
             } else {
@@ -178,22 +188,22 @@ export default defineComponent({
                 const error = Object.values(store.errors);
                 if (error.length === 0) {
                     Swal.fire({
-                        title: 'Good job!',
-                        text: 'Record has been successfuly added',
+                        title: translate('goodJob') + '!',
+                        text: translate('recordHasBeenSuccesfullyAdded'),
                         icon: 'success',
                         confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Ok, got it!'
+                        confirmButtonText: translate('okGotIt') + '!'
                     }).then(() => {
                         userRoleForm.value.selectedPermissions = [];
                         userRoleForm.value.userRole = "";
                     });
                 } else {
                     Swal.fire({
-                        title: 'Oops...',
+                        title: translate('opps') + '...',
                         text: error[0] as string,
                         icon: 'error',
                         confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Try again!'
+                        confirmButtonText: translate('tryAgain') + '!'
                     }).then((result) => {
                         store.errors = {};
                     })
@@ -207,7 +217,8 @@ export default defineComponent({
             permissionsList,
             userRoleForm,
             submitUserRole,
-            submitButton
+            submitButton,
+            translate
         }
     },
 });
