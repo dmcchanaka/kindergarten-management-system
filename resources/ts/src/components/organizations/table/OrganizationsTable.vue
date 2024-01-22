@@ -8,12 +8,12 @@
             >
                 <tr>
                     <th scope="col" class="px-6 py-3">#</th>
-                    <th scope="col" class="px-6 py-3">Name</th>
-                    <th scope="col" class="px-6 py-3">Address</th>
-                    <th scope="col" class="px-6 py-3">Contact Num</th>
-                    <th scope="col" class="px-6 py-3">Email</th>
-                    <th scope="col" class="px-6 py-3">Registered At</th>
-                    <th scope="col" class="px-6 py-3">Action</th>
+                    <th scope="col" class="px-6 py-3">{{ translate('name') }}</th>
+                    <th scope="col" class="px-6 py-3">{{ translate('address') }}</th>
+                    <th scope="col" class="px-6 py-3">{{ translate('phoneNumber') }}</th>
+                    <th scope="col" class="px-6 py-3">{{ translate('email') }}</th>
+                    <th scope="col" class="px-6 py-3">{{ translate('registeredAt') }}</th>
+                    <th scope="col" class="px-6 py-3">{{ translate('action') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -89,7 +89,7 @@
 import { defineComponent } from "vue";
 import ApiService from "@/core/services/ApiService";
 import Swal from "sweetalert2/dist/sweetalert2.js";
-
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
     name: "table-organizations",
@@ -98,6 +98,16 @@ export default defineComponent({
     },
     components: {},
     setup(props, { emit }) {
+        const { t, te } = useI18n();
+
+        const translate = (text: string) => {
+            if (te(text)) {
+                return t(text);
+            } else {
+                return text;
+            }
+        };
+
         const deleteOrganization = async (id: string) => {
             await Swal.fire({
                 title: "Are you sure?",
@@ -145,7 +155,8 @@ export default defineComponent({
 
         return {
             deleteOrganization,
-            editOrganization
+            editOrganization,
+            translate
         };
     },
 });

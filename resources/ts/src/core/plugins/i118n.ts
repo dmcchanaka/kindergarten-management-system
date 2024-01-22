@@ -137,7 +137,15 @@ const messages = {
         myProfile: "My Profile",
         areYouSure: "Are you sure",
         doYouWantToMarkYourAttendance: "Do you want to mark your attendance",
-        yesMarkIt: "Yes, mark it"
+        yesMarkIt: "Yes, mark it",
+        organizationList: "Organization List",
+        addNewOrganization: "Add New Organization",
+        organizationInformations:"Organization Informations",
+        organizationName: "organization name",
+        organizationAddress: "organization address",
+        principal: "Principal",
+        choosePrincipal: "Choose principal",
+        editOrganization: "Edit Organization"
     },
     de: {
         home: "Startseite",
@@ -147,9 +155,9 @@ const messages = {
         userRoleList: "Benutzerrollenliste",
         description: "Beschreibung",
         actions: "Aktionen",
-        classRoomsList: "Liste der Klassenzimmer",
+        classRoomsList: "Liste der Gruppen",
         classRooms: "Gruppe",
-        addClassRoom: "Klassenzimmer Hinzufügen",
+        addClassRoom: "Gruppe hinzufügen",
         organization: "Kindergarten",
         name: "Name",
         email: "E-Mail",
@@ -175,8 +183,8 @@ const messages = {
         username: "Benutzername",
         password: "Passwort",
         confirmPassword: "Passwort bestätigen",
-        studentsList: "Schülerliste",
-        addStudent: "Schüler hinzufügen",
+        studentsList: "Kinder",
+        addStudent: "Kind hinzufügen",
         students: "Kinder",
         searchStudents: "Schüler suchen",
         dateOfBirth: "Geburtsdatum",
@@ -275,7 +283,13 @@ const messages = {
         myProfile: "Mein Profil",
         areYouSure: "Bist du sicher",
         doYouWantToMarkYourAttendance: "Willst Du deine Anwesenheit markieren",
-        yesMarkIt: "Ja, bestätigen"
+        yesMarkIt: "Ja, bestätigen",
+        organizationList: "Organisationsliste",
+        addNewOrganization: "Neue Organisation hinzufügen",
+        organizationInformations:"Informationen zur Organisation",
+        organizationName: "Name der Organisation",
+        organizationAddress: "Adresse der Organisation",
+        editOrganization: "Organisation bearbeiten"
     },
 };
 
