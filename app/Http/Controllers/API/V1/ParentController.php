@@ -123,7 +123,7 @@ class ParentController extends Controller
 
             return response()->json([
                 'result' => true,
-                'message' => 'Record has been successfuly added'
+                'message' => 'recordHasBeenSuccesfullyAdded'
             ], 200);
         } catch(Exception $e){
             DB::rollBack();
@@ -236,7 +236,7 @@ class ParentController extends Controller
     
             return response()->json([
                 'result' => true,
-                'message' => 'Record has been successfully updated'
+                'message' => 'recordHasBeenSuccesfullyUpdated'
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
