@@ -2,7 +2,7 @@
     <div class="max-w-full px-3 mb-4 lg:mb-0 lg:w-full lg:flex-none">
         <div class="relative flex flex-col min-w-0 mt-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
             <div class="flex flex-wrap mx-3 mb-3">
-                <div class="w-full max-w-full px-3 mt-6 md:w-8/12 md:flex-none">
+                <div class="w-full max-w-full px-3 mt-6 md:w-12/12 md:flex-none">
                     <div class="relative flex flex-col h-full min-w-0 mb-6 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
                         <div class="text-center w-full mt-5">
                             <div class="flex flex-wrap">
@@ -11,7 +11,7 @@
                                         <div class="flex-auto p-1">
                                             <div class="flex flex-wrap -mx-3">
                                                 <div class="flex flex-col justify-center pl-5">
-                                                    <img :src="item.image_url" class="inline-flex items-center content-center text-sm transition-all duration-200 ease-soft-in-out h-10 w-10 rounded-full my-2" alt="xd" />
+                                                    <img :src="item.image_url" class="inline-flex items-center content-center text-sm transition-all duration-200 ease-soft-in-out h-12 w-12 rounded-full my-2" alt="xd" />
                                                 </div>
                                                 <div class="flex flex-col justify-center items-center w-full sm:w-1/2 md:w-4/12 lg:w-4/12">
                                                     <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ item.first_name }} {{ item.last_name }}</p>
@@ -36,42 +36,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="w-full max-w-full px-3 mt-6 md:w-4/12 md:flex-none">
-                    <div class="relative flex flex-col h-full min-w-0 mb-6 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
-                        <ul class="space-y-4 text-left text-gray-500 dark:text-gray-400 mx-5 my-5">
-                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
-                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                                </svg>
-                                <span class="text-lime-500">Child has marked themself as "Present" teacher can confirm/deny that via the check mark/x</span>
-                            </li>
-                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
-                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                                </svg>
-                                <span class="text-lime-500">child has not yet marked temself as "Present" teacher can mark the child as "Not Present" via the x</span>
-                            </li>
-                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
-                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                                </svg>
-                                <span class="text-lime-500">Child is marked "ill/excused" by the system P.ex. child was declared Sick by the presents via the app</span>
-                            </li>
-                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
-                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                                </svg>
-                                <span class="text-lime-500">Child wa marked as "present" by the teacher</span>
-                            </li>
-                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
-                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                                </svg>
-                                <span class="text-lime-500">Child was marked as "not present" by the teacher but is ot excused via the system</span>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -113,8 +77,6 @@ export default defineComponent({
                 return text;
             }
         };
-
-        console.log(translate('home'));
 
         const attendanceForm = ref({
             orgId: "",
