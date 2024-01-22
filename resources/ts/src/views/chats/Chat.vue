@@ -18,7 +18,7 @@
                 <div class="w-full max-w-full px-3 mt-6 md:w-4/12 md:flex-none">
                     <div class="relative flex flex-col h-full min-w-0 mb-6 break-words p-2 bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
                         <!--chat search-->
-                        <input type="text" placeholder="Search" class="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blu-400 mb-4" />
+                        <input type="text" :placeholder="translate('search')" class="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blu-400 mb-4" readonly />
                         <!--chat list-->
                         <div class="max-h-96 overflow-y-auto">
                             <div v-for="(item, index) in computedUsers" :key="item.id" @click="openChat(item.id)" :class="{ 'bg-gray-700 hover:bg-gray-800': isSelectedUser(item.id) }" class="flex p-2 items-center mb-3 cursor-pointer rounded-md bg-gray-100 hover:bg-gray-100">
@@ -51,7 +51,7 @@
                                     <fa icon="ellipsis-vertical" class="w-6 h-6 cursor-pointer" />
                                     <div class="origin-top-right absolute right-0 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 hidden group-hover:block">
                                         <div class="py-1">
-                                            <a @click="closeChat" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">close chat</a>
+                                            <a @click="closeChat" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">{{ translate('closeChat') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -107,8 +107,8 @@
                         </div>
                         <div v-else class="flex flex-col items-center justify-center min-h-[19rem]">
                             <img :src="computedLogo" class="" alt="main_logo" />
-                            <div class="font-semibold">Welcome to chat room</div>
-                            <span class="text-gray-500">Select a chat to start messaging</span>
+                            <div class="font-semibold">{{ translate('welcomeChat') }}</div>
+                            <span class="text-gray-500">{{ translate('selectChatMessage') }}</span>
                         </div>
                     </div>
                 </div>

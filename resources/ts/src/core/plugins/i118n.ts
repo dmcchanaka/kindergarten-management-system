@@ -113,7 +113,15 @@ const messages = {
         male: "Male",
         female: "Female",
         other: "Other",
-        image: "Image"
+        image: "Image",
+        noAnyPosts: "No Any Posts",
+        newsFeedWaitMessage: "Please wait till we publish the children´s activity posts.",
+        noRelatedPosts: "No Related Posts",
+        chatRoom: "Chat Room",
+        search: "Search",
+        welcomeChat: "Welcome to chat room",
+        closeChat: "Close Chat",
+        selectChatMessage: "Select a chat to start messaging"
     },
     de: {
         home: "Startseite",
@@ -175,9 +183,9 @@ const messages = {
         searchGallery: "Gallerie durchsuchen",
         contentImages: "Inhaltsbilder",
         newsFeed: "Neuigkeiten",
-        latestClassRoomActivity: "Aktuellste Neuigkeiten",
-        classRoomActivities: "Aktivitäten der Gruppe",
-        previousPosts: "Letzet Post",
+        latestClassRoomActivity: "Neuste Klassenzimmer Aktivität",
+        classRoomActivities: "Klassenzimmer Aktivitäten",
+        previousPosts: "Frühere Beiträge",
         readMore: "Mehr anzeigen",
         attendance: "Teilnahme",
         attendanceList: "Anwesenheitsliste",
@@ -227,7 +235,15 @@ const messages = {
         male: "Männlich",
         female: "Weiblich",
         other: "Divers",
-        image: "Bild"
+        image: "Bild",
+        noAnyPosts: "Keine Beiträge",
+        newsFeedWaitMessage: "Bitte warten Sie, bis wir die Kinder aktivitätsbeiträge veröffentlichen.",
+        noRelatedPosts: "Keine verwandten Beiträge",
+        chatRoom: "Plauderecke",
+        search: "Suchen",
+        welcomeChat: "Willkommen in der Plauderecke",
+        closeChat: "Chat schließen",
+        selectChatMessage: "Wählen Sie einen Chat aus, um mit dem Versenden von Nachrichten zu berginnen"
     },
 };
 

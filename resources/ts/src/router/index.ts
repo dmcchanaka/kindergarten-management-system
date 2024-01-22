@@ -257,8 +257,8 @@ const routes: Array<RouteRecordRaw> = [
               name: "chat",
               component: () => import("@/views/chats/Chat.vue"),
               meta: {
-                pageTitle: "Chat",
-                breadcrumbs: ["Chat"],
+                pageTitle: "chat",
+                breadcrumbs: ["chat"],
 
               },
           },
