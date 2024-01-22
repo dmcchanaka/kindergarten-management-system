@@ -103,7 +103,7 @@ export default defineComponent({
 
     i18n.locale.value = localStorage.getItem("lang")
       ? (localStorage.getItem("lang") as string)
-      : "en";
+      : "de";
 
     const submitButton = ref<HTMLButtonElement | null>(null);
     const loading = ref(false);

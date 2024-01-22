@@ -449,7 +449,9 @@ export default defineComponent({
             submitStudent,
             resetForm,
             selectOrganization,
-            selectStudentImage
+            selectStudentImage,
+            format,
+            i18n
         }
     }
 });

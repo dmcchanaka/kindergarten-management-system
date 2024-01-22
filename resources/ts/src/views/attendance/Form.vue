@@ -2,54 +2,76 @@
     <div class="max-w-full px-3 mb-4 lg:mb-0 lg:w-full lg:flex-none">
         <div class="relative flex flex-col min-w-0 mt-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
             <div class="flex flex-wrap mx-3 mb-3">
-                <div class="w-full max-w-full px-3 mt-6 md:w-12/12 md:flex-none">
+                <div class="w-full max-w-full px-3 mt-6 md:w-8/12 md:flex-none">
                     <div class="relative flex flex-col h-full min-w-0 mb-6 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
                         <div class="text-center w-full mt-5">
-                            <Datatable key="userId" @on-sort="sort" @on-items-select="onItemSelect" :data="tableData" :header="tableHeader"
-                                :enable-items-per-page-dropdown="true" :checkbox-enabled="false" checkbox-label="id">
-                                <template v-slot:id="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.id }}</a>
-                                </template>
-                                <template v-slot:image_url="{ row: users }">
-                                    <img :src="users.image_url" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-soft-in-out h-9 w-9 rounded-xl" alt="xd" />
-                                </template>
-                                <template v-slot:first_name="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.first_name }}</a>
-                                </template>
-                                <template v-slot:last_name="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.last_name }}</a>
-                                </template>
-                                <template v-slot:date_of_birth="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.date_of_birth }}</a>
-                                </template>
-                                <template v-slot:age="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.age }}</a>
-                                </template>
-                                <template v-slot:organization="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.organization.name }}</a>
-                                </template>
-                                <template v-slot:class_room="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.class_room.name }}</a>
-                                </template>
-                                <template v-slot:gender="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.gender }}</a>
-                                </template>
-                                <template v-slot:address="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.address }}</a>
-                                </template>
-                                <template v-slot:status="{ row: users }">
-                                    <span v-if="users.attendance_status === true" class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Marked</span>
-                                    <span v-else class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Not Marked</span>
-                                </template>
-                                <template v-slot:actions="{ row: users }">
-                                    <a @click="markAttendance(users.id)" v-if="users.attendance_status === false"
-                                        class="cursor-pointer mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
-                                        <fa icon="check" class="text-purple-700 group-hover:text-white"></fa>
-                                    </a>
-                                    <span v-else>&nbsp;</span>
-                                </template>
-                            </Datatable>
+                            <div class="flex flex-wrap">
+                                <div class="w-full max-w-full px-3 mb-2">
+                                    <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border mb-2" v-for="(item, index) in tableData">
+                                        <div class="flex-auto p-1">
+                                            <div class="flex flex-wrap -mx-3">
+                                                <div class="flex flex-col justify-center pl-5">
+                                                    <img :src="item.image_url" class="inline-flex items-center content-center text-sm transition-all duration-200 ease-soft-in-out h-10 w-10 rounded-full my-2" alt="xd" />
+                                                </div>
+                                                <div class="flex flex-col justify-center items-center w-full sm:w-1/2 md:w-4/12 lg:w-4/12">
+                                                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ item.first_name }} {{ item.last_name }}</p>
+                                                </div>
+                                                <div class="flex flex-col justify-center items-center w-full sm:w-1/2 md:w-2/12 lg:w-2/12">
+                                                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ item.class_room.name }}</p>
+                                                </div>
+                                                <div class="flex flex-col justify-center items-center w-full sm:w-1/2 md:w-2/12 lg:w-2/12">
+                                                    <span v-if="item.attendance_status === true" class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Anwesend</span>
+                                                    <span v-else class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Abwesend</span>
+                                                </div>
+                                                <div class="flex flex-col justify-center items-center w-full md:w-3/12 lg:w-3/12 text-right">
+                                                    <a @click="markAttendance(item.id)" v-if="item.attendance_status === false"
+                                                        class="cursor-pointer mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
+                                                        <fa icon="check" class="text-purple-700 group-hover:text-white"></fa>
+                                                    </a>
+                                                    <span v-else>&nbsp;</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="w-full max-w-full px-3 mt-6 md:w-4/12 md:flex-none">
+                    <div class="relative flex flex-col h-full min-w-0 mb-6 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
+                        <ul class="space-y-4 text-left text-gray-500 dark:text-gray-400 mx-5 my-5">
+                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
+                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                                <span class="text-lime-500">Child has marked themself as "Present" teacher can confirm/deny that via the check mark/x</span>
+                            </li>
+                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
+                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                                <span class="text-lime-500">child has not yet marked temself as "Present" teacher can mark the child as "Not Present" via the x</span>
+                            </li>
+                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
+                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                                <span class="text-lime-500">Child is marked "ill/excused" by the system P.ex. child was declared Sick by the presents via the app</span>
+                            </li>
+                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
+                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                                <span class="text-lime-500">Child wa marked as "present" by the teacher</span>
+                            </li>
+                            <li class="flex items-center space-x-3 rtl:space-x-reverse">
+                                <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                                <span class="text-lime-500">Child was marked as "not present" by the teacher but is ot excused via the system</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -91,6 +113,8 @@ export default defineComponent({
                 return text;
             }
         };
+
+        console.log(translate('home'));
 
         const attendanceForm = ref({
             orgId: "",
@@ -212,11 +236,11 @@ export default defineComponent({
                 tableData.value.splice(0, tableData.value.length, ...store.studentList);
             } else {
                 Swal.fire({
-                    title: translate('opps') + '...',
+                    title: 'Oops...',
                     text: translate(error[0] as string),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: translate('tryAgain') + '!'
+                    confirmButtonText: 'Erneut versuchen!'
                 }).then((result) => {
                     store.errors = {};
                 })
@@ -254,13 +278,13 @@ export default defineComponent({
 
         const markAttendance = async (studentId) => {
             await Swal.fire({
-                title: "Are you sure?",
-                text: "Do you want to mark your attendance!",
+                title: "Bist du sicher?",
+                text: "Willst Du deine Anwesenheit markieren!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, mark it!",
+                confirmButtonText: "Ja, bestätigen!",
             }).then(async(result: any) => {
                 if (result.isConfirmed) {
                     const inputs = {
@@ -270,11 +294,11 @@ export default defineComponent({
                     const error = Object.values(store.errors);
                     if (error.length === 0) {
                         Swal.fire({
-                            title: translate('goodJob') + '!',
+                            title: 'Gute Arbeit!',
                             text: translate(response.message),
                             icon: 'success',
                             confirmButtonColor: '#3085d6',
-                            confirmButtonText: translate('okGotIt') + '!'
+                            confirmButtonText: 'OK, verstanden!'
                         }).then(async() => {
                             await fetchStudentList();
                         });

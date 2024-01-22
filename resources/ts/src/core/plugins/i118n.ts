@@ -134,7 +134,10 @@ const messages = {
         textColor: "Text Color",
         uploadProfileImage: "Upload Profile Image",
         profile: "Profile",
-        myProfile: "My Profile"
+        myProfile: "My Profile",
+        areYouSure: "Are you sure",
+        doYouWantToMarkYourAttendance: "Do you want to mark your attendance",
+        yesMarkIt: "Yes, mark it"
     },
     de: {
         home: "Startseite",
@@ -145,7 +148,7 @@ const messages = {
         description: "Beschreibung",
         actions: "Aktionen",
         classRoomsList: "Liste der Klassenzimmer",
-        classRooms: "Klassenzimmer",
+        classRooms: "Gruppe",
         addClassRoom: "Klassenzimmer Hinzufügen",
         organization: "Kindergarten",
         name: "Name",
@@ -174,7 +177,7 @@ const messages = {
         confirmPassword: "Passwort bestätigen",
         studentsList: "Schülerliste",
         addStudent: "Schüler hinzufügen",
-        students: "Schüler",
+        students: "Kinder",
         searchStudents: "Schüler suchen",
         dateOfBirth: "Geburtsdatum",
         age: "Alter",
@@ -219,7 +222,7 @@ const messages = {
         opps: "Oops",
         theEnteredPasswordIsIncorrect: "Das eingegebene Passwort ist Inkorrekt",
         tryAgain: "Erneut versuchen",
-        users: "Bensutzer",
+        users: "Benutzer",
         organizations: "Organisierungen",
         chat: "Chat",
         settings: "Einstellungen",
@@ -269,7 +272,10 @@ const messages = {
         textColor: "Textfarbe",
         uploadProfileImage: "Profilbild hochladen",
         profile: "Profil",
-        myProfile: "Mein Profil"
+        myProfile: "Mein Profil",
+        areYouSure: "Bist du sicher",
+        doYouWantToMarkYourAttendance: "Willst Du deine Anwesenheit markieren",
+        yesMarkIt: "Ja, bestätigen"
     },
 };
 
