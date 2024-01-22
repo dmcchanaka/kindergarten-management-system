@@ -20,7 +20,7 @@
                       class="hidden"
                       @change="changelogo"
                     />
-                    <fa icon="cloud-arrow-up" class="h-4 w-5 text-white" /> Upload Logo
+                    <fa icon="cloud-arrow-up" class="h-4 w-5 text-white" /> {{ translate('uploadLogo') }}
                   </label>
                 </div>
             </div>
@@ -29,11 +29,11 @@
       </div>
       <div class="border-black/12.5 shadow-soft-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4 mb-5">
         <div class="relative z-10 flex flex-col flex-auto h-full p-4">
-          <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select language</label>
+          <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('selectLanguage') }}</label>
           <select id="small" @click="selectLanguage" v-model="i18n.locale.value" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option selected>Choose language</option>
+            <option selected>{{ translate('chooseLanguage') }}</option>
             <option v-for="(country, code) in countries" :key="code" :value="code">
-              {{ country.name }}
+              {{ country.name.value }}
             </option>
           </select>
         </div>
@@ -43,22 +43,22 @@
       <div
         class="border-black/12.5 shadow-soft-xl relative flex h-full min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4">
         <form class="space-y-6" @submit.prevent="onSubmitSettings">
-          <h5 class="mb-0 font-bold capitalize">UI Configurations</h5>
+          <h5 class="mb-0 font-bold capitalize">{{ translate('uiConfigurations') }}</h5>
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium">Background Color</label>
+            <label for="email" class="block mb-2 text-sm font-medium">{{ translate('backgroundColor') }}</label>
             <input type="color" v-model="settings.backgroundColor"
               :style="{ backgroundColor: settings.backgroundColor, borderColor: settings.backgroundColor }"
               class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full" placeholder="name@company.com"
               required>
           </div>
           <div>
-            <label for="password" class="block mb-2 text-sm font-medium">Heading Color</label>
+            <label for="password" class="block mb-2 text-sm font-medium">{{ translate('headingColor') }}</label>
             <input type="color" v-model="settings.headerColor"
               :style="{ backgroundColor: settings.headerColor, borderColor: settings.headerColor }"
               class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full" required>
           </div>
           <div>
-            <label for="password" class="block mb-2 text-sm font-medium">Text Color</label>
+            <label for="password" class="block mb-2 text-sm font-medium">{{ translate('textColor') }}</label>
             <input type="color" v-model="settings.textColor"
               :style="{ backgroundColor: settings.textColor, borderColor: settings.textColor }"
               class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full" required>
@@ -67,9 +67,9 @@
             class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Reset</button>
           <button ref="submitButton" type="submit" :disabled="loading"
             class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            <span v-if="!loading">Submit</span>
+            <span v-if="!loading">{{ translate('submit') }}</span>
             <span v-if="loading">
-              Please wait...
+              {{ translate('pleaseWait') }}...
             </span>
           </button>
         </form>
@@ -100,16 +100,25 @@ export default defineComponent({
     const authStore = useAuthStore();
     const store = useSettingsStore();
     const i18n = useI18n();
+    const { t, te } = useI18n();
+
+    const translate = (text: string) => {
+        if (te(text)) {
+            return t(text);
+        } else {
+            return text;
+        }
+    };
 
     //languages with country flags
     const countries = {
       en: {
         flag: "media/flags/united-states.svg",
-        name: "English",
+        name: computed(()=>{ return translate('english') }),
       },
       de: {
         flag: "media/flags/germany.svg",
-        name: "German",
+        name: computed(()=>{ return translate('german') }),
       },
     };
 
@@ -281,7 +290,8 @@ export default defineComponent({
       currentOrganization,
       countries,
       i18n,
-      selectLanguage
+      selectLanguage,
+      translate
     }
   },
 });

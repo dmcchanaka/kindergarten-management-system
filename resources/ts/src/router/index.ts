@@ -267,8 +267,8 @@ const routes: Array<RouteRecordRaw> = [
               name: "settings",
               component: () => import("@/views/settings/Settings.vue"),
               meta: {
-                pageTitle: "General Settings",
-                breadcrumbs: ["Settings"],
+                pageTitle: "generalSettings",
+                breadcrumbs: ["settings"],
 
               },
           },
@@ -277,8 +277,8 @@ const routes: Array<RouteRecordRaw> = [
             name: "my-profile",
             component: () => import("@/views/profile/MyProfile.vue"),
             meta: {
-              pageTitle: "My Profile",
-              breadcrumbs: ["Profile"],
+              pageTitle: "myProfile",
+              breadcrumbs: ["profile"],
 
             },
         },
