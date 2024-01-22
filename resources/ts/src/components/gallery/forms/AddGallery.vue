@@ -228,11 +228,11 @@ export default defineComponent({
                 organizationList.value.splice(0, organizationList.value.length, ...classRoomStore.organizationsList);
             } else {
                 Swal.fire({
-                    title: 'Oops...',
+                    title: translate('opps') + '...',
                     text: error[0] as string,
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                     classRoomStore.errors = {};
                 })
@@ -251,11 +251,11 @@ export default defineComponent({
                 galleryForm.value.studentId = "";
             } else {
                 Swal.fire({
-                title: 'Oops...',
-                text: error[0] as string,
-                icon: 'error',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Try again!'
+                    title: translate('opps') + '...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                 classRoomStore.errors = {};
                 })
@@ -275,11 +275,11 @@ export default defineComponent({
             } else {
                 galleryForm.value.studentId = "";
                 Swal.fire({
-                title: 'Oops...',
-                text: error[0] as string,
-                icon: 'error',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Try again!'
+                    title: translate('opps') + '...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                     store.errors = {};
                 })
@@ -334,11 +334,11 @@ export default defineComponent({
             formErrors.value = Object(store.formDataErrors);
             if (error.length === 0) {
                 Swal.fire({
-                    title: 'Good job!',
-                    text: response.message,
+                    title: translate('goodJob') + '!',
+                    text: translate(response.message),
                     icon: 'success',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Ok, got it!'
+                    confirmButtonText: translate('okGotIt') + '!'
                 }).then(() => {
                     galleryForm.value.title = "";
                     galleryForm.value.description = "";

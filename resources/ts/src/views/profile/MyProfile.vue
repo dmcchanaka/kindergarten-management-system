@@ -7,7 +7,7 @@
                     <div class="flex items-center space-x-4">
                         <img class="w-20 h-20 rounded-lg" :src="userProfile.logo" alt="" >
                         <div class="font-medium dark:text-white">
-                            <div>Name</div>
+                            <div>{{ currentUser }}</div>
                             <div class="mt-3">
                             <label
                                 for="logoInput"
@@ -20,7 +20,7 @@
                                 class="hidden"
                                 @change="changelogo"
                                 />
-                                <fa icon="cloud-arrow-up" class="h-4 w-5 text-white" /> Upload Logo
+                                <fa icon="cloud-arrow-up" class="h-4 w-5 text-white" /> {{ translate('uploadProfileImage') }}
                             </label>
                             </div>
                         </div>
@@ -50,9 +50,9 @@
                     </div>
                     <button ref="passwordUpdateButton" type="submit" :disabled="userProfile.pwLoading"
                         class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
-                        <span v-if="!userProfile.pwLoading">Submit</span>
+                        <span v-if="!userProfile.pwLoading">{{ translate('submit') }}</span>
                         <span v-if="userProfile.pwLoading">
-                        Please wait...
+                            {{ translate('pleaseWait') }}...
                         </span>
                     </button>
                 </form>
@@ -91,9 +91,9 @@
                     </div>
                     <button ref="submitButton" type="submit" :disabled="userProfile.basicProfileLoading"
                         class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
-                        <span v-if="!userProfile.basicProfileLoading">Submit</span>
+                        <span v-if="!userProfile.basicProfileLoading">{{ translate('submit') }}</span>
                         <span v-if="userProfile.basicProfileLoading">
-                        Please wait...
+                        {{ translate('pleaseWait') }}...
                         </span>
                     </button>
                 </form>
@@ -281,6 +281,8 @@ export default defineComponent({
             userProfile.value.pwLoading = false;
         }
 
+        const currentUser = computed(() => store.user?.name || "-");
+
         return {
             userProfile,
             changelogo,
@@ -290,7 +292,8 @@ export default defineComponent({
             submitButton,
             passwordUpdateButton,
             formErrors,
-            formPWErrors
+            formPWErrors,
+            currentUser
         }
     }
 });

@@ -27,6 +27,7 @@
         "@heroicons/vue": "^2.0.18",
         "@vitejs/plugin-vue": "^4.3.3",
         "@vueform/multiselect": "^2.6.2",
+        "@vuepic/vue-datepicker": "^7.4.1",
         "array-sort": "^1.0.0",
         "pinia": "^2.1.6",
         "sweetalert2": "^11.7.27",

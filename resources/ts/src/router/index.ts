@@ -57,8 +57,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "edit-user-role",
                 component: () => import("@/components/user-roles/forms/EditUserRole.vue"),
                 meta: {
-                  pageTitle: "Edit User Role",
-                  breadcrumbs: ["User Roles", "Edit User Role"],
+                  pageTitle: "editUserRole",
+                  breadcrumbs: ["userRoles", "editUserRole"],
 
                 },
             },
@@ -67,8 +67,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "users",
                 component: () => import("@/views/users/UsersList.vue"),
                 meta: {
-                  pageTitle: "Users",
-                  breadcrumbs: ["User List"],
+                  pageTitle: "users",
+                  breadcrumbs: ["userList"],
                 },
             },
             {
@@ -76,8 +76,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "add-user",
                 component: () => import("@/components/users/forms/AddUser.vue"),
                 meta: {
-                  pageTitle: "Users",
-                  breadcrumbs: ["Users", "Add User"],
+                  pageTitle: "users",
+                  breadcrumbs: ["users", "addUser"],
                 },
             },
             {
@@ -86,7 +86,7 @@ const routes: Array<RouteRecordRaw> = [
               component: () => import("@/components/users/forms/EditUser.vue"),
               meta: {
                 pageTitle: "Users",
-                breadcrumbs: ["Users", "Edit User"],
+                breadcrumbs: ["users", "editUser"],
               },
           },
             {
@@ -94,8 +94,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "organizations",
                 component: () => import("@/views/organizations/OrganizationsList.vue"),
                 meta: {
-                  pageTitle: "Organizations",
-                  breadcrumbs: ["Organizations"],
+                  pageTitle: "organizations",
+                  breadcrumbs: ["organizations"],
                 },
             },
             {
@@ -257,8 +257,8 @@ const routes: Array<RouteRecordRaw> = [
               name: "chat",
               component: () => import("@/views/chats/Chat.vue"),
               meta: {
-                pageTitle: "Chat",
-                breadcrumbs: ["Chat"],
+                pageTitle: "chat",
+                breadcrumbs: ["chat"],
 
               },
           },
@@ -267,8 +267,8 @@ const routes: Array<RouteRecordRaw> = [
               name: "settings",
               component: () => import("@/views/settings/Settings.vue"),
               meta: {
-                pageTitle: "General Settings",
-                breadcrumbs: ["Settings"],
+                pageTitle: "generalSettings",
+                breadcrumbs: ["settings"],
 
               },
           },
@@ -277,8 +277,8 @@ const routes: Array<RouteRecordRaw> = [
             name: "my-profile",
             component: () => import("@/views/profile/MyProfile.vue"),
             meta: {
-              pageTitle: "My Profile",
-              breadcrumbs: ["Profile"],
+              pageTitle: "myProfile",
+              breadcrumbs: ["profile"],
 
             },
         },

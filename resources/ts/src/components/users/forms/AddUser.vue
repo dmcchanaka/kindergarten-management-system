@@ -4,12 +4,12 @@
         <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
             <div class="flex flex-wrap mx-3">
                 <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                    <h6 class="mb-0">User Informations</h6>
+                    <h6 class="mb-0">{{ translate('userInformations') }}</h6>
                 </div>
                 <div class="flex-none w-1/2 max-w-full px-3 text-right">
                     <router-link to="/users" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
                         <fa icon="arrow-left" />
-                        &nbsp;&nbsp;Back
+                        &nbsp;&nbsp;{{ translate('back') }}
                     </router-link>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                 <div
                     class="relative flex flex-col min-w-0 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
                     <div class="p-6 px-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
-                        <h6 class="mb-0">Basic Information</h6>
+                        <h6 class="mb-0">{{ translate('basicInformation') }}</h6>
                     </div>
                     <div class="flex-auto p-4 pt-6">
                         <ul class="flex flex-col pl-0 mb-0 rounded-lg">
@@ -28,52 +28,52 @@
                                     <form>
                                         <div class="grid gap-6 mb-6 md:grid-cols-2">
                                             <div>
-                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
+                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('firstName') }}</label>
                                                 <input type="text" v-model="userForm.firstName" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="First Name" required>
                                                 <p class="text-red-500 text-xs italic" v-if="formErrors.first_name">{{ formErrors.first_name }}</p>
                                             </div>
                                             <div>
-                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
+                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('lastName') }}</label>
                                                 <input type="text" v-model="userForm.lastName" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Last Name" required>
                                                 <p class="text-red-500 text-xs italic" v-if="formErrors.last_name">{{ formErrors.last_name }}</p>
                                             </div>
                                             <div>
-                                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('email') }}</label>
                                                 <input type="email" v-model="userForm.email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Email" required>
                                                 <p class="text-red-500 text-xs italic" v-if="formErrors.email">{{ formErrors.email }}</p>
                                             </div>  
                                             <div>
-                                                <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number</label>
+                                                <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('phoneNumber') }}</label>
                                                 <input type="tel" v-model="userForm.phoneNumber" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Phone Number" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
                                                 <p class="text-red-500 text-xs italic" v-if="formErrors.phone_number">{{ formErrors.phone_number }}</p>
                                             </div>
                                         </div>
                                         <div class="mb-6">
-                                            <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                                            <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('address') }}</label>
                                             <textarea id="address" v-model="userForm.address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Address" required></textarea>
                                             <p class="text-red-500 text-xs italic" v-if="formErrors.address">{{ formErrors.address }}</p>
                                         </div>
                                         <div class="grid gap-6 mb-6 md:grid-cols-2">
                                             <div>
-                                                <label for="userRole" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User role</label>
+                                                <label for="userRole" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('userRole') }}</label>
                                                 <select v-model="userForm.userRole" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                                    <option value="">Select User Role</option>
+                                                    <option value="">{{ translate('selectUserRole') }}</option>
                                                     <option v-for="(item, index) in userRole" :key="index" :value="item.role_id">{{ item.description }}</option>
                                                 </select>
                                                 <p class="text-red-500 text-xs italic" v-if="formErrors.u_tp_id">{{ formErrors.u_tp_id }}</p>
                                             </div>
                                             <div>
-                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('username') }}</label>
                                                 <input type="text" v-model="userForm.userName" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" required>
                                                 <p class="text-red-500 text-xs italic" v-if="formErrors.username">{{ formErrors.username }}</p>
                                             </div>
                                             <div class="mb-6">
-                                                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('password') }}</label>
                                                 <input type="password" v-model="userForm.password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required>
                                                 <p class="text-red-500 text-xs italic" v-if="formErrors.password">{{ formErrors.password }}</p>
                                             </div> 
                                             <div class="mb-6">
-                                                <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
+                                                <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('confirmPassword') }}</label>
                                                 <input type="password" v-model="userForm.passwordConfirm" id="confirm_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required>
                                             </div> 
                                         </div>
@@ -83,9 +83,9 @@
                                             @click.prevent="submitUser"
                                             :disabled="userForm.loading"
                                             class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
-                                            <span v-if="!userForm.loading">Submit</span>
+                                            <span v-if="!userForm.loading">{{ translate('submit') }}</span>
                                             <span v-if="userForm.loading">
-                                            Please wait...
+                                                {{ translate('pleaseWait') }}...
                                             </span>
                                         </button>
                                     </form>
@@ -102,6 +102,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useI18n } from "vue-i18n";
 
 import { useUserStore, type Users, UserForm } from "@/stores/users";
 import { useUserRoleStore, type UserRole, Permission, SaveUserRole } from "@/stores/userRole";
@@ -113,6 +114,16 @@ export default defineComponent({
     setup(){
         const store = useUserStore();
         const userRoleStore = useUserRoleStore();
+        const { t, te } = useI18n();
+
+        const translate = (text: string) => {
+            if (te(text)) {
+                return t(text);
+            } else {
+                return text;
+            }
+        };
+
         const submitButton = ref<HTMLButtonElement | null>(null);
 
         const userRole = ref<Array<UserRole>>([]);
@@ -184,11 +195,11 @@ export default defineComponent({
             formErrors.value = Object(store.formDataErrors);
             if (error.length === 0) {
                     Swal.fire({
-                        title: 'Good job!',
-                        text: 'Record has been successfuly added',
+                        title: translate('goodJob') + '!',
+                        text: translate('recordHasBeenSuccesfullyAdded'),
                         icon: 'success',
                         confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Ok, got it!'
+                        confirmButtonText: translate('okGotIt') + '!'
                     }).then(() => {
                         userForm.value.firstName = "";
                         userForm.value.lastName = "";
@@ -203,11 +214,11 @@ export default defineComponent({
                     });
                 } else {
                     Swal.fire({
-                        title: 'Oops...',
-                        text: error[0] as string,
+                        title: translate('opps') + '...',
+                        text: translate(error[0] as string),
                         icon: 'error',
                         confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Try again!'
+                        confirmButtonText: translate('tryAgain') + '!'
                     }).then((result) => {
                         store.errors = {};
                         store.formDataErrors = {};
@@ -222,7 +233,8 @@ export default defineComponent({
             submitUser,
             userRole,
             formErrors,
-            submitButton
+            submitButton,
+            translate
         }
     }
 });
