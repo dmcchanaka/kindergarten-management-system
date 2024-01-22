@@ -31,6 +31,7 @@
   import TableContent from "@/components/table/table-partials/table-content/TableContent.vue";
   import TableFooter from "@/components/table/table-partials/TableFooter.vue";
   import type { Sort } from "@/components/table/table-partials/models";
+  import { useI18n } from "vue-i18n";
   
   export default defineComponent({
     name: "kt-datatable",
@@ -53,7 +54,7 @@
         required: false,
         default: "asc",
       },
-      emptyTableText: { type: String, required: false, default: "No data found" },
+      emptyTableText: { type: String, required: false, default: "noDataFound" },
       currentPage: { type: Number, required: false, default: 1 },
     },
     emits: [
@@ -67,6 +68,15 @@
       TableFooter,
     },
     setup(props, { emit }) {
+      const { t, te } = useI18n();
+      const translate = (text: string) => {
+          if (te(text)) {
+              return t(text);
+          } else {
+              return text;
+          }
+      };
+
       const currentPage = ref(props.currentPage);
       const itemsInTable = ref<number>(props.itemsPerPage);
   
@@ -122,6 +132,7 @@
         onItemSelect,
         itemsInTable,
         totalItems,
+        translate
       };
     },
   });

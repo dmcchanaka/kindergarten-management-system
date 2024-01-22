@@ -29,7 +29,7 @@
       <template v-else>
         <tr class="odd">
           <td :colspan="header.length" class="dataTables_empty">
-            {{ emptyTableText }}
+            {{ translate(emptyTableText) }}
           </td>
         </tr>
       </template>
@@ -44,13 +44,14 @@ import TableHeadRow from "@/components/table/table-partials/table-content/table-
 import TableBodyRow from "@/components/table/table-partials/table-content/table-body/TableBodyRow.vue";
 import Loading from "@/components/table/table-partials/Loading.vue";
 import type { Sort } from "@/components/table/table-partials/models";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "table-body",
   props: {
     header: { type: Array, required: true },
     data: { type: Array, required: true },
-    emptyTableText: { type: String, default: "No data found" },
+    emptyTableText: { type: String, default: "noDataFound" },
     sortLabel: { type: String, required: false, default: null },
     sortOrder: {
       type: String as () => "asc" | "desc",
@@ -68,6 +69,15 @@ export default defineComponent({
     Loading,
   },
   setup(props, { emit }) {
+    const { t, te } = useI18n();
+    const translate = (text: string) => {
+        if (te(text)) {
+            return t(text);
+        } else {
+            return text;
+        }
+    };
+
     const selectedItems = ref<Array<unknown>>([]);
     const allSelectedItems = ref<Array<unknown>>([]);
     const check = ref<boolean>(false);
@@ -139,6 +149,7 @@ export default defineComponent({
       selectAll,
       itemsSelect,
       check,
+      translate
     };
   },
 });

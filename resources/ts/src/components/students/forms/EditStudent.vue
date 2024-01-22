@@ -45,7 +45,7 @@
                                                 </div>
                                                 <div>
                                                     <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('dateOfBirth') }}</label>
-                                                    <Datepicker v-model="studentForm.dateOfBirth" placeholder="Date of birth" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                                                    <Datepicker :format="format" :locale="i18n.locale.value" :cancelText="translate('cancel')" :selectText="translate('select')" v-model="studentForm.dateOfBirth" :placeholder="translate('dateOfBirth')" class=" text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                                     <ErrorLabel v-if="formErrors.date_of_birth" :error="formErrors.date_of_birth"></ErrorLabel>
                                                 </div>
                                                 <div>
@@ -57,7 +57,7 @@
                                                     <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('gender') }}</label>
                                                     <Multiselect 
                                                         v-model="studentForm.gender"
-                                                        placeholder="Choose gender"
+                                                        :placeholder="translate('chooseGender')"
                                                         :close-on-select="true"
                                                         :searchable="true" 
                                                         :options="genderList" />
@@ -184,7 +184,8 @@ import { useI18n } from "vue-i18n";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useRouter } from "vue-router";
 
-import Datepicker from 'vue3-datepicker';
+import Datepicker from '@vuepic/vue-datepicker';
+import "@vuepic/vue-datepicker/dist/main.css";
 import Multiselect from '@vueform/multiselect';
 import ErrorLabel from "@/components/global/ErrorLabel.vue";
 
@@ -203,6 +204,7 @@ export default defineComponent({
         const store = useStudentStore();
         const classRoomStore = useClassRoomStore();
 
+        const i18n = useI18n();
         const { t, te } = useI18n();
         const translate = (text: string) => {
             if (te(text)) {
@@ -252,17 +254,29 @@ export default defineComponent({
         const genderList = ref([
             {
                 value: 'male',
-                label: 'Male',
+                label: computed(()=>{ return translate('male') }),
             },
             {
                 value: 'female',
-                label: 'Female',
+                label: computed(()=>{ return translate('female') }),
             },
             {
                 value: 'other',
-                label: 'Other',
+                label: computed(()=>{ return translate('other') }),
             },
         ]);
+
+        const format = (date) => {
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+
+            return `${day}.${month}.${year}`;
+        };
+
+        i18n.locale.value = localStorage.getItem("lang")
+        ? (localStorage.getItem("lang") as string)
+        : "en";
 
         onMounted(async () => {
             await fetchOrganizationList();
@@ -277,11 +291,11 @@ export default defineComponent({
                 organizationList.value.splice(0, organizationList.value.length, ...classRoomStore.organizationsList);
             } else {
                 Swal.fire({
-                    title: 'Oops...',
+                    title: translate('opps') + '...',
                     text: error[0] as string,
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                     classRoomStore.errors = {};
                 })
@@ -299,11 +313,11 @@ export default defineComponent({
                 studentForm.value.classRoomId = "";
             } else {
                 Swal.fire({
-                title: 'Oops...',
-                text: error[0] as string,
-                icon: 'error',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Try again!'
+                    title: translate('opps') + '...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                 classRoomStore.errors = {};
                 })
@@ -317,11 +331,11 @@ export default defineComponent({
                 parentsList.value.splice(0, parentsList.value.length, ...store.parentsList);
             } else {
                 Swal.fire({
-                    title: 'Oops...',
+                    title: translate('opps') + '...',
                     text: error[0] as string,
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                     store.errors = {};
                 })
@@ -395,21 +409,21 @@ export default defineComponent({
             formErrors.value = Object(store.formDataErrors);
             if (error.length === 0) {
                 Swal.fire({
-                    title: 'Good job!',
-                    text: response.message,
+                    title: translate('goodJob') + '!',
+                    text: translate(response.message),
                     icon: 'success',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Ok, got it!'
+                    confirmButtonText: translate('okGotIt') + '!'
                 }).then(() => {
                     studentForm.value.loading = false;
                 });
             } else {
                 Swal.fire({
-                    title: 'Oops...',
+                    title: translate('opps') + '...',
                     text: error[0] as string,
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                     store.errors = {};
                     store.formDataErrors = {};
