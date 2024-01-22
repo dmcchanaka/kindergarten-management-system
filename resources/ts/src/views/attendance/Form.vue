@@ -30,71 +30,11 @@
                                                     </a>
                                                     <span v-else>&nbsp;</span>
                                                 </div>
-                                                <!-- <div class="px-3 mb-2 w-full sm:w-1/2 md:w-2/12 lg:w-2/12">
-                                                    <div class="w-14 h-14 text-center rounded-full bg-gradient-to-tl from-lime-500 to-lime-500">
-                                                        <img :src="item.image_url" class="inline-flex items-center content-center text-sm transition-all duration-200 ease-soft-in-out h-10 w-10 rounded-full my-2" alt="xd" />
-                                                    </div>
-                                                </div>
-                                                <div class="px-3 mb-2 w-full sm:w-1/2 md:w-4/12 lg:w-4/12">
-                                                    <div class="justify-items-center">
-                                                        <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ item.first_name }} {{ item.last_name }}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="px-3 mb-2 w-full sm:w-1/2 md:w-3/12 lg:w-3/12">
-                                                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ item.class_room.name }}</p>
-                                                </div>
-                                                <div class="px-3 mb-2 w-full sm:w-1/2 md:w-3/12 lg:w-3/12 text-right">
-                                                    ccc
-                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- <Datatable key="userId" @on-sort="sort" @on-items-select="onItemSelect" :data="tableData" :header="tableHeader"
-                                :enable-items-per-page-dropdown="true" :checkbox-enabled="false" checkbox-label="id">
-                                <template v-slot:id="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.id }}</a>
-                                </template>
-                                <template v-slot:image_url="{ row: users }">
-                                    <img :src="users.image_url" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-soft-in-out h-9 w-9 rounded-xl" alt="xd" />
-                                </template>
-                                <template v-slot:first_name="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.first_name }}</a>
-                                </template>
-                                <template v-slot:last_name="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.last_name }}</a>
-                                </template>
-                                <template v-slot:date_of_birth="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.date_of_birth }}</a>
-                                </template>
-                                <template v-slot:age="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.age }}</a>
-                                </template>
-                                <template v-slot:organization="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.organization.name }}</a>
-                                </template>
-                                <template v-slot:class_room="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.class_room.name }}</a>
-                                </template>
-                                <template v-slot:gender="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.gender }}</a>
-                                </template>
-                                <template v-slot:address="{ row: users }">
-                                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.address }}</a>
-                                </template>
-                                <template v-slot:status="{ row: users }">
-                                    <span v-if="users.attendance_status === true" class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Marked</span>
-                                    <span v-else class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Not Marked</span>
-                                </template>
-                                <template v-slot:actions="{ row: users }">
-                                    <a @click="markAttendance(users.id)" v-if="users.attendance_status === false"
-                                        class="cursor-pointer mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
-                                        <fa icon="check" class="text-purple-700 group-hover:text-white"></fa>
-                                    </a>
-                                    <span v-else>&nbsp;</span>
-                                </template>
-                            </Datatable> -->
                         </div>
                     </div>
                 </div>
@@ -173,6 +113,8 @@ export default defineComponent({
                 return text;
             }
         };
+
+        console.log(translate('home'));
 
         const attendanceForm = ref({
             orgId: "",
@@ -294,11 +236,11 @@ export default defineComponent({
                 tableData.value.splice(0, tableData.value.length, ...store.studentList);
             } else {
                 Swal.fire({
-                    title: translate('opps') + '...',
+                    title: 'Oops...',
                     text: translate(error[0] as string),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: translate('tryAgain') + '!'
+                    confirmButtonText: 'Erneut versuchen!'
                 }).then((result) => {
                     store.errors = {};
                 })
@@ -336,13 +278,13 @@ export default defineComponent({
 
         const markAttendance = async (studentId) => {
             await Swal.fire({
-                title: translate('areYouSure') + "?",
-                text: translate('doYouWantToMarkYourAttendance') + "!",
+                title: "Bist du sicher?",
+                text: "Willst Du deine Anwesenheit markieren!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: translate('yesMarkIt') + "!",
+                confirmButtonText: "Ja, bestätigen!",
             }).then(async(result: any) => {
                 if (result.isConfirmed) {
                     const inputs = {
@@ -352,11 +294,11 @@ export default defineComponent({
                     const error = Object.values(store.errors);
                     if (error.length === 0) {
                         Swal.fire({
-                            title: translate('goodJob') + '!',
+                            title: 'Gute Arbeit!',
                             text: translate(response.message),
                             icon: 'success',
                             confirmButtonColor: '#3085d6',
-                            confirmButtonText: translate('okGotIt') + '!'
+                            confirmButtonText: 'OK, verstanden!'
                         }).then(async() => {
                             await fetchStudentList();
                         });
