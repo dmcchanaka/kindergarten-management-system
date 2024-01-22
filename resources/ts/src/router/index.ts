@@ -112,8 +112,8 @@ const routes: Array<RouteRecordRaw> = [
                 name: "edit-organization",
                 component: () => import("@/components/organizations/forms/OrganizationEdit.vue"),
                 meta: {
-                  pageTitle: "Edit Organization",
-                  breadcrumbs: ["Edit Organization"],
+                  pageTitle: "editOrganization",
+                  breadcrumbs: ["editOrganization"],
                 }
             },
             {
