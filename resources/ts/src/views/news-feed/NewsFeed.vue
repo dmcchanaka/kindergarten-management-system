@@ -130,11 +130,11 @@ export default defineComponent({
                 newsFeedList.value.splice(0, newsFeedList.value.length, ...store.contentList);
             } else {
                 Swal.fire({
-                    title: 'Oops...',
-                    text: error[0] as string,
+                    title: translate('opps') + '...',
+                    text: translate(error[0] as string),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                     store.errors = {};
                 })

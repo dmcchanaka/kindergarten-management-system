@@ -147,11 +147,11 @@ export default defineComponent({
                 tableData.value.splice(0, tableData.value.length, ...store.studentAttendanceList);
             } else {
                 Swal.fire({
-                    title: 'Oops...',
-                    text: error[0] as string,
+                    title: translate('opps') + '...',
+                    text: translate(error[0] as string),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Try again!'
+                    confirmButtonText: translate('tryAgain') + '!'
                 }).then((result) => {
                     store.errors = {};
                 })
@@ -223,21 +223,21 @@ export default defineComponent({
                     const error = Object.values(store.errors);
                     if (error.length === 0) {
                         Swal.fire({
-                            title: 'Good job!',
+                            title: translate('goodJob') + '!',
                             text: response.message,
                             icon: 'success',
                             confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Ok, got it!'
+                            confirmButtonText: translate('okGotIt') + '!'
                         }).then(async() => {
                             await fetchAttendanceList();
                         });
                     } else {
                         Swal.fire({
-                            title: 'Oops...',
-                            text: error[0] as string,
+                            title: translate('opps') + '...',
+                            text: translate(error[0] as string),
                             icon: 'error',
                             confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Try again!'
+                            confirmButtonText: translate('tryAgain') + '!'
                         }).then((result) => {
                             store.errors = {};
                         })
