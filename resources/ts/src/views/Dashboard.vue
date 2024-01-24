@@ -7,7 +7,7 @@
         <div
           class="text-base ease-soft-in-out h-18.5 w-18.5 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
           <div
-            class="bg-gradient-to-tl from-purple-700 to-blue-500 shadow-soft-2xl mr-2 flex h-12 w-12 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+            class="bg-gradient-to-tl bg-lime-500 shadow-soft-2xl mr-2 flex h-12 w-12 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <fa icon="school" class="h-7" />
           </div>
         </div>
@@ -20,7 +20,97 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-wrap my-6 -mx-3" v-if="userRoleId == 3">
+
+  <div class="w-full py-6 mx-auto">
+    <div class="flex flex-wrap -mx-3">
+      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+          <div class="flex-auto p-4">
+            <div class="flex flex-row -mx-3">
+              <div class="flex-none w-2/3 max-w-full px-3">
+                <div>
+                  <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('organizations') }}</p>
+                  <h5 class="mb-0 font-bold">
+                    {{ dashboardOverview?.organizationsCount }}
+                  </h5>
+                </div>
+              </div>
+              <div class="px-3 text-right basis-1/3">
+                <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl bg-lime-500">
+                  <fa icon="school" class="ni leading-none ni-money-coins text-lg relative top-2 text-white h-7" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+          <div class="flex-auto p-4">
+            <div class="flex flex-row -mx-3">
+              <div class="flex-none w-2/3 max-w-full px-3">
+                <div>
+                  <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('classRooms') }}</p>
+                  <h5 class="mb-0 font-bold">
+                    {{ dashboardOverview?.classRoomsCount }}
+                  </h5>
+                </div>
+              </div>
+              <div class="px-3 text-right basis-1/3">
+                <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl bg-lime-500">
+                  <fa icon="chair" class="ni leading-none ni-money-coins text-lg relative top-2 text-white h-7" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+          <div class="flex-auto p-4">
+            <div class="flex flex-row -mx-3">
+              <div class="flex-none w-2/3 max-w-full px-3">
+                <div>
+                  <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('teachers') }}</p>
+                  <h5 class="mb-0 font-bold">
+                    {{ dashboardOverview?.teachersCount }}
+                  </h5>
+                </div>
+              </div>
+              <div class="px-3 text-right basis-1/3">
+                <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl bg-lime-500">
+                  <fa icon="user" class="ni leading-none ni-money-coins text-lg relative top-2 text-white h-7" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+          <div class="flex-auto p-4">
+            <div class="flex flex-row -mx-3">
+              <div class="flex-none w-2/3 max-w-full px-3">
+                <div>
+                  <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('students') }}</p>
+                  <h5 class="mb-0 font-bold">
+                    {{ dashboardOverview?.studentsCount }}
+                  </h5>
+                </div>
+              </div>
+              <div class="px-3 text-right basis-1/3">
+                <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl bg-lime-500">
+                  <fa icon="baby" class="ni leading-none ni-money-coins text-lg relative top-2 text-white h-7" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap -mx-3" v-if="userRoleId == 3">
     <div class="w-full max-w-full px-3 mt-0 mb-6 md:mb-0 md:flex-none lg:flex-none">
       <div
         class="border-black/12.5 shadow-soft-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
@@ -112,6 +202,7 @@ import { defineComponent, computed, onMounted, ref } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
 import { useAuthStore } from "@/stores/auth";
 import { useStudentStore, type Student } from "@/stores/students";
+import { useDashboardStore, type Overview } from '@/stores/dashboard';
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -119,6 +210,7 @@ export default defineComponent({
   setup() {
     const store = useAuthStore();
     const studentStore = useStudentStore();
+    const dashboardStore = useDashboardStore();
     const { t, te } = useI18n();
 
     const translate = (text: string) => {
@@ -130,6 +222,7 @@ export default defineComponent({
     };
 
     const studentList = ref<Array<Student>>([]);
+    const dashboardOverview = ref<Overview>();
 
     const currentOrganization = computed(() => {
       const organization = store.organization;
@@ -148,16 +241,26 @@ export default defineComponent({
 
     onMounted(() => {
       fetchClassRoomStudents();
+      fetchDashboardInfo();
     });
 
     const fetchClassRoomStudents = async() => {
       await studentStore.fetchStudentList();
-            const error = Object.values(store.errors);
-            if (error.length === 0) {
-                studentList.value.splice(0, studentList.value.length, ...studentStore.studentList);
-            } else {
-              studentList.value = [];
-            }
+      const error = Object.values(studentStore.errors);
+      if (error.length === 0) {
+          studentList.value.splice(0, studentList.value.length, ...studentStore.studentList);
+      } else {
+        studentList.value = [];
+      }
+    }
+
+    const fetchDashboardInfo = async() => {
+      console.log('xxx');
+      await dashboardStore.fetchOverview();
+      const error = Object.values(dashboardStore.errors);
+      if (error.length === 0) {
+        dashboardOverview.value = dashboardStore.overview;
+      }
     }
 
     return {
@@ -166,7 +269,8 @@ export default defineComponent({
       userRole,
       userRoleId,
       translate,
-      studentList
+      studentList,
+      dashboardOverview
     }
   },
 });

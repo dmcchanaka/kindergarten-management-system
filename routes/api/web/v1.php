@@ -7,6 +7,7 @@ use App\Http\Controllers\API\V1\ParentController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\UserRoleController;
 use App\Http\Controllers\API\V1\ClassRoomController;
+use App\Http\Controllers\API\V1\DashboardController;
 use App\Http\Controllers\API\V1\GalleryController;
 use App\Http\Controllers\API\V1\GeneralSettingsController;
 use App\Http\Controllers\API\V1\StudentController;
@@ -17,6 +18,8 @@ Route::post('login', [UserController::class, 'login'])->name('login');
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('verify_token', [UserController::class, 'verifyToken']);
     Route::post('user-roles-list', [UserRoleController::class, 'userRoleList']);
+
+    Route::post('overview', [DashboardController::class, 'overview']);
     
     Route::prefix('organization')->group(function () {
         Route::get('/list', [OrganizationController::class, 'index'])->name('organization-list');
