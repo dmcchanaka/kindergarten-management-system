@@ -7,10 +7,10 @@
           :to="item.route">
           <div class="flex flex-col items-center justify-center w-full">
             <div>
-              <fa :class="{ 'text-3xl': currentActive(item.route), 'text-lg': !currentActive(item.route) }"
+              <fa :class="{ 'text-3xl text-blue-500': currentActive(item.route), 'text-lg': !currentActive(item.route) }"
                 class="text-white text-lg" :icon="item.icon" />
             </div>
-            <div><span :class="{ 'text-header': currentActive(item.route), '': !currentActive(item.route) }"
+            <div><span :class="{ 'text-base text-blue-500': currentActive(item.route), '': !currentActive(item.route) }"
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft text-white">{{ translate(item.heading) }}</span>
             </div>
           </div>

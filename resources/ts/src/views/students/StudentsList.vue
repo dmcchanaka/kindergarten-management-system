@@ -45,7 +45,7 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.guardian.name }}</a>
             </template>
             <template v-slot:gender="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.gender }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ translate(users.gender) }}</a>
             </template>
             <template v-slot:address="{ row: users }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.address }}</a>

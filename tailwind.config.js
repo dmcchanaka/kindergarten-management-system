@@ -14,6 +14,10 @@ module.exports = {
         'sm': 'var(--custom-text-color, #344767)', // Default text color is black (#000)
         'header': 'var(--custom-header-color, #344767)', // Default h1 text color
       },
+      fontSize: {
+        'header': '2rem', // Font size for the 'header' class
+        'sub-header': '1.5rem'
+      },
     },
     screens: {
       sm: "576px",
@@ -730,10 +734,11 @@ module.exports = {
       DEFAULT: "1",
     },
     fontFamily: {
-      sans: ["Open Sans"],
+      sans: ["Poppins"], //Open Sans
       serif: ['SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace', "serif"],
       body: ["Roboto", "sans-serif"],
       awesome: ["FontAwesome"],
+      custom: ["Nanum Pen Script"]
     },
     fontSize: ({ theme }) => ({
       ...theme("spacing"),
@@ -1411,6 +1416,7 @@ module.exports = {
         "h1, h2, h3, h4, h5, h6": {
           "margin-bottom": ".5rem",
           color: "#344767",
+          'font-family': 'Nanum Pen Script'
         },
 
         "h1, h2, h3, h4": {

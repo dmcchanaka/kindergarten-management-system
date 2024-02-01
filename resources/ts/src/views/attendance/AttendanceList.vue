@@ -31,8 +31,8 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ att.classRoom.name }}</a>
             </template>
             <template v-slot:status="{ row: att }">
-                <span v-if="att.approve_status === true" class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Approved</span>
-                <span v-else class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Not Approved</span>
+                <span v-if="att.approve_status === true" class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('approved') }}</span>
+                <span v-else class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('notYetApproved') }}</span>
             </template>
             <template v-slot:actions="{ row: att }">
                 <a @click="approveAttendance(att.id)" v-if="att.approve_status === false"

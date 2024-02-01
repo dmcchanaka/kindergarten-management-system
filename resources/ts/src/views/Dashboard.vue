@@ -30,9 +30,9 @@
               <div class="flex-none w-2/3 max-w-full px-3">
                 <div>
                   <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('organizations') }}</p>
-                  <h5 class="mb-0 font-bold">
+                  <h3 class="mb-0 font-bold">
                     {{ dashboardOverview?.organizationsCount }}
-                  </h5>
+                  </h3>
                 </div>
               </div>
               <div class="px-3 text-right basis-1/3">
@@ -51,9 +51,9 @@
               <div class="flex-none w-2/3 max-w-full px-3">
                 <div>
                   <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('classRooms') }}</p>
-                  <h5 class="mb-0 font-bold">
+                  <h3 class="mb-0 font-bold">
                     {{ dashboardOverview?.classRoomsCount }}
-                  </h5>
+                  </h3>
                 </div>
               </div>
               <div class="px-3 text-right basis-1/3">
@@ -72,9 +72,9 @@
               <div class="flex-none w-2/3 max-w-full px-3">
                 <div>
                   <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('teachers') }}</p>
-                  <h5 class="mb-0 font-bold">
+                  <h3 class="mb-0 font-bold">
                     {{ dashboardOverview?.teachersCount }}
-                  </h5>
+                  </h3>
                 </div>
               </div>
               <div class="px-3 text-right basis-1/3">
@@ -93,9 +93,9 @@
               <div class="flex-none w-2/3 max-w-full px-3">
                 <div>
                   <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('students') }}</p>
-                  <h5 class="mb-0 font-bold">
+                  <h3 class="mb-0 font-bold">
                     {{ dashboardOverview?.studentsCount }}
-                  </h5>
+                  </h3>
                 </div>
               </div>
               <div class="px-3 text-right basis-1/3">
