@@ -17,7 +17,7 @@
                   <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">{{ translate(item as string) }}</li>
                 </template>
               </ol>
-              <h5 class="text-header mb-0 font-bold capitalize">{{ translate(pageTitle as string) }}</h5>
+              <h1 class="text-header mb-0 font-bold capitalize">{{ translate(pageTitle as string) }}</h1>
             </nav>
           </div>
           <div class="flex mt-5 lg:ml-4 lg:mt-0">&nbsp;</div>

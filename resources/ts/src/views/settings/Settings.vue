@@ -11,7 +11,7 @@
                 <div class="mt-3">
                   <label
                     for="logoInput"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
                   >
                     <input
                       id="logoInput"
@@ -43,7 +43,7 @@
       <div
         class="border-black/12.5 shadow-soft-xl relative flex h-full min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4">
         <form class="space-y-6" @submit.prevent="onSubmitSettings">
-          <h5 class="mb-0 font-bold capitalize">{{ translate('uiConfigurations') }}</h5>
+          <h5 class="mb-0 font-bold capitalize text-sub-header">{{ translate('uiConfigurations') }}</h5>
           <div>
             <label for="email" class="block mb-2 text-sm font-medium">{{ translate('backgroundColor') }}</label>
             <input type="color" v-model="settings.backgroundColor"
@@ -64,9 +64,9 @@
               class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full" required>
           </div>
           <button type="reset"
-            class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Reset</button>
+            class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-red-600 hover:bg-red-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">Reset</button>
           <button ref="submitButton" type="submit" :disabled="loading"
-            class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
             <span v-if="!loading">{{ translate('submit') }}</span>
             <span v-if="loading">
               {{ translate('pleaseWait') }}...

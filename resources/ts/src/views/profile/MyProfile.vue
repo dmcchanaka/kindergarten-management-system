@@ -1,7 +1,7 @@
 <template>
     <!-- cards row -->
     <div class="flex flex-wrap my-6 -mx-3">
-        <div class="w-full h-full max-w-full px-3 lg:w-4/12 lg:flex-none">
+        <div class="w-full h-full max-w-full px-3 lg:w-4/12 lg:flex-none mb-5">
             <div class="border-black/12.5 shadow-soft-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4 mb-5">
                 <div class="relative z-10 flex flex-col flex-auto h-full p-4">
                     <div class="flex items-center space-x-4">
@@ -11,7 +11,7 @@
                             <div class="mt-3">
                             <label
                                 for="logoInput"
-                                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
+                                class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
                             >
                                 <input
                                 id="logoInput"
@@ -29,7 +29,7 @@
             </div>
             <div class="border-black/12.5 shadow-soft-xl relative flex h-full min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4 mt-5">
                 <form class="space-y-6" @submit.prevent="onSubmitPasswordInfo">
-                    <h5 class="mb-0 font-bold capitalize">{{ translate('updatePassword') }}</h5>
+                    <h5 class="mb-0 font-bold capitalize text-sub-header">{{ translate('updatePassword') }}</h5>
                     <div>
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
@@ -49,7 +49,7 @@
                             placeholder="•••••••••" required>
                     </div>
                     <button ref="passwordUpdateButton" type="submit" :disabled="userProfile.pwLoading"
-                        class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                        class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
                         <span v-if="!userProfile.pwLoading">{{ translate('submit') }}</span>
                         <span v-if="userProfile.pwLoading">
                             {{ translate('pleaseWait') }}...
@@ -61,7 +61,7 @@
         <div class="w-full h-full max-w-full px-3 lg:w-8/12 lg:flex-none">
             <div class="border-black/12.5 shadow-soft-xl relative flex h-full min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4">
                 <form class="space-y-6" @submit.prevent="onSubmitProfileInfo">
-                    <h5 class="mb-0 font-bold capitalize">{{ translate('basicInformation') }}</h5>
+                    <h5 class="mb-0 font-bold capitalize text-sub-header">{{ translate('basicInformation') }}</h5>
                     <div>
                         <label for="first_name"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
@@ -90,7 +90,7 @@
                         <ErrorLabel v-if="formErrors.email" :error="formErrors.email"></ErrorLabel>
                     </div>
                     <button ref="submitButton" type="submit" :disabled="userProfile.basicProfileLoading"
-                        class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                        class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
                         <span v-if="!userProfile.basicProfileLoading">{{ translate('submit') }}</span>
                         <span v-if="userProfile.basicProfileLoading">
                         {{ translate('pleaseWait') }}...
