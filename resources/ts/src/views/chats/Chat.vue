@@ -106,7 +106,7 @@
                             </div>
                         </div>
                         <div v-else class="flex flex-col items-center justify-center min-h-[19rem]">
-                            <img :src="computedLogo" class="max-h-80" alt="main_logo" />
+                            <img :src="computedLogo" class="max-h-80 max-w-full h-auto" alt="main_logo" />
                             <div class="font-semibold">{{ translate('welcomeChat') }}</div>
                             <span class="text-gray-500">{{ translate('selectChatMessage') }}</span>
                         </div>

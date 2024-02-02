@@ -19,7 +19,7 @@
                                 <div class="max-w-full px-3 lg:w-8/12 lg:flex-none">
                                     <div class="flex flex-col h-full">
                                         <h3 class="font-bold">{{ latestNewsFeed?.title }}</h3>
-                                        <p class="mb-5">{{ latestNewsFeed?.description }}</p>
+                                        <p class="mb-5 text-sm">{{ latestNewsFeed?.description }}</p>
                                         
                                         <div class="mt-auto" v-if="latestNewsFeed?.title">
                                             <a @click.prevent="viewContent(latestNewsFeed?.id)" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">

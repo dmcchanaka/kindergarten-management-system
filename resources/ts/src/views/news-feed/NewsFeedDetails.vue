@@ -37,8 +37,8 @@
                                         <p class="text-sm mr-[10px] font-bold">{{ newsFeedInfo.added_date }}</p>
                                     </div>
                                 </div>
-                                <h2 class="font-bold">{{ newsFeedInfo.title }}</h2>
-                                <p class="mb-5">{{ newsFeedInfo.description }}</p>
+                                <h2 class="font-bold text-header">{{ newsFeedInfo.title }}</h2>
+                                <p class="mb-5 text-sm">{{ newsFeedInfo.description }}</p>
                             </div>
                             <div class="grid gap-4">
                                 <div class="grid grid-cols-2 gap-2">
@@ -55,7 +55,7 @@
                         <div class="p-6 px-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
                             <div class="flex flex-wrap -mx-3">
                                 <div class="max-w-full px-3 md:w-1/2 md:flex-none">
-                                    <h6 class="mb-0">{{ translate('previousPosts') }}</h6>
+                                    <h6 class="mb-0 text-sub-header">{{ translate('previousPosts') }}</h6>
                                 </div>
                                 <div class="flex items-center justify-end max-w-full px-3 md:w-1/2 md:flex-none">
                                     &nbsp;
@@ -72,7 +72,7 @@
                                     </div>
                                     <div>
                                         <p class="text text-sm mb-2 leading-none">{{ item.added_date }}</p>
-                                        <h5 class="text-[15px] sm:text leading-6 font-semibold text-black">
+                                        <h5 class="sm:text leading-6 font-semibold text-black">
                                             <a>{{ item.title }}</a>
                                         </h5>
                                     </div>

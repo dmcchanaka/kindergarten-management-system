@@ -1,7 +1,7 @@
 <template>
     <!-- sidenav  -->
     <aside
-        class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0" style="background-color: #7bcde3;">
+        class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 ml-0 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0" style="background-color: #7bcde3;">
         <div class="">
             <fa icon="times" class="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden" @click.prevent="close"></fa>
             <a class="block px-8 py-3 m-0 text-sm whitespace-nowrap text-slate-700 text-center" href="javascript:;" target="_blank">
@@ -12,7 +12,7 @@
 
         <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
         <!-- aside menu -->
-        <AsideMenu />
+        <AsideMenu @close-azide="closeAzide" />
         <!-- end aside menu -->
     </aside>
     <!-- end sidenav -->
@@ -43,10 +43,16 @@ export default defineComponent({
     const close = () => {
       emit('close-sidebar')
     }
+
+    const closeAzide = () => {
+      close();
+    }
+
     return {
       getAssetPath,
       close,
-      computedLogo
+      computedLogo,
+      closeAzide
     }
   },
 });

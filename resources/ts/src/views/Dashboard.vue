@@ -255,7 +255,6 @@ export default defineComponent({
     }
 
     const fetchDashboardInfo = async() => {
-      console.log('xxx');
       await dashboardStore.fetchOverview();
       const error = Object.values(dashboardStore.errors);
       if (error.length === 0) {

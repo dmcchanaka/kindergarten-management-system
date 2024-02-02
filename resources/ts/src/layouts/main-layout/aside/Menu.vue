@@ -4,7 +4,7 @@
       <li class="mt-0.5 w-full" v-for="(item, i) in mainMenu" :key="i">
         <router-link v-if="item.route"
           class="py-1.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-          :to="item.route">
+          :to="item.route" @click.prevent="closeSideBar">
           <div class="flex flex-col items-center justify-center w-full">
             <div>
               <fa :class="{ 'text-3xl text-blue-500': currentActive(item.route), 'text-lg': !currentActive(item.route) }"
@@ -98,7 +98,8 @@ export default defineComponent({
     MenuItems,
     MenuItem
   },
-  setup() {
+  emits: ["close-azide"],
+  setup(props, {emit}) {
     const store = useAuthStore();
     const route = useRoute();
     const router = useRouter();
@@ -173,6 +174,10 @@ export default defineComponent({
       router.push({ name: "sign-in" });
     };
 
+    const closeSideBar = () => {
+      emit('close-azide');
+    }
+
     return {
       MainMenuConfig,
       currentActive,
@@ -188,7 +193,8 @@ export default defineComponent({
       countries,
       signOut,
       i18n,
-      translate
+      translate,
+      closeSideBar
     }
   }
 });
