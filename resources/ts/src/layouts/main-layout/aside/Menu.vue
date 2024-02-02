@@ -4,13 +4,13 @@
       <li class="mt-0.5 w-full" v-for="(item, i) in mainMenu" :key="i">
         <router-link v-if="item.route"
           class="py-1.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-          :to="item.route">
+          :to="item.route" @click.prevent="closeSideBar">
           <div class="flex flex-col items-center justify-center w-full">
             <div>
-              <fa :class="{ 'text-3xl': currentActive(item.route), 'text-lg': !currentActive(item.route) }"
+              <fa :class="{ 'text-3xl text-blue-500': currentActive(item.route), 'text-lg': !currentActive(item.route) }"
                 class="text-white text-lg" :icon="item.icon" />
             </div>
-            <div><span :class="{ 'text-header': currentActive(item.route), '': !currentActive(item.route) }"
+            <div><span :class="{ 'text-base text-blue-500': currentActive(item.route), '': !currentActive(item.route) }"
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft text-white">{{ translate(item.heading) }}</span>
             </div>
           </div>
@@ -21,7 +21,7 @@
     <!--user profile-->
     <div class="flex flex-col items-center justify-center w-full">
       <router-link to="my-profile">
-        <img class="h-12 w-12 rounded-full" :src="userProfileImage" alt="" />
+        <img class="h-12 w-12 rounded-full" :src="userProfileImage" alt="" @click.prevent="closeSideBar" />
       </router-link>
     </div>
     <div class="flex flex-col items-center justify-center w-full">
@@ -34,7 +34,7 @@
     </div>
     <div class="flex items-center justify-center w-full">
       <span class="mt-4 duration-300 opacity-100 cursor-pointer ease-soft text-white space-x-4">
-        <router-link to="my-profile">
+        <router-link to="my-profile" @click.prevent="closeSideBar">
           <fa icon="gear" class="text-2xl" />
         </router-link>
         <a @click="signOut()">
@@ -98,7 +98,8 @@ export default defineComponent({
     MenuItems,
     MenuItem
   },
-  setup() {
+  emits: ["close-azide"],
+  setup(props, {emit}) {
     const store = useAuthStore();
     const route = useRoute();
     const router = useRouter();
@@ -154,6 +155,8 @@ export default defineComponent({
       showSubMenu.value = false;
       localStorage.setItem("lang", lang);
       i18n.locale.value = lang;
+
+      closeSideBar();
     };
 
     //get current language object 
@@ -173,6 +176,10 @@ export default defineComponent({
       router.push({ name: "sign-in" });
     };
 
+    const closeSideBar = () => {
+      emit('close-azide');
+    }
+
     return {
       MainMenuConfig,
       currentActive,
@@ -188,7 +195,8 @@ export default defineComponent({
       countries,
       signOut,
       i18n,
-      translate
+      translate,
+      closeSideBar
     }
   }
 });

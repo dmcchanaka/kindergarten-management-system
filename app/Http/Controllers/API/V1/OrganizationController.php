@@ -31,7 +31,7 @@ class OrganizationController extends Controller
 
         $encryptedOrganizations = $organizations->map(function ($organization) {
             $organization->e_id = Crypt::encrypt($organization->id);
-            $organization->__unset('id');
+            // $organization->__unset('id');
             return $organization;
         });
 

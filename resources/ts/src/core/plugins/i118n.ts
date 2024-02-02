@@ -145,7 +145,9 @@ const messages = {
         organizationAddress: "organization address",
         principal: "Principal",
         choosePrincipal: "Choose principal",
-        editOrganization: "Edit Organization"
+        editOrganization: "Edit Organization",
+        approved: "Approved",
+        notYetApproved: "not yet approved"
     },
     de: {
         home: "Startseite",
@@ -156,7 +158,7 @@ const messages = {
         description: "Beschreibung",
         actions: "Aktionen",
         classRoomsList: "Liste der Gruppen",
-        classRooms: "Gruppe",
+        classRooms: "Gruppen",
         addClassRoom: "Gruppe hinzufügen",
         organization: "Kindergarten",
         name: "Name",
@@ -207,8 +209,8 @@ const messages = {
         searchGallery: "Gallerie durchsuchen",
         contentImages: "Inhaltsbilder",
         newsFeed: "Neuigkeiten",
-        latestClassRoomActivity: "Neuste Klassenzimmer Aktivität",
-        classRoomActivities: "Klassenzimmer Aktivitäten",
+        latestClassRoomActivity: "Aktuelles",
+        classRoomActivities: "Neuigkeiten",
         previousPosts: "Frühere Beiträge",
         readMore: "Mehr anzeigen",
         attendance: "Anwesenheit",
@@ -231,7 +233,7 @@ const messages = {
         theEnteredPasswordIsIncorrect: "Das eingegebene Passwort ist Inkorrekt",
         tryAgain: "Erneut versuchen",
         users: "Benutzer",
-        organizations: "Organisierungen",
+        organizations: "Organisationen",
         chat: "Chat",
         settings: "Einstellungen",
         userRoleAndPermissions: "Benutzerrolle und Berechtigungen",
@@ -270,11 +272,11 @@ const messages = {
         selectChatMessage: "Wählen Sie einen Chat aus, um mit dem Versenden von Nachrichten zu berginnen",
         date: "Datum",
         time: "Zeit",
-        generalSettings: "Allgemeiner Einstellungen",
+        generalSettings: "Allgemeine Einstellungen",
         uploadLogo: "Logo hochladen",
         selectLanguage: "Sprache auswählen",
         chooseLanguage: "Sprache auswählen",
-        uiConfigurations: "UI-Konfigurationen",
+        uiConfigurations: "Farben",
         backgroundColor: "Hintergrundfarbe",
         headingColor: "Überschrifftenfarbe",
         textColor: "Textfarbe",
@@ -289,7 +291,9 @@ const messages = {
         organizationInformations:"Informationen zur Organisation",
         organizationName: "Name der Organisation",
         organizationAddress: "Adresse der Organisation",
-        editOrganization: "Organisation bearbeiten"
+        editOrganization: "Organisation bearbeiten",
+        approved: "Anwesend",
+        notYetApproved: "Noch nicht bestätigt"
     },
 };
 

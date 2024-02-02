@@ -4,10 +4,10 @@
       <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
           <div class="flex flex-wrap mx-3">
               <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                  <h6 class="mb-0">{{ translate('organizationInformations') }}</h6>
+                  <h6 class="mb-0 text-header">{{ translate('organizationInformations') }}</h6>
               </div>
               <div class="flex-none w-1/2 max-w-full px-3 text-right">
-                  <router-link to="/organizations" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                  <router-link to="/organizations" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
                       <fa icon="arrow-left" />
                       &nbsp;&nbsp;{{ translate('back') }}
                   </router-link>
@@ -18,7 +18,7 @@
         <div class="w-full max-w-full px-3 mt-6 md:w-12/12 md:flex-none">
           <div class="relative flex flex-col min-w-0 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
             <div class="p-6 px-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
-                <h6 class="mb-0">{{ translate('basicInformation') }}</h6>
+                <h6 class="mb-0 text-sub-header">{{ translate('basicInformation') }}</h6>
             </div>
             <div class="flex-auto p-4 pt-6">
               <ul class="flex flex-col pl-0 mb-0 rounded-lg">
@@ -86,7 +86,7 @@
                         type="submit" 
                         @click.prevent="submitOrganizationFormData"
                         :disabled="form.loading"
-                        class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                        class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
                         <span v-if="!form.loading">{{ translate('submit') }}</span>
                         <span v-if="form.loading">
                           {{ translate('pleaseWait') }}...
@@ -161,7 +161,7 @@ export default defineComponent({
     });
 
     watch(form,(nVal, OVal) => {
-      console.log(nVal);
+      // console.log(nVal);
     });
 
     const filterPhoneNumber = () => {

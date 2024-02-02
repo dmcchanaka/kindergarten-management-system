@@ -46,7 +46,6 @@ export const useSettingsStore = defineStore("settings", () => {
                 setUiSettings(data.settings);
             })
             .catch(({ response }) => {
-                console.log(response);
                 if (response.status !== 200) {
                     const error = {
                         message : response.data.errors,
@@ -65,11 +64,9 @@ export const useSettingsStore = defineStore("settings", () => {
     function fetchUiSettings(search: SearchField){
         return ApiService.post("/fetch-general-settings", search)
             .then(({ data }) => {
-                console.log(data);
                 setUiSettings(data.settings);
             })
             .catch(({ response }) => {
-                console.log(response);
                 if (response.status !== 200) {
                     const error = {
                         message : response.data.errors,
@@ -83,11 +80,9 @@ export const useSettingsStore = defineStore("settings", () => {
     function saveLogo(logo: FormLogo) {
         return ApiService.post("/save-logo", logo)
             .then(({ data }) => {
-                console.log(data);
                 setOrganizationLogo(data);
             })
             .catch(({ response }) => {
-                console.log(response);
                 if (response.status !== 200) {
                     const error = {
                         message : response.data.errors,

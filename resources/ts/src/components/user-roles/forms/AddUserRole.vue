@@ -9,7 +9,7 @@
                     </div>
                     <div class="flex-none w-1/2 max-w-full px-3 text-right">
                         <router-link to="/user-roles"
-                            class="inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                            class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
                             <ArrowLeftIcon class="w-5 h-5 text-white-600 hover:text-gray-500 hover:scale-110" />
                             &nbsp;&nbsp;{{ translate('back') }}
                         </router-link>
@@ -21,7 +21,7 @@
                     <div
                         class="relative flex flex-col min-w-0 break-words bg-transparent border border-solid shadow-none rounded-xl border-slate-100 bg-clip-border">
                         <div class="p-6 px-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
-                            <h6 class="mb-0">{{ translate('basicInformation') }}</h6>
+                            <h6 class="mb-0 text-sub-header">{{ translate('basicInformation') }}</h6>
                         </div>
                         <div class="flex-auto p-4 pt-6">
                             <ul class="flex flex-col pl-0 mb-0 rounded-lg">
@@ -40,7 +40,7 @@
                                                 type="submit" 
                                                 @click.prevent="submitUserRole"
                                                 :disabled="userRoleForm.loading"
-                                                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                                                class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
                                                 <span v-if="!userRoleForm.loading">{{ translate('submit') }}</span>
                                                 <span v-if="userRoleForm.loading">
                                                 {{ translate('pleaseWait') }}...
@@ -59,7 +59,7 @@
                         <div class="p-6 px-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
                             <div class="flex flex-wrap -mx-3">
                                 <div class="max-w-full px-3 md:w-1/2 md:flex-none">
-                                    <h6 class="mb-0">{{ translate('permissionInformation') }}</h6>
+                                    <h6 class="mb-0 text-sub-header">{{ translate('permissionInformation') }}</h6>
                                 </div>
                                 <div class="flex items-center justify-end max-w-full px-3 md:w-1/2 md:flex-none">
                                     &nbsp;
