@@ -1,12 +1,12 @@
 <template>
     <div class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="flex flex-wrap -mx-3">
-            <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                <h6 class="mb-0">{{ translate('attendanceList') }}</h6>
+            <div class="flex items-center flex-none w-full sm:w-1/2 max-w-full px-3 mb-2 sm:mb-0">
+                <h6 class="mb-0 text-header">{{ translate('attendanceList') }}</h6>
             </div>
-            <div class="flex-none w-1/2 max-w-full px-3 mb-2 flex items-center justify-end">
+            <div class="flex-none w-full sm:w-1/2 max-w-full px-3 mb-2 flex items-center justify-end">
                 <input type="text" v-model="search" @input="searchItems()"
-                    class="flex-grow border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="flex-grow max-w-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     :placeholder="translate('searchAttendace')" />
             </div>
         </div>

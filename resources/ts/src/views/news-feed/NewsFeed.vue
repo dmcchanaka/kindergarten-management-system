@@ -4,7 +4,7 @@
             <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
                 <div class="flex flex-wrap mx-3">
                     <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                        <h6 class="mb-0">{{ translate('latestClassRoomActivity') }}</h6>
+                        <h6 class="mb-0 text-header">{{ translate('latestClassRoomActivity') }}</h6>
                     </div>
                     <div class="flex-none w-1/2 max-w-full px-3 text-right">
                         
@@ -18,11 +18,11 @@
                             <div class="flex flex-wrap -mx-3">
                                 <div class="max-w-full px-3 lg:w-8/12 lg:flex-none">
                                     <div class="flex flex-col h-full">
-                                        <h2 class="font-bold">{{ latestNewsFeed?.title }}</h2>
+                                        <h3 class="font-bold">{{ latestNewsFeed?.title }}</h3>
                                         <p class="mb-5">{{ latestNewsFeed?.description }}</p>
                                         
                                         <div class="mt-auto" v-if="latestNewsFeed?.title">
-                                            <a @click.prevent="viewContent(latestNewsFeed?.id)" class="text-sm inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                                            <a @click.prevent="viewContent(latestNewsFeed?.id)" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
                                             &nbsp;&nbsp;{{ translate('readMore') }}
                                             <fa icon="arrow-right" />
                                             </a>
@@ -56,7 +56,7 @@
     <div class="flex-none w-full max-w-full px-3 mt-6">
         <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 shadow-soft-xl rounded-2xl bg-clip-border">
             <div class="p-4 pb-0 mb-0 bg-white rounded-t-2xl">
-                <h6 class="mb-1">{{ translate('previousPosts') }}</h6>
+                <h6 class="mb-1 text-sub-header">{{ translate('previousPosts') }}</h6>
             </div>
             <div class="flex-auto p-4">
                 <div class="flex flex-wrap -mx-3" v-if="remainingNewsFeedList.length">
@@ -70,11 +70,11 @@
                             <div class="flex-auto px-1 pt-6">
                                 <p class="relative z-10 mb-2 leading-normal text-transparent from-gray-900 to-slate-800 text-sm bg-clip-text"></p>
                                 <a href="javascript:;">
-                                    <h5>{{ item.title }}</h5>
+                                    <h4>{{ item.title }}</h4>
                                 </a>
                                 <p class="mb-6 leading-normal text-sm">{{ truncateText(item.description) }}</p>
                                 <div class="flex items-center justify-between">
-                                    <button @click.prevent="viewContent(item?.id)" type="button" class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs hover:scale-102 active:shadow-soft-xs tracking-tight-soft border-fuchsia-500 text-fuchsia-500 hover:border-fuchsia-500 hover:bg-transparent hover:text-fuchsia-500 hover:opacity-75 hover:shadow-none active:bg-fuchsia-500 active:text-white active:hover:bg-transparent active:hover:text-fuchsia-500">{{ translate('readMore') }}</button>
+                                    <button @click.prevent="viewContent(item?.id)" type="button" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">{{ translate('readMore') }}</button>
                                 </div>
                             </div>
                         </div>

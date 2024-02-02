@@ -51,3 +51,30 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="scss">
+aside {
+  /* Your existing styles for the aside element */
+
+  /* Add overflow-y-auto and set the scrollbar width */
+  overflow-y: auto;
+  scrollbar-width: thin;
+
+  /* For Firefox */
+  scrollbar-color: transparent transparent;
+
+  /* For Webkit (Chrome, Safari, and newer versions of Edge) */
+  &::-webkit-scrollbar {
+    width: 6px; /* Set the width of the scrollbar */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #7bcde3; /* Set the color of the thumb */
+    border-radius: 3px; /* Set the border radius of the thumb */
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #fff; /* Set the color of the track */
+    border-radius: 3px; /* Set the border radius of the track */
+  }
+}
+</style>
