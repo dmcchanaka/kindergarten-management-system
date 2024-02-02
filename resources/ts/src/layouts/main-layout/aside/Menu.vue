@@ -21,7 +21,7 @@
     <!--user profile-->
     <div class="flex flex-col items-center justify-center w-full">
       <router-link to="my-profile">
-        <img class="h-12 w-12 rounded-full" :src="userProfileImage" alt="" />
+        <img class="h-12 w-12 rounded-full" :src="userProfileImage" alt="" @click.prevent="closeSideBar" />
       </router-link>
     </div>
     <div class="flex flex-col items-center justify-center w-full">
@@ -34,7 +34,7 @@
     </div>
     <div class="flex items-center justify-center w-full">
       <span class="mt-4 duration-300 opacity-100 cursor-pointer ease-soft text-white space-x-4">
-        <router-link to="my-profile">
+        <router-link to="my-profile" @click.prevent="closeSideBar">
           <fa icon="gear" class="text-2xl" />
         </router-link>
         <a @click="signOut()">
@@ -155,6 +155,8 @@ export default defineComponent({
       showSubMenu.value = false;
       localStorage.setItem("lang", lang);
       i18n.locale.value = lang;
+
+      closeSideBar();
     };
 
     //get current language object 

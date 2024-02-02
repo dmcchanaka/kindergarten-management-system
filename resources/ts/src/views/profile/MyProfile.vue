@@ -1,7 +1,7 @@
 <template>
     <!-- cards row -->
     <div class="flex flex-wrap my-6 -mx-3">
-        <div class="w-full h-full max-w-full px-3 lg:w-4/12 lg:flex-none">
+        <div class="w-full h-full max-w-full px-3 lg:w-4/12 lg:flex-none mb-5">
             <div class="border-black/12.5 shadow-soft-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4 mb-5">
                 <div class="relative z-10 flex flex-col flex-auto h-full p-4">
                     <div class="flex items-center space-x-4">
