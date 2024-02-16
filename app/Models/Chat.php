@@ -13,7 +13,8 @@ class Chat extends Model
         'sender_id',
         'receiver_id',
         'message',
-        'seen'
+        'seen',
+        'group_id'
     ];
 
     protected $appends = ['time_ago'];
@@ -24,6 +25,10 @@ class Chat extends Model
 
     public function receiver(){
         return $this->belongsTo(User::class, 'receiver_id', 'id');
+    }
+
+    public function group(){
+        return $this->belongsTo(ChatGroup::class, 'group_id', 'id');
     }
 
     public function getTimeAgoAttribute(){
@@ -39,6 +44,15 @@ class Chat extends Model
             ->orWhere(function($sub) use ($sender, $receiever){
                 $sub->where('receiver_id', $sender)
                     ->where('sender_id', $receiever);
+            });
+        });
+        return $query;
+    }
+
+    public static function getMessagesQueryBetweenUserAndGroup($request, $sender, $receiever){
+        $query = self::with(['sender','group'])->where(function($q) use($request, $sender, $receiever){
+            $q->where(function($sub) use ($sender, $receiever){
+                $sub->where('group_id', $receiever);
             });
         });
         return $query;

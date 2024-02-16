@@ -73,6 +73,7 @@ class User extends Authenticatable
     public function unSeenMessages(){
         return $this->hasMany(Chat::class, 'sender_id')
                 ->where('seen', 1)
+                ->whereNull('group_id')
                 ->where('receiver_id', auth()->user()->id);
     }
 }
