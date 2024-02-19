@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Events\ChatEvent;
+use App\Events\GroupChatEvent;
 use App\Events\NewChatMessage;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
+use App\Models\ChatGroup;
+use App\Models\ChatGroupUser;
 use App\Models\User;
 use App\Traits\UserAllocation;
+use App\Validators\CustomValidator;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -34,6 +39,36 @@ class ChatController extends Controller
                 'userList' => $users
             ],200);
 
+        } catch(Exception $e){
+            return response()->json([
+                'result' => false,
+                'errors' => 'Database connection error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function chatGroupList(Request $request){
+        $user = Auth::user();
+        try {
+            $userChatGroups = ChatGroupUser::where('user_id', $user->getKey())->pluck('group_id');
+            if(!$userChatGroups->isEmpty()){
+                $chatGroups = ChatGroup::whereIn('id', $userChatGroups)->get();
+                $chatGroups->transform(function($grp){
+                    $unseenMessages = $grp->groupUnSeenMessages($grp->id);
+                    return [
+                        'id'=>$grp->id,
+                        'name'=>$grp->name,
+                        'unseen_messages'=>$unseenMessages->count()
+                    ];
+                });
+            } else {
+                $chatGroups = collect([]);
+            }
+            
+            return response()->json([
+                'result'=>true,
+                'chatGroupList' => $chatGroups
+            ],200);
         } catch(Exception $e){
             return response()->json([
                 'result' => false,
@@ -97,13 +132,25 @@ class ChatController extends Controller
 
         $message = new Chat();
         $message->sender_id = $user->getKey();
-        $message->receiver_id = $request->userId;
+
+        if($request->chatType == 0){
+            $message->receiver_id = $request->userId;
+            $message->group_id = NULL;
+        } else {
+            $message->receiver_id = NULL;
+            $message->group_id = $request->userId;
+        }
         $message->message = $request->message;
         $message->save();
 
-        $updateMessage = Chat::with(['sender', 'receiver'])->find($message->id);
+        if($request->chatType == 0){
+            $updateMessage = Chat::with(['sender', 'receiver'])->find($message->id);
+            event(new NewChatMessage($updateMessage));
+        } else {
+            $updateMessage = Chat::with(['sender', 'group'])->find($message->id);
+            event(new GroupChatEvent($updateMessage));
+        }
 
-        event(new NewChatMessage($updateMessage));
         // broadcast(new NewChatMessage($request->message, $user->name))->toOthers();
         return response()->json([
             'result'=>true,
@@ -113,7 +160,7 @@ class ChatController extends Controller
 
     public function updateMessageSeen(Request $request){
         $user = Auth::user();
-        $message = Chat::where('receiver_id', $user->getKey())->where('sender_id', $request->userId)->where('seen', 1)->get();
+        $message = Chat::where('receiver_id', $user->getKey())->where('sender_id', $request->userId)->where('seen', 1)->whereNull('group_id')->get();
         if($message->count()>0){
             foreach($message AS $msg){
                 $msg->update(['seen'=>0]);
@@ -124,6 +171,100 @@ class ChatController extends Controller
             'result'=>true,
             'message' => $message,
             'sender'=> $request->userId
+        ],200);
+    }
+
+    public function userGroupMessages(Request $request){
+        $user = Auth::user();
+        $messageQuery = Chat::getMessagesQueryBetweenUserAndGroup($request, $user->getKey(), $request->groupId);
+        if(isset($request->earlierDate)){
+            $formattedDate = (new \DateTime($request->earlierDate))->format("Y-m-d H:i:s");
+            $messageQuery->where('created_at', '<', $formattedDate);
+        }
+        $messages = $messageQuery->orderBy('created_at', 'DESC')->limit($request->limit ?? 10)->get();
+
+        if($messages->count()){
+            foreach($messages AS $msg){
+                if($msg->receiver_id === $user->getKey()){
+                    $msg->update(['seen'=>0]);
+                }
+            }
+        }
+        // Sort messages collection by "id" in ascending order
+        $messages = $messages->sortBy('id')->values();
+
+        return response()->json([
+            'result'=>true,
+            'groupMessageList' => $messages
+        ],200);
+    }
+
+    public function chatRoomRegistration(Request $request){
+        $user = Auth::user();
+        $data = $request->all();
+        $rules = [
+            'name' => ['required', 'string', 'max:255'],
+            'users' => ['required'],
+        ];
+        $attributes = [
+            'name' => 'chat room name',
+            'users' => 'users'
+        ];
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $classRoom = ChatGroup::create([
+                'name'=>$request['name'],
+                'admin_id'=>$user->getKey(),
+            ]);
+
+            if(isset($request['users']) && sizeof($request['users'])> 0){
+                $classRoom->users()->sync($request['users']);
+            }
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfuly added'
+            ], 200);
+        } catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'result'=>false,
+                'errors' => $e->getMessage()
+            ],500);
+        }
+    }
+
+    public function updateGroupMessageSeen(Request $request){
+        $user = Auth::user();
+        $message = Chat::where('sender_id', '!=' ,$user->getKey())->where('group_id', $request->groupId)->where('seen', 1)->whereNull('receiver_id')->get();
+        if($message->count()>0){
+            foreach($message AS $msg){
+                $msg->update(['seen'=>0]);
+            }
+        }
+        
+        return response()->json([
+            'result'=>true,
+            'message' => $message,
+            'group'=> $request->groupId
         ],200);
     }
 }

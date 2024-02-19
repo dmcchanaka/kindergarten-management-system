@@ -25,3 +25,8 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('paulino-channel-{receiverId}', function($user, $receiverId){
     return $user->id === (int) $receiverId;
 });
+
+//broadcast group chat
+Broadcast::channel('broadcast-group-chat', function($user){
+    return $user;
+});

@@ -86,6 +86,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('user-old-messages', [ChatController::class, 'userOldMessages']);
     Route::post('send-message', [ChatController::class, 'sendMessage']);
     Route::post('update-message-seen', [ChatController::class, 'updateMessageSeen']);
+
+    Route::post('chat-groups-list', [ChatController::class, 'chatGroupList']);
+    Route::post('user-group-messages', [ChatController::class, 'userGroupMessages']);
+    Route::post('chat-room-registration', [ChatController::class, 'chatRoomRegistration']);
+    Route::post('update-group-message-seen', [ChatController::class, 'updateGroupMessageSeen']);
 });
 
 //unauth access routes
