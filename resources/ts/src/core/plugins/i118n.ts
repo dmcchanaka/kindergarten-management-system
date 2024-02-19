@@ -147,7 +147,12 @@ const messages = {
         choosePrincipal: "Choose principal",
         editOrganization: "Edit Organization",
         approved: "Approved",
-        notYetApproved: "not yet approved"
+        notYetApproved: "not yet approved",
+        private: "Private",
+        group: "Group",
+        createNewGroup: "Create New Group",
+        chatRoomName: "Chat Room Name",
+        chooseUsers: "Choose Users"
     },
     de: {
         home: "Startseite",
@@ -293,7 +298,12 @@ const messages = {
         organizationAddress: "Adresse der Organisation",
         editOrganization: "Organisation bearbeiten",
         approved: "Anwesend",
-        notYetApproved: "Noch nicht bestätigt"
+        notYetApproved: "Noch nicht bestätigt",
+        private: "Privat",
+        group: "Gruppe",
+        createNewGroup: "neue Gruppe erstellen",
+        chatRoomName: "Name des Chatrooms",
+        chooseUsers: "Wählen Sie Benutzer"
     },
 };
 
