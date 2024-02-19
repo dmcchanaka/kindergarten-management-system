@@ -22,13 +22,13 @@
                         <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
                             <ul class="flex flex-wrap -mb-px mb-1">
                                 <li class="me-2">
-                                    <a @click="selectTab('private')" :class="{ 'active bg-blue-700 hover:bg-blue-500 text-white hover:text-white': chatApp.activeTab === 'private' }" class="relative inline-block p-4 cursor-pointer bg-white rounded-lg border border-gray-200 hover:bg-gray-100">
+                                    <a @click="selectTab('private')" :class="{ 'active bg-lime-500 hover:bg-lime-400 text-white hover:text-white': chatApp.activeTab === 'private' }" class="relative inline-block p-4 cursor-pointer rounded-lg border border-lime-200 hover:bg-lime-100">
                                         {{ translate('private') }}
                                         <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900" v-if="computedPrivateChatUnseenMsg">{{ computedPrivateChatUnseenMsg }}</div>
                                     </a>
                                 </li>
                                 <li class="me-2">
-                                    <a @click="selectTab('group')" :class="{ 'active bg-blue-700 hover:bg-blue-500 text-white hover:text-white': chatApp.activeTab === 'group' }" class="relative inline-block p-4 cursor-pointer bg-white rounded-lg border border-gray-200 hover:bg-gray-100" aria-current="page">
+                                    <a @click="selectTab('group')" :class="{ 'active bg-lime-500 hover:bg-lime-400 text-white hover:text-white': chatApp.activeTab === 'group' }" class="relative inline-block p-4 cursor-pointer rounded-lg border border-lime-200 hover:bg-lime-100" aria-current="page">
                                         {{ translate('group') }}
                                         <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900" v-if="computedChatRoomUnseenMsg">{{ computedChatRoomUnseenMsg }}</div>
                                     </a>
