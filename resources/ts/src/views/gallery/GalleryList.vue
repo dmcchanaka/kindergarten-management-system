@@ -9,7 +9,7 @@
                 <input type="text" v-model="search" @input="searchItems()"
                     class="flex-grow max-w-xs min-w-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     :placeholder="translate('searchGallery')" />
-                <router-link v-if="isPermittedRoute('add-parent')" to="/add-gallery"
+                <router-link v-if="isPermittedRoute('add-gallery')" to="/add-gallery"
                     class="ml-3 inline-block px-6 py-3 text-lg text-center text-white uppercase align-middle rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
                     <fa icon="plus" />&nbsp;&nbsp;{{ translate('addGallery') }}
                 </router-link>
