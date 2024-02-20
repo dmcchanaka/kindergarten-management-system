@@ -4,13 +4,17 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Traits\UserAllocation;
 use App\Validators\CustomValidator;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
+    use UserAllocation;
+
     public function eventRegistration(Request $request){
         $data = $request->all();
         
@@ -72,5 +76,53 @@ class EventController extends Controller
                 'errors' => $e->getMessage()
             ],500);
         }
+    }
+
+    public function eventList(Request $request){
+        $user = Auth::user();
+        try {
+            $classRoomInfo = $this->getUserRelatedClassRooms($user);
+            if(!$classRoomInfo->isEmpty()){
+            $events = Event::with('class_room', 'organization')
+                ->whereIn('org_id', $classRoomInfo->pluck('org_id')->all())
+                ->whereIn('class_room_id', $classRoomInfo->pluck('id')->all())
+                ->orderBy('id','desc')->get();
+            $events->transform(function($event){
+                $organization = $event->organization ? [
+                    'id' => $event->organization->id,
+                    'name' => $event->organization->name,
+                ] : (object)[];
+                $class_room = $event->class_room ? [
+                    'id' => $event->class_room->id,
+                    'name' => $event->class_room->name,
+                ] : (object)[];
+
+                return [
+                    'id'=>$event->getKey(),
+                    'description'=>$event->description,
+                    'event_date'=>$event->event_date,
+                    'class_room'=>$class_room,
+                    'organization'=>$organization,
+                    'added_date'=>date('F d, Y', strtotime($event->created_at)),
+                ];
+            });
+            return response()->json([
+                'result'=>true,
+                'eventList' => $events
+            ],200);
+        } else {
+            return response()->json([
+                'result' => false,
+                'errors' => ['Dont have allocated organizations']
+            ], 400);
+        }
+
+        } catch(Exception $e){
+            return response()->json([
+                'result' => false,
+                'errors' => 'Database connection error: ' . $e->getMessage()
+            ], 500);
+        }
+
     }
 }

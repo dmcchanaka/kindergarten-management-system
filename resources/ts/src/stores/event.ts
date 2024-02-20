@@ -9,9 +9,29 @@ export interface EventForm {
     class_room_id: string,
 }
 
+export interface Event {
+    id: string;
+    description: string,
+    event_date: string,
+    class_room: ClassRoom,
+    organization: Organization;
+    added_date: string,
+}
+
+export interface ClassRoom {
+    id: number;
+    name: string;
+}
+
+export interface Organization {
+    id: number;
+    name: string;
+}
+
 export const useEventStore = defineStore("event", () => {
     const errors = ref({});
     const formDataErrors = ref({});
+    const eventList = ref<Event[]>([]);
 
     function eventRegistration(formData: EventForm) {
         return ApiService.post("/event-registration", formData)
@@ -44,10 +64,32 @@ export const useEventStore = defineStore("event", () => {
         formDataErrors.value = { ...error };
     }
 
+    function fetchEventList() {
+        return ApiService.post("/event-list", {})
+        .then(({ data }) => {
+            setEventList(data.eventList);
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                const error = {
+                    message : response.data.errors,
+                    status : response.status,
+                }
+                setError(error);
+            }
+        });
+    }
+
+    function setEventList(event: Event[]){
+        eventList.value = event;
+    }
+
     return {
         errors,
         formDataErrors,
         eventRegistration,
+        fetchEventList,
+        eventList
     }
 
 });
