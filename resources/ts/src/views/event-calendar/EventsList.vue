@@ -16,7 +16,7 @@
             </div>
         </div>
         <Datatable
-            key="role_id"
+            key="id"
             @on-sort="sort"
             @on-items-select="onItemSelect"
             :data="tableData"
@@ -30,6 +30,9 @@
                 </template>
                 <template v-slot:description="{ row: event }">
                     <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ event.description }}</a>
+                </template>
+                <template v-slot:event_date="{ row: event }">
+                    <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ event.event_date }}</a>
                 </template>
                 <template v-slot:organization="{ row: event }">
                     <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ event.organization.name }}</a>
@@ -109,6 +112,13 @@ export default defineComponent({
                 sortEnabled: true,
                 columnWidth: 250,
                 textAlign: "text-left",
+            },
+            {
+                columnName: computed(()=>{ return translate('date') }),
+                columnLabel: "event_date",
+                sortEnabled: true,
+                columnWidth: 100,
+                textAlign: "text-center",
             },
             {
                 columnName: computed(()=> { return translate("organization") }),
@@ -199,12 +209,50 @@ export default defineComponent({
         };
 
         const editEvent = async(eventId) => {
-
+            store.saveEventId(eventId);
+            router.push({ name: "edit-event" });
         }
 
         const deleteEvent = async(eventId) => {
-
-}
+            await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then(async(result: any) => {
+                if (result.isConfirmed) {
+                    const inputs = {
+                        eventId: eventId,
+                    };
+                    let response = await store.removeEvent(inputs);
+                    const error = Object.values(store.errors);
+                    if (error.length === 0) {
+                        Swal.fire({
+                            title: 'Good job!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Ok, got it!'
+                        }).then(async() => {
+                            await fetchEventList();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: error[0] as string,
+                            icon: 'error',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Try again!'
+                        }).then((result) => {
+                            store.errors = {};
+                        })
+                    }
+                }
+            });
+        }
 
         return {
             translate,

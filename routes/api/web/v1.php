@@ -96,6 +96,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //event calendar
     Route::post('event-registration', [EventController::class, 'eventRegistration']);
     Route::post('event-list', [EventController::class, 'eventList']);
+    Route::post('event-update', [EventController::class, 'eventUpdate']);
+    Route::post('event-remove', [EventController::class, 'eventDestroy']);
 });
 
 //unauth access routes

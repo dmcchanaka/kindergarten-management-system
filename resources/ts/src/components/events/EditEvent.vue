@@ -126,12 +126,14 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 
 import { useClassRoomStore, type Organization } from "@/stores/classRoom";
 import { useStudentStore, type ClassRoom, Parent, StudentForm } from "@/stores/students";
-import { useEventStore } from "@/stores/event";
+import { useEventStore, type Event } from "@/stores/event";
 
 import ErrorLabel from "@/components/global/ErrorLabel.vue";
 import Multiselect from '@vueform/multiselect';
 import Datepicker from '@vuepic/vue-datepicker';
 import "@vuepic/vue-datepicker/dist/main.css";
+
+import { useRouter } from "vue-router";
 export default defineComponent({
     name: "add-gallery",
     components: {
@@ -153,8 +155,10 @@ export default defineComponent({
         const store = useEventStore();
         const classRoomStore = useClassRoomStore();
         const studentStore = useStudentStore();
+        const router = useRouter();
 
         const eventForm = ref({
+            id: "",
             description: "",
             date: "",
             orgId: "",
@@ -185,10 +189,34 @@ export default defineComponent({
 
         const organizationList = ref<Array<Organization>>([]);
         const classRoomList = ref<Array<ClassRoom>>([]);
+        const eventInfo = ref<Array<Event>>([]);
 
         onMounted(async () => {
             await fetchOrganizationList();
+            await getEventInfo();
         });
+
+        const getEventInfo = async () => {
+            if(store.idEvent){
+                eventInfo.value.splice(0, eventInfo.value.length, ...store.eventList);
+                let results = eventInfo.value.filter((item) => {
+                    return item.id.toString() == store.idEvent.toString();
+                });
+                eventInfo.value.splice(0,eventInfo.value.length,...results);
+
+                eventForm.value.id = eventInfo?.value[0].id.toString() || "";
+                eventForm.value.date = eventInfo?.value[0].event_date || "";
+                eventForm.value.description = eventInfo?.value[0].description || "";
+
+                eventForm.value.orgId = eventInfo?.value[0].organization.id.toString() || "";
+                if(eventInfo?.value[0].organization.id.toString() != ""){
+                    await selectOrganization(eventInfo?.value[0].organization.id.toString());
+                    eventForm.value.classRoomId = eventInfo?.value[0].class_room.id.toString() || "";
+                }
+            } else {
+                router.go(-1);
+            }
+        }
 
         const fetchOrganizationList = async() => {
             await classRoomStore.fetchOrganizations();
@@ -232,6 +260,7 @@ export default defineComponent({
 
         const submitEvent = async() => {
             const inputs = {
+                id: eventForm.value.id,
                 description: eventForm.value.description,
                 date: eventForm.value.date,
                 org_id: eventForm.value.orgId,
@@ -241,21 +270,17 @@ export default defineComponent({
             if (submitButton.value) { 
                 submitButton.value!.disabled = true;
             }
-            await store.eventRegistration(inputs);
+            await store.eventModification(inputs);
             const error = Object.values(store.errors);
             formErrors.value = Object(store.formDataErrors);
             if (error.length === 0) {
                 Swal.fire({
                     title: translate('goodJob') + '!',
-                    text: translate('recordHasBeenSuccesfullyAdded'),
+                    text: translate('recordHasBeenSuccesfullyUpdated'),
                     icon: 'success',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: translate('okGotIt') + '!'
                 }).then(() => {
-                    eventForm.value.description = "";
-                    eventForm.value.date = "";
-                    eventForm.value.orgId = "";
-                    eventForm.value.classRoomId = "";
                     eventForm.value.loading = false;
                 });
             } else {

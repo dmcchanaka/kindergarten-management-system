@@ -32,6 +32,7 @@ export const useEventStore = defineStore("event", () => {
     const errors = ref({});
     const formDataErrors = ref({});
     const eventList = ref<Event[]>([]);
+    const idEvent = ref(0);
 
     function eventRegistration(formData: EventForm) {
         return ApiService.post("/event-registration", formData)
@@ -84,12 +85,59 @@ export const useEventStore = defineStore("event", () => {
         eventList.value = event;
     }
 
+    function saveEventId(eventId){
+        idEvent.value = eventId;
+    }
+
+    function eventModification(formData: FormData) {
+        return ApiService.post("/event-update", formData)
+            .then(({ data }) => {
+               return data;
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    let errorMsg = '';
+                    if (typeof response.data.errors === 'object') {
+                        errorMsg = 'someFieldsAreMissing';
+                    } else {
+                        errorMsg = response.data.errors;
+                    }
+                    const error = {
+                        message : errorMsg,
+                        status : response.status,
+                    }
+                    setError(error);
+                    setFormDataErrors(response.data.errors);
+                }
+            });
+    }
+
+    function removeEvent(input){
+        return ApiService.post("/event-remove", input)
+            .then(({ data }) => {
+                return data;
+            })
+            .catch(({ response }) => {
+                if (response.status !== 200) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
     return {
         errors,
         formDataErrors,
         eventRegistration,
         fetchEventList,
-        eventList
+        eventList,
+        saveEventId,
+        idEvent,
+        eventModification,
+        removeEvent
     }
 
 });

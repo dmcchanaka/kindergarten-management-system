@@ -312,6 +312,16 @@ const routes: Array<RouteRecordRaw> = [
 
             },
           },
+          {
+            path: "/edit-event",
+            name: "edit-event",
+            component: () => import("@/components/events/EditEvent.vue"),
+            meta: {
+              pageTitle: "events",
+              breadcrumbs: ["events"],
+
+            },
+          },
         ]
     },
     {

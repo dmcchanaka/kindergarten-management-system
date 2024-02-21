@@ -125,4 +125,84 @@ class EventController extends Controller
         }
 
     }
+
+    public function eventUpdate(Request $request){
+        $data = $request->all();
+        
+        $rules = [
+            'description' => ['required', 'string'],
+            'date' => ['required'],
+            'org_id' => ['required'],
+            'class_room_id' => ['required'],
+        ];
+
+        $attributes = [
+            'description' => 'description',
+            'date' => 'date',
+            'org_id' => 'organization',
+            'class_room_id' => 'class room',
+        ];
+
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
+        try {
+            DB::beginTransaction();
+
+            $event = Event::findOrFail($request->input('id'));
+
+            $event->description = $request->input('description');
+            $event->event_date = date('Y-m-d', strtotime($request->input('date')));
+            $event->org_id = $request->input('org_id');
+            $event->class_room_id = $request->input('class_room_id');
+            $event->save();
+
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfuly updated'
+            ], 200);
+            
+        } catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'result'=>false,
+                'errors' => $e->getMessage()
+            ],500);
+        }
+    }
+
+    public function eventDestroy(Request $request){
+        try {
+            DB::beginTransaction();
+    
+            $event = Event::findOrFail($request['eventId']);
+            $event->delete();
+    
+            DB::commit();
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfuly removed'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'result'=>false,
+                'errors' => $e->getMessage()
+            ],500);
+        }
+    }
 }
