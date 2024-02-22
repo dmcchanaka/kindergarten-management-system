@@ -252,7 +252,7 @@ const routes: Array<RouteRecordRaw> = [
 
               },
           },
-            {
+          {
               path: "/chat",
               name: "chat",
               component: () => import("@/views/chats/Chat.vue"),
@@ -281,7 +281,47 @@ const routes: Array<RouteRecordRaw> = [
               breadcrumbs: ["profile"],
 
             },
-        },
+          },
+          {
+            path: "/calendar",
+            name: "calendar",
+            component: () => import("@/views/event-calendar/Calendar.vue"),
+            meta: {
+              pageTitle: "calendar",
+              breadcrumbs: ["calendar"],
+
+            },
+          },
+          {
+            path: "/events",
+            name: "events",
+            component: () => import("@/views/event-calendar/EventsList.vue"),
+            meta: {
+              pageTitle: "events",
+              breadcrumbs: ["events"],
+
+            },
+          },
+          {
+            path: "/add-event",
+            name: "add-event",
+            component: () => import("@/components/events/AddEvent.vue"),
+            meta: {
+              pageTitle: "events",
+              breadcrumbs: ["events"],
+
+            },
+          },
+          {
+            path: "/edit-event",
+            name: "edit-event",
+            component: () => import("@/components/events/EditEvent.vue"),
+            meta: {
+              pageTitle: "events",
+              breadcrumbs: ["events"],
+
+            },
+          },
         ]
     },
     {

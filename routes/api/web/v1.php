@@ -8,6 +8,7 @@ use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\UserRoleController;
 use App\Http\Controllers\API\V1\ClassRoomController;
 use App\Http\Controllers\API\V1\DashboardController;
+use App\Http\Controllers\API\V1\EventController;
 use App\Http\Controllers\API\V1\GalleryController;
 use App\Http\Controllers\API\V1\GeneralSettingsController;
 use App\Http\Controllers\API\V1\StudentController;
@@ -91,6 +92,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('user-group-messages', [ChatController::class, 'userGroupMessages']);
     Route::post('chat-room-registration', [ChatController::class, 'chatRoomRegistration']);
     Route::post('update-group-message-seen', [ChatController::class, 'updateGroupMessageSeen']);
+
+    //event calendar
+    Route::post('event-registration', [EventController::class, 'eventRegistration']);
+    Route::post('event-list', [EventController::class, 'eventList']);
+    Route::post('event-update', [EventController::class, 'eventUpdate']);
+    Route::post('event-remove', [EventController::class, 'eventDestroy']);
 });
 
 //unauth access routes

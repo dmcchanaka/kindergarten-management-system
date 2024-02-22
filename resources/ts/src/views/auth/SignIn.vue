@@ -11,7 +11,7 @@
 
             <div class="mt-4">
                 <label class="block text-gray-700">{{ translate('password') }}</label>
-                <input v-model="login.password" :placeholder="translate('enterPassword')" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
+                <input type="password" v-model="login.password" :placeholder="translate('enterPassword')" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                     focus:bg-white focus:outline-none" required>
             </div>
 
