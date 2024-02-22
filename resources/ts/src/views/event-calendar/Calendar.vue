@@ -22,6 +22,8 @@
 import { defineComponent, onMounted, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useAuthStore } from "@/stores/auth";
+import { useEventStore, type Event } from "@/stores/event";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -33,8 +35,10 @@ export default defineComponent({
         FullCalendar
     },
     setup(){
+        const store = useEventStore();
         const authStore = useAuthStore();
         const { t, te } = useI18n();
+        const i18n = useI18n();
 
         const translate = (text: string) => {
             if (te(text)) {
@@ -50,27 +54,57 @@ export default defineComponent({
             }
         }
 
-        const calendarOptions = ref({
+        const calendarOptions = ref<{
+            plugins: any[];
+            initialView: string;
+            events: { title: string; date: string }[];
+            locale: string;
+        }>({
             plugins: [dayGridPlugin, interactionPlugin],
             initialView: 'dayGridMonth',
-            // weekends: false,
-            events: [
-                { title: 'event 1', date: '2024-02-01' },
-                { title: 'specaial event 1', date: '2024-02-01' },
-                { title: 'event 2', date: '2024-02-20' }
-            ],
-            locale: 'en'
+            events: [],
+            locale: i18n.locale.value
         });
+
+        onMounted(async () => {
+            await fetchEventList();
+        });
+
+        const fetchEventList = async() => {
+            await store.fetchEventList();
+            const error = Object.values(store.errors);
+            if (error.length === 0) {
+                calendarOptions.value.events = store.eventList.map(event => ({
+                    title: event.description,
+                    date: event.event_date
+                }));
+            } else {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try again!'
+                }).then((result) => {
+                    store.errors = {};
+                })
+            }
+        }
 
         const toggleWeekends = () => {
             calendarOptions.value.weekends = !calendarOptions.value.weekends;
         };
+
+        i18n.locale.value = localStorage.getItem("lang")
+        ? (localStorage.getItem("lang") as string)
+        : "en";
 
         return {
             translate,
             isPermittedRoute,
             calendarOptions,
             toggleWeekends,
+            i18n
         }
     }
 });

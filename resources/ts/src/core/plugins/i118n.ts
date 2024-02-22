@@ -154,7 +154,10 @@ const messages = {
         chatRoomName: "Chat Room Name",
         chooseUsers: "Choose Users",
         addEvent: "Add Event",
-        searchEvent: "Search Event"
+        searchEvent: "Search Event",
+        eventCalendar: "Event Calendar",
+        events: "Events",
+        calendar: "Calendar"
     },
     de: {
         home: "Startseite",
@@ -307,7 +310,10 @@ const messages = {
         chatRoomName: "Name des Chatrooms",
         chooseUsers: "Wählen Sie Benutzer",
         addEvent: "Ereignis hinzufügen",
-        searchEvent: "Suchereignis"
+        searchEvent: "Suchereignis",
+        eventCalendar: "Evenementen kalender",
+        events: "Evenementen",
+        calendar: "Kalender"
     },
 };
 
