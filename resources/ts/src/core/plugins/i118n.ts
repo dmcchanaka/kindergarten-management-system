@@ -152,7 +152,12 @@ const messages = {
         group: "Group",
         createNewGroup: "Create New Group",
         chatRoomName: "Chat Room Name",
-        chooseUsers: "Choose Users"
+        chooseUsers: "Choose Users",
+        addEvent: "Add Event",
+        searchEvent: "Search Event",
+        eventCalendar: "Event Calendar",
+        events: "Events",
+        calendar: "Calendar"
     },
     de: {
         home: "Startseite",
@@ -303,7 +308,12 @@ const messages = {
         group: "Gruppe",
         createNewGroup: "neue Gruppe erstellen",
         chatRoomName: "Name des Chatrooms",
-        chooseUsers: "Wählen Sie Benutzer"
+        chooseUsers: "Wählen Sie Benutzer",
+        addEvent: "Ereignis hinzufügen",
+        searchEvent: "Suchereignis",
+        eventCalendar: "Evenementen kalender",
+        events: "Evenementen",
+        calendar: "Kalender"
     },
 };
 
