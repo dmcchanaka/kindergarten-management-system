@@ -133,7 +133,7 @@ import Multiselect from '@vueform/multiselect';
 import Datepicker from '@vuepic/vue-datepicker';
 import "@vuepic/vue-datepicker/dist/main.css";
 export default defineComponent({
-    name: "add-gallery",
+    name: "add-event",
     components: {
         ErrorLabel,
         Multiselect,

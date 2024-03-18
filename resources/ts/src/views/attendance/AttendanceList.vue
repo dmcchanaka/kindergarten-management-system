@@ -1,4 +1,5 @@
 <template>
+    <AttendanceFilterCard @search-attendance="searchAttendance" @export-attendance="exportAttendance" />
     <div class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="flex flex-wrap -mx-3">
             <div class="flex items-center flex-none w-full sm:w-1/2 max-w-full px-3 mb-2 sm:mb-0">
@@ -52,13 +53,16 @@ import { useI18n } from "vue-i18n";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import arraySort from "array-sort";
 
-import { useAttendanceStore, type Attendance } from "@/stores/attendance";
+import { useAttendanceStore, type Attendance,AttendanceFilters } from "@/stores/attendance";
 import Datatable from "@/components/table/Datatable.vue";
+
+import AttendanceFilterCard from "@/components/attendance/filter/FilterCard.vue";
 
 export default defineComponent({
     name: "attendance-list",
     components: {
-        Datatable
+        Datatable,
+        AttendanceFilterCard
     },
     setup(){
         const { t, te } = useI18n();
@@ -76,7 +80,7 @@ export default defineComponent({
         const attendanceList = ref<Array<Attendance>>([]);
         const tableData = ref<Array<Attendance>>([]);
 
-            const tableHeader = ref([
+        const tableHeader = ref([
             {
                 columnName: "#",
                 columnLabel: "id",
@@ -139,8 +143,8 @@ export default defineComponent({
             await fetchAttendanceList();
         });
 
-        const fetchAttendanceList = async () => {
-            await store.fetchAttendanceList();
+        const fetchAttendanceList = async (options = {orgId: "",classRoomId: "",fromDate: "",toDate: ""}) => {
+            await store.fetchAttendanceList(options);
             const error = Object.values(store.errors);
             if (error.length === 0) {
                 attendanceList.value.splice(0, attendanceList.value.length, ...store.studentAttendanceList);
@@ -246,6 +250,50 @@ export default defineComponent({
             });
         }
 
+        const searchAttendance = async (data) => {
+            const inputs = {
+                orgId: data.value.orgId,
+                classRoomId: data.value.classRoomId,
+                fromDate: data.value.fromDate,
+                toDate: data.value.toDate ,
+            }
+            await fetchAttendanceList(inputs);
+        }
+
+        const exportAttendance = async (data) => {
+            const inputs = {
+                orgId: data.value.orgId,
+                classRoomId: data.value.classRoomId,
+                fromDate: data.value.fromDate,
+                toDate: data.value.toDate ,
+            }
+            const response = await store.exportAttendanceList(inputs);
+            const error = Object.values(store.errors);
+            if (error.length === 0) {
+                if (response.result && response.excel_url) {
+                    const link = document.createElement('a');
+                    link.href = response.excel_url;
+                    link.setAttribute('download', response.excel_name); // Set the desired filename
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link); // Clean up
+                } else {
+                    // Handle errors or display messages if needed
+                    console.error('Export failed:', response.errors);
+                }
+            } else {
+                Swal.fire({
+                    title: translate('opps') + '...',
+                    text: translate(error[0] as string),
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: translate('tryAgain') + '!'
+                }).then((result) => {
+                    store.errors = {};
+                })
+            }
+        }
+
         return {
             translate,
             tableData,
@@ -254,7 +302,9 @@ export default defineComponent({
             sort,
             onItemSelect,
             search,
-            approveAttendance
+            approveAttendance,
+            searchAttendance,
+            exportAttendance
         }
     }
 });
