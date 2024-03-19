@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Exports\AttendanceExport;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\ClassRoom;
@@ -15,6 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AttendanceController extends Controller
 {
@@ -242,7 +245,24 @@ class AttendanceController extends Controller
         try {
             $studentsInfo = $this->getUserRoleRelatedStudents($user);
             if(!$studentsInfo->isEmpty()){
-                $attendance = Attendance::whereIn('student_id', $studentsInfo->pluck('id')->all())->get();
+                $query = Attendance::whereIn('student_id', $studentsInfo->pluck('id')->all());
+                if($request->has('orgId') && $request->input('orgId') != "") {
+                    $query->whereHas('student.organization', function($query) use ($request) {
+                        $query->where('id', $request->orgId);
+                    });
+                }
+                if($request->has('classRoomId')  && $request->input('classRoomId') != "") {
+                    $query->whereHas('student.class_room', function($query) use ($request) {
+                        $query->where('id', $request->classRoomId);
+                    });
+                }
+                if($request->has('fromDate') && $request->input('fromDate') != "") {
+                    $query->whereDate('att_date', '>=', $request->fromDate);
+                }
+                if($request->has('toDate') && $request->input('toDate') != "") {
+                    $query->whereDate('att_date', '<=', $request->toDate);
+                }
+                $attendance = $query->get();
                 $attendance->transform(function($att){
                     $student = $att->student ? [
                         'id' => $att->student->id,
@@ -316,29 +336,6 @@ class AttendanceController extends Controller
 
     public function fetchStudentAttendanceList(Request $request){
         try {
-            // $todayAttendance = Attendance::with(['student'])->where('att_date', date('Y-m-d'))->get();
-            // $todayAttendance->transform(function($att){
-            //     $organization = $att->student->organization ? [
-            //         'id' => $att->student->organization->id,
-            //         'name' => $att->student->organization->name,
-            //     ] : (object)[];
-            //     $classRoom = $att->student->class_room ? [
-            //         'id' => $att->student->class_room->id,
-            //         'name' => $att->student->class_room->name,
-            //     ] : (object)[];
-            //     $guardian = $att->student->guardian ? [
-            //         'id' => $att->student->guardian->id,
-            //         'name' => $att->student->guardian->name,
-            //     ] : (object)[];
-            //     return [
-            //         'id'=>$att->id,
-            //         'first_name'=>$att->student->first_name,
-            //         'last_name'=>$att->student->last_name,
-            //         'organization'=>$organization,
-            //         'class_room'=>$classRoom,
-            //         'guardian'=>$guardian,
-            //     ];
-            // });
             $students = Student::get();
             $students->transform(function($student){
                 $todayAttendance = Attendance::where('student_id', $student->getKey())->where('att_date', date('Y-m-d'))->latest()->first();
@@ -374,6 +371,83 @@ class AttendanceController extends Controller
                 'attendance' => $students
             ], 200);
         } catch (QueryException $e) {
+            // Handle database query exceptions
+            return response()->json([
+                'result' => false,
+                'errors' => ['Database error: ' . $e->getMessage()]
+            ], 500);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json([
+                'result' => false,
+                'errors' => ['An error occurred: ' . $e->getMessage()]
+            ], 500);
+        }
+    }
+
+    public function exportAttendanceList(Request $request){
+        $user = Auth::user();
+        try {
+            $studentsInfo = $this->getUserRoleRelatedStudents($user);
+            if(!$studentsInfo->isEmpty()){
+                $query = Attendance::whereIn('student_id', $studentsInfo->pluck('id')->all());
+                if($request->has('orgId') && $request->input('orgId') != "") {
+                    $query->whereHas('student.organization', function($query) use ($request) {
+                        $query->where('id', $request->orgId);
+                    });
+                }
+                if($request->has('classRoomId')  && $request->input('classRoomId') != "") {
+                    $query->whereHas('student.class_room', function($query) use ($request) {
+                        $query->where('id', $request->classRoomId);
+                    });
+                }
+                if($request->has('fromDate') && $request->input('fromDate') != "") {
+                    $query->whereDate('att_date', '>=', $request->fromDate);
+                }
+                if($request->has('toDate') && $request->input('toDate') != "") {
+                    $query->whereDate('att_date', '<=', $request->toDate);
+                }
+                $attendance = $query->get();
+                $attendance->transform(function($att){
+                    $student = $att->student ? [
+                        'id' => $att->student->id,
+                        'name' => $att->student->first_name . ' '. $att->student->last_name,
+                    ] : (object)[];
+                    $organization = $att->student->organization ? [
+                        'id' => $att->student->organization->id,
+                        'name' => $att->student->organization->name,
+                    ] : (object)[];
+                    $classRoom = $att->student->class_room ? [
+                        'id' => $att->student->class_room->id,
+                        'name' => $att->student->class_room->name,
+                    ] : (object)[];
+                    return [
+                        'id'=>$att->id,
+                        'date'=>$att->att_date,
+                        'time'=>$att->att_time,
+                        'student'=>$student,
+                        'organization'=>$organization,
+                        'classRoom'=>$classRoom,
+                        'approve_status'=>($att->approved_at)?true:false
+                    ];
+                });
+
+                $export = new AttendanceExport($attendance);
+                $filename = 'class-room-attendance.xlsx';
+                $filePath = 'public/attendance/exports/' . $filename;
+                Excel::store($export, $filePath);
+                return response()->json([
+                    'result' => true,
+                    'excel_name' => $filename,
+                    'excel_url' => asset('storage/attendance/exports/'. $filename)
+                ], 200);
+            } else {
+                return response()->json([
+                    'result' => false,
+                    'errors' => ['Dont have registered students']
+                ], 400);
+            }
+        }  catch (QueryException $e) {
             // Handle database query exceptions
             return response()->json([
                 'result' => false,

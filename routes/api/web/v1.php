@@ -80,6 +80,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //attendance
     Route::post('attendance-list', [AttendanceController::class, 'fetchAttendanceList']);
+    Route::post('export-attendance-list', [AttendanceController::class, 'exportAttendanceList']);
+    Route::get('export-attendance-list', [AttendanceController::class, 'exportAttendanceList']);
     
     //chat
     Route::post('chat-user-list', [ChatController::class, 'chatUserList']);

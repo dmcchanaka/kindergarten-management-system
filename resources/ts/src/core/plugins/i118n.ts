@@ -157,7 +157,10 @@ const messages = {
         searchEvent: "Search Event",
         eventCalendar: "Event Calendar",
         events: "Events",
-        calendar: "Calendar"
+        calendar: "Calendar",
+        startDate: "Start Date",
+        endDate: "End Date",
+        export: "Export"
     },
     de: {
         home: "Startseite",
@@ -313,7 +316,10 @@ const messages = {
         searchEvent: "Suchereignis",
         eventCalendar: "Evenementen kalender",
         events: "Evenementen",
-        calendar: "Kalender"
+        calendar: "Kalender",
+        startDate: "Begin datum",
+        endDate: "Einddatum",
+        export: "Exporteren"
     },
 };
 

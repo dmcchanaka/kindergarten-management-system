@@ -42,6 +42,13 @@ export interface StudentList {
     image: string;
 }
 
+export interface AttendanceFilters {
+    orgId: string;
+    classRoomId: string;
+    fromDate: string;
+    toDate: string;
+}
+
 export const useAttendanceStore = defineStore("attendance", () => {
     const errors = ref({});
     const formDataErrors = ref({});
@@ -81,8 +88,8 @@ export const useAttendanceStore = defineStore("attendance", () => {
         errors.value = { ...error };
     }
 
-    function fetchAttendanceList() {
-        return ApiService.post("/attendance-list", {})
+    function fetchAttendanceList(inputs: AttendanceFilters) {
+        return ApiService.post("/attendance-list", inputs)
             .then(({ data }) => {
                 setAttendance(data.attendance);
             })
@@ -198,6 +205,22 @@ export const useAttendanceStore = defineStore("attendance", () => {
             });
     }
 
+    function exportAttendanceList(inputs: AttendanceFilters) {
+        return ApiService.post("/export-attendance-list", inputs)
+            .then(({ data }) => {
+                return data;
+            })
+            .catch(({ response }) => {
+                if (response.status === 404) {
+                    const error = {
+                        message : response.data.errors,
+                        status : response.status,
+                    }
+                    setError(error);
+                }
+            });
+    }
+
     return {
         markStudentAttendance,
         errors,
@@ -211,7 +234,8 @@ export const useAttendanceStore = defineStore("attendance", () => {
         lookupClassRoomStudents,
         studentList,
         formDataErrors,
-        fetchStudentAttendanceList
+        fetchStudentAttendanceList,
+        exportAttendanceList
     }
 
 });
