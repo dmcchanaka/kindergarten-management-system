@@ -24,10 +24,10 @@
                 <img :src="users.image_url" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-soft-in-out h-9 w-9 rounded-xl" alt="xd" />
             </template>
             <template v-slot:first_name="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.first_name }}</a>
+                <a @click="showStudentProfile(users.id)" class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.first_name }}</a>
             </template>
             <template v-slot:last_name="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.last_name }}</a>
+                <a @click="showStudentProfile(users.id)" class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.last_name }}</a>
             </template>
             <template v-slot:date_of_birth="{ row: users }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.date_of_birth }}</a>
@@ -301,6 +301,11 @@ export default defineComponent({
             });
         }
 
+        const showStudentProfile = async(studentId) => {
+            store.saveStudentId(studentId);
+            router.push({ name: "student-profile" });
+        }
+
         return {
             translate,
             isPermittedRoute,
@@ -311,7 +316,8 @@ export default defineComponent({
             onItemSelect,
             search,
             editStudent,
-            deleteStudent
+            deleteStudent,
+            showStudentProfile
         }
     }
 });
