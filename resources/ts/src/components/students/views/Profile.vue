@@ -19,6 +19,10 @@
                         <fa icon="arrow-left" />
                         &nbsp;&nbsp;{{ translate('back') }}
                     </router-link>
+                    <router-link v-if="isPermittedRoute('student-development')" to="/student-development" class="inline-block px-6 py-2 ml-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                        <fa icon="pen-to-square" />
+                        &nbsp;&nbsp;{{ translate('studentDevelopment') }}
+                    </router-link>
                 </div>
             </div>
             <div class="border-black/12.5 shadow-soft-xl relative flex h-full min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4 mt-5">
@@ -76,12 +80,14 @@ import { defineComponent, onMounted, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useStudentStore, type ClassRoom, Parent, StudentForm, Student } from "@/stores/students";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
 export default defineComponent({
     name: "student-profile",
     setup() {
         const router = useRouter();
         const store = useStudentStore();
+        const authStore = useAuthStore();
 
         const i18n = useI18n();
         const { t, te } = useI18n();
@@ -148,12 +154,19 @@ export default defineComponent({
             const date = new Date(studentForm.value.dateOfBirth).toISOString();
             return date.substring(0, date.indexOf('T'));
         });
+
+        const isPermittedRoute = (currentRoute) => {
+            if (authStore.userPermissions.length > 0) {
+                return authStore.userPermissions.some(permission => permission.name === currentRoute);
+            }
+        }
         
         return {
             translate,
             studentForm,
             studentName,
-            studentDOB
+            studentDOB,
+            isPermittedRoute
         }
     }
 });
