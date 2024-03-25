@@ -21,37 +21,37 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.id }}</a>
             </template>
             <template v-slot:image_url="{ row: users }">
-                <img :src="users.image_url" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-soft-in-out h-9 w-9 rounded-xl" alt="xd" />
+                <img @click="showStudentProfile(users.id)" :src="users.image_url" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-soft-in-out h-9 w-9 rounded-xl cursor-pointer" alt="xd" />
             </template>
             <template v-slot:first_name="{ row: users }">
-                <a @click="showStudentProfile(users.id)" class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.first_name }}</a>
+                <a @click="showStudentProfile(users.id)" class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.first_name }}</a>
             </template>
             <template v-slot:last_name="{ row: users }">
-                <a @click="showStudentProfile(users.id)" class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.last_name }}</a>
+                <a @click="showStudentProfile(users.id)" class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.last_name }}</a>
             </template>
             <template v-slot:date_of_birth="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.date_of_birth }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.date_of_birth }}</a>
             </template>
             <template v-slot:age="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.age }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.age }}</a>
             </template>
             <template v-slot:organization="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.organization.name }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.organization.name }}</a>
             </template>
             <template v-slot:class_room="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.class_room.name }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.class_room.name }}</a>
             </template>
             <template v-slot:guardian="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.guardian.name }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.guardian.name }}</a>
             </template>
             <template v-slot:gender="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ translate(users.gender) }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ translate(users.gender) }}</a>
             </template>
             <template v-slot:address="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.address }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.address }}</a>
             </template>
             <template v-slot:special_notice="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.special_notice }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.special_notice }}</a>
             </template>
             <template v-slot:actions="{ row: users }">
                 <a v-if="isPermittedRoute('edit-student')" @click="editStudent(users.id)"
