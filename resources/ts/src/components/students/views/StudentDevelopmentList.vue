@@ -83,71 +83,23 @@
                             <ul class="flex flex-col pl-0 mb-0 rounded-lg">
                                 <li class="relative flex p-6 mb-2 border-0 rounded-t-inherit rounded-xl bg-gray-50">
                                     <div class="w-full h-96 overflow-y-auto">
-                                        <ul role="list">
-                                            <li class="group/item bg-white shadow-soft-xs hover:bg-slate-100 p-3 rounded-2 mb-2 flex">
-                                                <div class="h-14 w-14 rounded-full bg-lime-500 flex items-center justify-center">
-                                                    <fa icon="book" class="text-2xl text-white" />
-                                                </div>
-                                                <div class="ml-3 overflow-hidden">
-                                                    <h2 class="text-slate-900 group-hover:text-white text-sub-header font-semibold">New project</h2>
-                                                    <p class="text-slate-500 group-hover:text-white text-sm">Create a new project from a variety of starting templates.</p>
-                                                </div>
-                                            </li>
-                                            <li class="group/item bg-white shadow-soft-xs hover:bg-slate-100 p-3 rounded-2 mb-2 flex">
-                                                <div class="h-14 w-14 rounded-full bg-lime-500 flex items-center justify-center">
-                                                    <fa icon="book" class="text-2xl text-white" />
-                                                </div>
-                                                <div class="ml-3 overflow-hidden">
-                                                    <h2 class="text-slate-900 group-hover:text-white text-sub-header font-semibold">New project</h2>
-                                                    <p class="text-slate-500 group-hover:text-white text-sm">Create a new project from a variety of starting templates.</p>
-                                                </div>
-                                            </li>
-                                            <li class="group/item bg-white shadow-soft-xs hover:bg-slate-100 p-3 rounded-2 mb-2 flex">
-                                                <div class="h-14 w-14 rounded-full bg-lime-500 flex items-center justify-center">
-                                                    <fa icon="book" class="text-2xl text-white" />
-                                                </div>
-                                                <div class="ml-3 overflow-hidden">
-                                                    <h2 class="text-slate-900 group-hover:text-white text-sub-header font-semibold">New project</h2>
-                                                    <p class="text-slate-500 group-hover:text-white text-sm">Create a new project from a variety of starting templates.</p>
-                                                </div>
-                                            </li>
-                                            <li class="group/item bg-white shadow-soft-xs hover:bg-slate-100 p-3 rounded-2 mb-2 flex">
-                                                <div class="h-14 w-14 rounded-full bg-lime-500 flex items-center justify-center">
-                                                    <fa icon="book" class="text-2xl text-white" />
-                                                </div>
-                                                <div class="ml-3 overflow-hidden">
-                                                    <h2 class="text-slate-900 group-hover:text-white text-sub-header font-semibold">New project</h2>
-                                                    <p class="text-slate-500 group-hover:text-white text-sm">Create a new project from a variety of starting templates.</p>
-                                                </div>
-                                            </li>
-                                            <li class="group/item bg-white shadow-soft-xs hover:bg-slate-100 p-3 rounded-2 mb-2 flex">
-                                                <div class="h-14 w-14 rounded-full bg-lime-500 flex items-center justify-center">
-                                                    <fa icon="book" class="text-2xl text-white" />
-                                                </div>
-                                                <div class="ml-3 overflow-hidden">
-                                                    <h2 class="text-slate-900 group-hover:text-white text-sub-header font-semibold">New project</h2>
-                                                    <p class="text-slate-500 group-hover:text-white text-sm">Create a new project from a variety of starting templates.</p>
-                                                </div>
-                                            </li>
-                                            <li class="group/item bg-white shadow-soft-xs hover:bg-slate-100 p-3 rounded-2 mb-2 flex">
-                                                <div class="h-14 w-14 rounded-full bg-lime-500 flex items-center justify-center">
-                                                    <fa icon="book" class="text-2xl text-white" />
-                                                </div>
-                                                <div class="ml-3 overflow-hidden">
-                                                    <h2 class="text-slate-900 group-hover:text-white text-sub-header font-semibold">New project</h2>
-                                                    <p class="text-slate-500 group-hover:text-white text-sm">Create a new project from a variety of starting templates.</p>
-                                                </div>
-                                            </li>
-                                            <li class="group/item bg-white shadow-soft-xs hover:bg-slate-100 p-3 rounded-2 mb-2 flex">
-                                                <div class="h-14 w-14 rounded-full bg-lime-500 flex items-center justify-center">
-                                                    <fa icon="book" class="text-2xl text-white" />
-                                                </div>
-                                                <div class="ml-3 overflow-hidden">
-                                                    <h2 class="text-slate-900 group-hover:text-white text-sub-header font-semibold">New project</h2>
-                                                    <p class="text-slate-500 group-hover:text-white text-sm">Create a new project from a variety of starting templates.</p>
-                                                </div>
-                                            </li>
+                                        <ul role="list" v-if="studentDevelopmentList.length > 0">
+                                            <template v-for="(item, index) in studentDevelopmentList">
+                                                <li class="group/item bg-white shadow-soft-xs hover:bg-slate-100 p-3 rounded-2 mb-2 flex">
+                                                    <div class="ml-3 overflow-hidden">
+                                                        <h2 class="text-slate-900 group-hover:text-white text-sub-header font-semibold">{{ item.date }}</h2>
+                                                        <p class="text-slate-500 group-hover:text-white text-sm">{{ item.note }}</p>
+                                                    </div>
+                                                </li>
+                                            </template>
                                         </ul>
+                                        <div v-else class="flex flex-col items-center justify-center min-h-[19rem]">
+                                            <div class="h-14 w-14 rounded-full bg-lime-500 flex items-center justify-center my-3">
+                                                    <fa icon="book" class="text-2xl text-white" />
+                                                </div>
+                                            <div class="font-semibold">{{ translate('studentDevelopmentNotes') }}</div>
+                                            <span class="text-gray-500">{{ translate('thereIsNoAnyPreviousNotes') }}</span>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
@@ -161,8 +113,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useStudentStore, type ClassRoom, Parent, StudentForm, Student } from "@/stores/students";
+import { useStudentStore, type ClassRoom, Parent, StudentForm, Student, StudentDevelopmentForm } from "@/stores/students";
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 export default defineComponent({
     name: "student-profile",
@@ -182,15 +135,22 @@ export default defineComponent({
 
         const submitButton = ref<HTMLButtonElement | null>(null);
         const studentInfo = ref<Array<Student>>([]);
+        const studentDevelopmentList = ref<Array<any>>([]);
         const studentDevelopmentForm = ref({
+            studentId: "",
             firstName: "",
             lastName: "",
             note: "",
             loading: false,
         });
 
+        const formErrors = ref<StudentDevelopmentForm>({
+            note: "",
+        });
+
         onMounted(async () => {
             await getStudentInfo();
+            await getStudentDevelopmentNotes();
         });
 
         const getStudentInfo = async () => {
@@ -201,10 +161,32 @@ export default defineComponent({
                 });
                 studentInfo.value.splice(0, studentInfo.value.length, ...results);
 
+                studentDevelopmentForm.value.studentId = studentInfo?.value[0].id.toString() || "";
                 studentDevelopmentForm.value.firstName = studentInfo?.value[0].first_name || "";
                 studentDevelopmentForm.value.lastName = studentInfo?.value[0].last_name || "";
             } else {
                 router.go(-1);
+            }
+        }
+
+        const getStudentDevelopmentNotes = async() => {
+            const inputs = {
+                studentId: studentDevelopmentForm.value.studentId,
+            }
+            await store.fetchStudentDevelopmentNotes(inputs);
+            const error = Object.values(store.errors);
+            if (error.length === 0) {
+                studentDevelopmentList.value.splice(0, studentDevelopmentList.value.length, ...store.studentDevelopmentList);
+            } else {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try again!'
+                }).then((result) => {
+                    store.errors = {};
+                })
             }
         }
 
@@ -213,7 +195,43 @@ export default defineComponent({
         });
 
         const submitStudentDevelopment = async() => {
+            studentDevelopmentForm.value.loading = true;
+            if (submitButton.value) { 
+                submitButton.value!.disabled = true;
+            }
+            const inputs = {
+                studentId: studentDevelopmentForm.value.studentId,
+                note: studentDevelopmentForm.value.note
+            }
+            let response = await store.addStudentDevelopmentNote(inputs);
+            const error = Object.values(store.errors);
+            formErrors.value = Object(store.formDataErrors);
+            if (error.length === 0) {
+                Swal.fire({
+                    title: translate('goodJob') + '!',
+                    text: translate(response.message),
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: translate('okGotIt') + '!'
+                }).then(() => {
+                    studentDevelopmentForm.value.note = "";
+                    studentDevelopmentForm.value.loading = false;
+                });
+            } else {
+                Swal.fire({
+                    title: translate('opps') + '...',
+                    text: error[0] as string,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: translate('tryAgain') + '!'
+                }).then((result) => {
+                    store.errors = {};
+                    store.formDataErrors = {};
+                })
+            }
 
+            submitButton.value!.disabled = false;
+            studentDevelopmentForm.value.loading = false;
         }
 
         const resetForm = async() => {}
@@ -224,7 +242,8 @@ export default defineComponent({
             submitButton,
             submitStudentDevelopment,
             studentName,
-            resetForm
+            resetForm,
+            studentDevelopmentList
         }
     }
 });

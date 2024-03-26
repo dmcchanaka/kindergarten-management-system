@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('students-list', [StudentController::class, 'fetchStudentsList']);
     Route::post('update-student', [StudentController::class, 'updateStudent']);
     Route::post('student-remove', [StudentController::class, 'studentRemove']);
+    Route::post('student-development-registration', [StudentController::class, 'studentDevelopmentRegistration']);
+    Route::post('student-development-notes-list', [StudentController::class, 'studentDevelopmentNoteList']);
 
     //content area
     Route::post('student-list-associate-with-class-room', [GalleryController::class, 'studentListAssociateWithClassRoom']);
