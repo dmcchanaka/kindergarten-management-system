@@ -389,7 +389,7 @@ class StudentController extends Controller
                 if(isset($request['studentId']) && $request['studentId']!= ""){
                     $studentDevelopmentQuery->where('student_id', $request['studentId']);
                 }
-                $studentDevelopment = $studentDevelopmentQuery->get();
+                $studentDevelopment = $studentDevelopmentQuery->orderBy('id','desc')->get();
                 $studentDevelopment->transform(function($std){
                     $organization = $std->student->organization ? [
                         'id' => $std->student->organization->id,
@@ -410,7 +410,7 @@ class StudentController extends Controller
                     return [
                         'id'=>$std->id,
                         'note'=>$std->note,
-                        'date'=>date('F d, Y', strtotime($std->created_at)),
+                        'date'=>date('F d, Y H:i:s A', strtotime($std->created_at)),
                         'organization'=>$organization,
                         'class_room'=>$classRoom,
                         'guardian'=>$guardian,

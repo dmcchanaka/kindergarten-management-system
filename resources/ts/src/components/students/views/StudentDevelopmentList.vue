@@ -213,9 +213,10 @@ export default defineComponent({
                     icon: 'success',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: translate('okGotIt') + '!'
-                }).then(() => {
+                }).then(async() => {
                     studentDevelopmentForm.value.note = "";
                     studentDevelopmentForm.value.loading = false;
+                    await getStudentDevelopmentNotes();
                 });
             } else {
                 Swal.fire({
