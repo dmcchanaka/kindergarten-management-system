@@ -160,7 +160,12 @@ const messages = {
         calendar: "Calendar",
         startDate: "Start Date",
         endDate: "End Date",
-        export: "Export"
+        export: "Export",
+        studentDevelopment: "Student Development",
+        previousNotes: "Previous Notes",
+        note: "Note",
+        studentDevelopmentNotes: "Student Development Notes",
+        thereIsNoAnyPreviousNotes: "There Is No Any Previous Notes"
     },
     de: {
         home: "Startseite",
@@ -319,7 +324,12 @@ const messages = {
         calendar: "Kalender",
         startDate: "Begin datum",
         endDate: "Einddatum",
-        export: "Exporteren"
+        export: "Exporteren",
+        studentDevelopment: "Ontwikkeling van studenten",
+        previousNotes: "Vorige opmerkingen",
+        note: "Opmerking",
+        studentDevelopmentNotes: "Aantekeningen over de ontwikkeling van studenten",
+        thereIsNoAnyPreviousNotes: "Er zijn geen eerdere opmerkingen"
     },
 };
 

@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
+import StudentDevelopmentList from "@/components/students/views/StudentDevelopmentList.vue";
 
 export interface ClassRoom {
     id: number;
@@ -50,12 +51,32 @@ export interface Guardian {
     description: string;
 }
 
+export interface Child {
+    id: number;
+    name: string;
+}
+
+export interface StudentDevelopmentForm {
+    note: ""
+}
+
+export interface StudentDevelopment {
+    id: number,
+    note: string,
+    date: string, 
+    organization: Organization;
+    class_room: ClassRoom;
+    guardian: Guardian;
+    student: Child;
+}
+
 export const useStudentStore = defineStore("student", () => {
     const errors = ref({});
     const formDataErrors = ref({});
     const classRoomList = ref<ClassRoom[]>([]);
     const parentsList = ref<Parent[]>([]);
     const studentList = ref<Student[]>([]);
+    const studentDevelopmentList = ref<StudentDevelopment[]>([]);
     const idStudent = ref(0);
 
 
@@ -111,8 +132,6 @@ export const useStudentStore = defineStore("student", () => {
                return data;
             })
             .catch(({ response }) => {
-                console.log(response);
-                
                 if (response.status !== 200) {
                     let errorMsg = '';
                     if (typeof response.data.errors === 'object') {
@@ -124,7 +143,6 @@ export const useStudentStore = defineStore("student", () => {
                         message : errorMsg,
                         status : response.status,
                     }
-                    console.log(error);
                     setError(error);
                     setFormDataErrors(response.data.errors);
                 }
@@ -215,6 +233,51 @@ export const useStudentStore = defineStore("student", () => {
             });
     }
 
+    function addStudentDevelopmentNote(inputs) {
+        return ApiService.post("/student-development-registration", inputs)
+        .then(({ data }) => {
+           return data;
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                let errorMsg = '';
+                if (typeof response.data.errors === 'object') {
+                    errorMsg = 'someFieldsAreMissing';
+                } else {
+                    errorMsg = response.data.errors;
+                }
+                const error = {
+                    message : errorMsg,
+                    status : response.status,
+                }
+                setError(error);
+                setFormDataErrors(response.data.errors);
+            }
+        });
+    }
+
+    function fetchStudentDevelopmentNotes(inputs) {
+        return ApiService.post("/student-development-notes-list", inputs)
+        .then(({ data }) => {
+            console.log(data);
+            setStudentDevelopmentNotes(data.notes);
+        })
+        .catch(({ response }) => {
+            if (response.status === 404) {
+                const error = {
+                    message : response.data.errors,
+                    status : response.status,
+                }
+                setError(error);
+            }
+        });
+    }
+
+    function setStudentDevelopmentNotes(studentDev: StudentDevelopment[]) {
+        studentDevelopmentList.value = studentDev;
+        errors.value = {};
+    }
+
     return {
         lookupClassRooms,
         classRoomList,
@@ -229,6 +292,9 @@ export const useStudentStore = defineStore("student", () => {
         idStudent,
         studentModification,
         removeStudent,
-        fetchAllStudentList
+        fetchAllStudentList,
+        addStudentDevelopmentNote,
+        fetchStudentDevelopmentNotes,
+        studentDevelopmentList
     }
 });

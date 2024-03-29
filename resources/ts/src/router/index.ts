@@ -198,6 +198,24 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+              path: "/student-profile",
+              name: "student-profile",
+              component: () => import("@/components/students/views/Profile.vue"),
+              meta: {
+                pageTitle: "students",
+                breadcrumbs: ["studentProfile"],
+              },
+            },
+            {
+              path: "/student-development",
+              name: "student-development",
+              component: () => import("@/components/students/views/StudentDevelopmentList.vue"),
+              meta: {
+                pageTitle: "students",
+                breadcrumbs: ["studentDevelopment"],
+              },
+            },
+            {
               path: "/gallery",
               name: "gallery",
               component: () => import("@/views/gallery/GalleryList.vue"),
