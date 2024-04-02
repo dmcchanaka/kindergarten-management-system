@@ -150,8 +150,6 @@ class ChatController extends Controller
             $updateMessage = Chat::with(['sender', 'group'])->find($message->id);
             event(new GroupChatEvent($updateMessage));
         }
-
-        // broadcast(new NewChatMessage($request->message, $user->name))->toOthers();
         return response()->json([
             'result'=>true,
             'message' => $updateMessage,
@@ -235,7 +233,9 @@ class ChatController extends Controller
             ]);
 
             if(isset($request['users']) && sizeof($request['users'])> 0){
-                $classRoom->users()->sync($request['users']);
+                $users = $request->input('users', []);
+                $users[] = $user->getKey();
+                $classRoom->users()->sync($users);
             }
             DB::commit();
 

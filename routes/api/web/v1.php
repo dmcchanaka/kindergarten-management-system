@@ -94,6 +94,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('chat-groups-list', [ChatController::class, 'chatGroupList']);
     Route::post('user-group-messages', [ChatController::class, 'userGroupMessages']);
+    Route::post('user-group-old-messages', [ChatController::class, 'userGroupMessages']);
     Route::post('chat-room-registration', [ChatController::class, 'chatRoomRegistration']);
     Route::post('update-group-message-seen', [ChatController::class, 'updateGroupMessageSeen']);
 

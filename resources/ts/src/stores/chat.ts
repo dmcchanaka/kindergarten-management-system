@@ -32,6 +32,7 @@ export const useChatStore = defineStore("chat", () => {
 
     const groupChatMessagesList = ref<any[]>([]);
     const groupChatOldMessagesList = ref<any[]>([]);
+    const groupChatId = ref(null);
 
     const pusher = inject('pusher');
 
@@ -72,6 +73,14 @@ export const useChatStore = defineStore("chat", () => {
                     chatGroupList.value[userIndex].unseen_messages += 1;
                 }
             }
+
+            // Filter messages based on conditions
+            userMessagesList.value = userMessagesList.value.filter(message => {
+                // Keep the message if it satisfies the conditions
+                return (
+                    (groupChatId.value == message.group_id)
+                );
+            });
         });
     }
 
@@ -87,8 +96,20 @@ export const useChatStore = defineStore("chat", () => {
                 // If not a duplicate, add the new message to userMessagesList
                 userMessagesList.value.push(newMessage);
             }
-            
+
+            // Filter messages based on conditions
+            userMessagesList.value = userMessagesList.value.filter(message => {
+                // Keep the message if it satisfies the conditions
+                return (
+                    (currentUser == message.sender_id && userId == message.receiver_id) ||
+                    (currentUser == message.receiver_id && userId == message.sender_id)
+                );
+            });
         });
+    }
+
+    function saveGroupChatId(groupId) {
+        groupChatId.value = groupId;
     }
 
     function subscribeGroupChannel(groupId, currentUser) {
@@ -103,6 +124,14 @@ export const useChatStore = defineStore("chat", () => {
                 // If not a duplicate, add the new message to userMessagesList
                 userMessagesList.value.push(newMessage);
             }
+            
+            // Filter messages based on conditions
+            userMessagesList.value = userMessagesList.value.filter(message => {
+                // Keep the message if it satisfies the conditions
+                return (
+                    (groupChatId.value == message.group_id)
+                );
+            });
         });
     }
 
@@ -318,6 +347,7 @@ export const useChatStore = defineStore("chat", () => {
         chatRoomRegistration,
         formDataErrors,
         updateGroupMessageSeenStatus,
-        setGlobalGroupChatChannelConnection
+        setGlobalGroupChatChannelConnection,
+        saveGroupChatId
     }
 });
