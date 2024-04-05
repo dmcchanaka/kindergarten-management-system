@@ -6,6 +6,7 @@ use App\Events\ChatEvent;
 use App\Events\GroupChatEvent;
 use App\Events\NewChatMessage;
 use App\Http\Controllers\Controller;
+use App\Jobs\StartChatNotification;
 use App\Models\Chat;
 use App\Models\ChatGroup;
 use App\Models\ChatGroupUser;
@@ -146,10 +147,51 @@ class ChatController extends Controller
         if($request->chatType == 0){
             $updateMessage = Chat::with(['sender', 'receiver'])->find($message->id);
             event(new NewChatMessage($updateMessage));
+
+            $params = [
+                'sender_id'=>$user->getKey(),
+                'receiver_id'=>$request->userId,
+                'group_id'=>NULL
+            ];
+            $data = [
+                'sender'=>$updateMessage->sender->name,
+                'message'=>$updateMessage->message,
+                'receiver'=> [
+                    'name' => $updateMessage->receiver->name,
+                    'email' => $updateMessage->receiver->email
+                ],
+            ];
         } else {
             $updateMessage = Chat::with(['sender', 'group'])->find($message->id);
             event(new GroupChatEvent($updateMessage));
+
+            $params = [
+                'sender_id'=>$user->getKey(),
+                'receiver_id'=>NULL,
+                'group_id'=>$request->userId
+            ];
+
+            $group = ChatGroup::findOrFail($request->userId);
+            $groupUsers = $group->users->whereNotIn('id', [$user->id]);
+            $receivers = [];
+            foreach ($groupUsers as $receiver) {
+                $receivers[] = [
+                    'name' => $receiver->name,
+                    'email' => $receiver->email
+                ];
+            }
+            $data = [
+                'sender'=>$updateMessage->sender->name,
+                'message'=>$updateMessage->message,
+                'receiver'=>$receivers
+            ];
         }
+
+        $chatCount = Chat::where($params)->count();
+        if($chatCount == 1){
+            dispatch(new StartChatNotification($data));
+        }
+
         return response()->json([
             'result'=>true,
             'message' => $updateMessage,
