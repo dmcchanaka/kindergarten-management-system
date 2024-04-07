@@ -157,8 +157,10 @@ class ChatController extends Controller
                 'sender'=>$updateMessage->sender->name,
                 'message'=>$updateMessage->message,
                 'receiver'=> [
+                    [
                     'name' => $updateMessage->receiver->name,
                     'email' => $updateMessage->receiver->email
+                    ]
                 ],
             ];
         } else {
@@ -195,6 +197,8 @@ class ChatController extends Controller
         return response()->json([
             'result'=>true,
             'message' => $updateMessage,
+            'data'=>$data,
+            'chatCount'=>$chatCount
         ],200);
     }
 

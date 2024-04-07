@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\StartConversation;
+use App\Mail\NewsfeedAlert;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
-class StartChatNotification implements ShouldQueue
+class SendNewsFeedNotification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,16 +31,13 @@ class StartChatNotification implements ShouldQueue
     public function handle(): void
     {
         try {
-            foreach($this->data['receiver'] AS $mail){
-
+            foreach($this->data AS $mail){
                 $mailInfo = [
-                    'sender'=>$this->data['sender'],
-                    'message'=>$this->data['message'],
-                    'receiver_name'=>$mail['name'],
-                    'receiver_email'=>$mail['email'],
+                    'receiver_name'=>$mail['parent_name'],
+                    'receiver_email'=>$mail['parent_email'],
                 ];
-                Mail::to($mail['email'])->send(new StartConversation($mailInfo));
-                Log::info('Job assigning email sent successfully.', ['data' => $mailInfo]);
+                Mail::to($mail['parent_email'])->send(new NewsfeedAlert($mailInfo));
+                Log::info('newsfeed email sent successfully.', ['data' => $mailInfo]);
             }
         } catch (\Exception $exception) {
             Log::error('Failed to send job assigning email.', ['exception' => $exception->getMessage(), 'data' => $mailInfo]);
