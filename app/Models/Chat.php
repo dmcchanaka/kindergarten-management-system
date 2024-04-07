@@ -44,7 +44,8 @@ class Chat extends Model
             ->orWhere(function($sub) use ($sender, $receiever){
                 $sub->where('receiver_id', $sender)
                     ->where('sender_id', $receiever);
-            });
+            })
+            ->whereNotNull('receiver_id');
         });
         return $query;
     }

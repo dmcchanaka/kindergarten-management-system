@@ -579,11 +579,13 @@ export default defineComponent({
         }
 
         const openGroupChat = async(groupId) => {
+            console.log('selected group is ' + groupId);
             const filteredGroupList = groupList.value.filter(item => item.id === groupId);
             chatApp.value.user = filteredGroupList[0].name;
             chatApp.value.isChatOpen = true;
             chatApp.value.groupId = groupId;
 
+            store.saveGroupChatId(groupId);
             store.subscribeGroupChannel(groupId, currentUser.value);
 
             await fetchGroupChatList(groupId);

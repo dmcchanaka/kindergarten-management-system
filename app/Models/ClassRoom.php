@@ -22,4 +22,8 @@ class ClassRoom extends Model
     {
         return $this->belongsToMany(User::class, 'class_room_teachers', 'cls_room_id', 'teacher_id')->withTimestamps();
     }
+
+    public function students(){
+        return $this->hasMany(Student::class, 'class_room_id', 'id');
+    }
 }

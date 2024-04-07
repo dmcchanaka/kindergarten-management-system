@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendNewsFeedNotification;
 use App\Models\Activity;
 use App\Models\ActivityImage;
 use App\Models\Student;
@@ -113,6 +114,8 @@ class GalleryController extends Controller
                 }
             }
             DB::commit();
+
+            dispatch(new SendNewsFeedNotification($data));
 
             return response()->json([
                 'result' => true,
@@ -240,80 +243,105 @@ class GalleryController extends Controller
 
             $activity = Activity::findOrFail($request->input('id'));
 
-            // Delete existing feature image
-            if ($activity->feature_img_url) {
-                $existingFeatureImagePath = public_path($activity->feature_img_url);
-                if (file_exists($existingFeatureImagePath)) {
-                    unlink($existingFeatureImagePath);
+            // // Delete existing feature image
+            // if ($activity->feature_img_url) {
+            //     $existingFeatureImagePath = public_path($activity->feature_img_url);
+            //     if (file_exists($existingFeatureImagePath)) {
+            //         unlink($existingFeatureImagePath);
+            //     }
+            // }
+
+            // // Delete existing images
+            // $existingActivityImgs = $activity->activity_images;
+            // foreach ($existingActivityImgs as $existingImage) {
+            //     // Delete image file from storage
+            //     $imagePath = public_path($existingImage->activity_img_url);
+            //     if (file_exists($imagePath)) {
+            //         unlink($imagePath);
+            //     }
+            //     // Delete record from the database
+            //     $existingImage->delete();
+            // }
+
+            // $activity->title = $request->input('title');
+            // $activity->description = $request->input('description');
+            // $activity->org_id = $request->input('org_id');
+            // $activity->class_room_id = $request->input('class_room_id');
+            // $activity->student_id = $request->input('student_id');
+
+            
+
+            // $featureImageUrl = "";
+            // $featureImage = $request->file('feature_image');
+            // if ($featureImage) {
+            //     $imageName = md5(uniqid() . microtime()) . '.'.$featureImage->getClientOriginalExtension();
+            //     $path = storage_path('app/public/classroom/images/' . $imageName);
+            
+            //     // Resize and save the image
+            //     Image::make($featureImage)
+            //             ->resize(500, 500, function ($constraint) {
+            //                 $constraint->aspectRatio();
+            //                 // $constraint->upsize();
+            //             })
+            //         ->save($path);
+            //     $featureImageUrl = Storage::url('public/classroom/images/'.$imageName);
+            //     $activity->feature_img_url = $featureImageUrl;
+            // }
+            // $activity->save();
+
+            // //insert new activity images
+            // $contentImages = $request->file('content_images');
+            // if ($contentImages) {
+            //     foreach ($contentImages as $contentImage) {
+            //         $subImageName = md5(uniqid() . microtime()) . '.' . $contentImage->getClientOriginalExtension();
+            //         $path = storage_path('app/public/classroom/images/' . $subImageName);
+            
+            //         // Resize and save the image
+            //         Image::make($contentImage)
+            //             ->resize(500, 500, function ($constraint) {
+            //                 $constraint->aspectRatio();
+            //                 // $constraint->upsize();
+            //             })
+            //             ->save($path);
+            //         $subImageUrl = Storage::url('public/classroom/images/'.$subImageName);
+            
+            //         $activityImage = new ActivityImage();
+            //         $activityImage->activity_id = $activity->getKey();
+            //         $activityImage->activity_img_url = $subImageUrl;
+            //         $activityImage->save();
+            //     }
+            // }
+
+            if($activity->student_id){
+                if ($activity->student->guardian) {
+                    $data = [
+                        [
+                            'parent_name'=>$activity->student->guardian->name,
+                            'parent_email'=>$activity->student->guardian->email,
+                        ]
+                    ];
+                } else {
+                    $data = []; 
                 }
-            }
-
-            // Delete existing images
-            $existingActivityImgs = $activity->activity_images;
-            foreach ($existingActivityImgs as $existingImage) {
-                // Delete image file from storage
-                $imagePath = public_path($existingImage->activity_img_url);
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
+                
+            } else {
+                $parents = [];
+                foreach ($activity->class_room->students as $student) {
+                    $parents[] = [
+                        'parent_name' => $student->guardian->name,
+                        'parent_email' => $student->guardian->email,
+                    ];
                 }
-                // Delete record from the database
-                $existingImage->delete();
+                $data = $parents;
             }
-
-            $activity->title = $request->input('title');
-            $activity->description = $request->input('description');
-            $activity->org_id = $request->input('org_id');
-            $activity->class_room_id = $request->input('class_room_id');
-            $activity->student_id = $request->input('student_id');
-
-            
-
-            $featureImageUrl = "";
-            $featureImage = $request->file('feature_image');
-            if ($featureImage) {
-                $imageName = md5(uniqid() . microtime()) . '.'.$featureImage->getClientOriginalExtension();
-                $path = storage_path('app/public/classroom/images/' . $imageName);
-            
-                // Resize and save the image
-                Image::make($featureImage)
-                        ->resize(500, 500, function ($constraint) {
-                            $constraint->aspectRatio();
-                            // $constraint->upsize();
-                        })
-                    ->save($path);
-                $featureImageUrl = Storage::url('public/classroom/images/'.$imageName);
-                $activity->feature_img_url = $featureImageUrl;
-            }
-            $activity->save();
-
-            //insert new activity images
-            $contentImages = $request->file('content_images');
-            if ($contentImages) {
-                foreach ($contentImages as $contentImage) {
-                    $subImageName = md5(uniqid() . microtime()) . '.' . $contentImage->getClientOriginalExtension();
-                    $path = storage_path('app/public/classroom/images/' . $subImageName);
-            
-                    // Resize and save the image
-                    Image::make($contentImage)
-                        ->resize(500, 500, function ($constraint) {
-                            $constraint->aspectRatio();
-                            // $constraint->upsize();
-                        })
-                        ->save($path);
-                    $subImageUrl = Storage::url('public/classroom/images/'.$subImageName);
-            
-                    $activityImage = new ActivityImage();
-                    $activityImage->activity_id = $activity->getKey();
-                    $activityImage->activity_img_url = $subImageUrl;
-                    $activityImage->save();
-                }
-            }
+            dispatch(new SendNewsFeedNotification($data));
 
             DB::commit();
 
             return response()->json([
                 'result' => true,
-                'message' => 'Record has been successfuly updated'
+                'message' => 'Record has been successfuly updated',
+                'data'=>$data,
             ], 200);
             
         } catch(Exception $e){
