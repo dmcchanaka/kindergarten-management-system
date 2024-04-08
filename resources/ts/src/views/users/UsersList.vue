@@ -41,7 +41,7 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.contact_number }}</a>
             </template>
             <template v-slot:user-role="{ row: users }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.user_role }}</a>
+                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.user_role.name }}</a>
             </template>
             <template v-slot:address="{ row: users }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ users.address }}</a>
