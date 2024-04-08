@@ -11,7 +11,7 @@
                             <div class="mt-3">
                             <label
                                 for="logoInput"
-                                class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
+                                class="inline-block px-6 py-3 mr-1 text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom"
                             >
                                 <input
                                 id="logoInput"
@@ -49,7 +49,7 @@
                             placeholder="•••••••••" required>
                     </div>
                     <button ref="passwordUpdateButton" type="submit" :disabled="userProfile.pwLoading"
-                        class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                        class="inline-block px-6 py-2 mr-1 text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
                         <span v-if="!userProfile.pwLoading">{{ translate('submit') }}</span>
                         <span v-if="userProfile.pwLoading">
                             {{ translate('pleaseWait') }}...
@@ -90,7 +90,7 @@
                         <ErrorLabel v-if="formErrors.email" :error="formErrors.email"></ErrorLabel>
                     </div>
                     <button ref="submitButton" type="submit" :disabled="userProfile.basicProfileLoading"
-                        class="inline-block px-6 py-3 mr-1 font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25">
+                        class="inline-block px-6 py-2 mr-1 text-center text-white uppercase transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl bg-lime-500 hover:bg-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
                         <span v-if="!userProfile.basicProfileLoading">{{ translate('submit') }}</span>
                         <span v-if="userProfile.basicProfileLoading">
                         {{ translate('pleaseWait') }}...
