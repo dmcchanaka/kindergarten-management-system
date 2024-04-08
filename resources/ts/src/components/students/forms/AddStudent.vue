@@ -45,7 +45,7 @@
                                                 </div>
                                                 <div>
                                                     <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ translate('dateOfBirth') }}</label>
-                                                    <Datepicker :format="format" :locale="i18n.locale.value" :cancelText="translate('cancel')" :selectText="translate('select')" v-model="studentForm.dateOfBirth" :placeholder="translate('dateOfBirth')" class=" text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                                                    <Datepicker @update:model-value="handleDate" :format="format" :locale="i18n.locale.value" :cancelText="translate('cancel')" :selectText="translate('select')" v-model="studentForm.dateOfBirth" :placeholder="translate('dateOfBirth')" class=" text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                                     <ErrorLabel v-if="formErrors.date_of_birth" :error="formErrors.date_of_birth"></ErrorLabel>
                                                 </div>
                                                 <div>
@@ -416,6 +416,20 @@ export default defineComponent({
             studentForm.value.parentId = "";
         }
 
+        const handleDate = (modelData) => {
+            studentForm.value.dateOfBirth = modelData;
+            const birthDate = new Date(modelData);
+            const today = new Date();
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            studentForm.value.age = age.toString();
+        }
+
         return {
             translate,
             studentForm,
@@ -430,7 +444,8 @@ export default defineComponent({
             resetForm,
             selectStudentImage,
             format,
-            i18n
+            i18n,
+            handleDate
         }
     }
 });
