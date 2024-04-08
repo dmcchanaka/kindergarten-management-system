@@ -20,8 +20,8 @@
     <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
     <!--user profile-->
     <div class="flex flex-col items-center justify-center w-full">
-      <router-link to="my-profile">
-        <img class="h-12 w-12 rounded-full" :src="userProfileImage" alt="" @click.prevent="closeSideBar" />
+      <router-link to="my-profile" @click.prevent="closeSideBar">
+        <img class="h-12 w-12 rounded-full" :src="userProfileImage" alt="" />
       </router-link>
     </div>
     <div class="flex flex-col items-center justify-center w-full">
