@@ -15,6 +15,7 @@ module.exports = {
         'header': 'var(--custom-header-color, #344767)', // Default h1 text color
       },
       fontSize: {
+        'title': '4rem',
         'header': '2rem', // Font size for the 'header' class
         'sub-header': '1.5rem'
       },

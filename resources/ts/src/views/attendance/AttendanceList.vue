@@ -9,6 +9,10 @@
                 <input type="text" v-model="search" @input="searchItems()"
                     class="flex-grow max-w-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     :placeholder="translate('searchAttendace')" />
+                <router-link to="/attendance-form"
+                    class="ml-3 inline-block px-6 py-3 text-lg text-center text-white uppercase align-middle rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                    <fa icon="plus" />&nbsp;&nbsp;{{ translate('attendance') }}
+                </router-link>
             </div>
         </div>
         <Datatable key="userId" @on-sort="sort" @on-items-select="onItemSelect" :data="tableData" :header="tableHeader"
@@ -32,8 +36,8 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ att.classRoom.name }}</a>
             </template>
             <template v-slot:status="{ row: att }">
-                <span v-if="att.approve_status === true" class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('approved') }}</span>
-                <span v-else class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('notYetApproved') }}</span>
+                <span v-if="att.approve_status === true" class=" bg-green-500 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('approved') }}</span>
+                <span v-else class="bg-slate-600 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('notYetApproved') }}</span>
             </template>
             <template v-slot:actions="{ row: att }">
                 <a @click="approveAttendance(att.id)" v-if="att.approve_status === false"

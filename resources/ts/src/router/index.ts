@@ -220,8 +220,8 @@ const routes: Array<RouteRecordRaw> = [
               name: "gallery",
               component: () => import("@/views/gallery/GalleryList.vue"),
               meta: {
-                pageTitle: "gallery",
-                breadcrumbs: ["galleryList"],
+                pageTitle: "post",
+                breadcrumbs: ["postList"],
               },
             },
             {
@@ -229,8 +229,8 @@ const routes: Array<RouteRecordRaw> = [
               name: "add-gallery",
               component: () => import("@/components/gallery/forms/AddGallery.vue"),
               meta: {
-                pageTitle: "gallery",
-                breadcrumbs: ["gallery", "addGallery"],
+                pageTitle: "post",
+                breadcrumbs: ["post", "addPost"],
               },
             },
             {
@@ -238,8 +238,8 @@ const routes: Array<RouteRecordRaw> = [
               name: "edit-gallery",
               component: () => import("@/components/gallery/forms/EditGallery.vue"),
               meta: {
-                pageTitle: "gallery",
-                breadcrumbs: ["gallery", "editGallery"],
+                pageTitle: "post",
+                breadcrumbs: ["post", "editPost"],
               },
             },
             {

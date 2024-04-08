@@ -10,8 +10,13 @@ export interface Users {
     contact_number: string;
     email: number;
     username: string;
-    user_role: string;
+    user_role: Role;
     address: string;
+}
+
+export interface Role {
+    id: number;
+    name: string;
 }
 
 export interface UserForm {

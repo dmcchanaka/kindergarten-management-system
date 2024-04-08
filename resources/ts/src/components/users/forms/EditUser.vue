@@ -190,7 +190,6 @@ export default defineComponent({
                 });
                 userInfo.value.splice(0, userInfo.value.length, ...results);
 
-                console.log(userInfo.value);
                 userForm.value.id = userInfo?.value[0].id.toString() || "";
                 userForm.value.firstName = userInfo?.value[0].first_name || "";
                 userForm.value.lastName = userInfo?.value[0].last_name || "";
@@ -198,6 +197,7 @@ export default defineComponent({
                 userForm.value.phoneNumber = userInfo?.value[0].contact_number || "";
                 userForm.value.address = userInfo?.value[0].address || "";
                 userForm.value.userName = userInfo?.value[0].username || "";
+                userForm.value.userRole = userInfo?.value[0].user_role.id.toString() || "";
             } else {
                 router.go(-1);
             }

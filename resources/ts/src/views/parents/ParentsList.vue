@@ -32,9 +32,6 @@
             <template v-slot:telephone="{ row: parent }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ parent.phone_number }}</a>
             </template>
-            <template v-slot:user-role="{ row: parent }">
-                <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ parent.user_role }}</a>
-            </template>
             <template v-slot:address="{ row: parent }">
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ parent.address }}</a>
             </template>
@@ -121,13 +118,6 @@ export default defineComponent({
                 sortEnabled: true,
                 columnWidth: 100,
                 textAlign: "text-left",
-            },
-            {
-                columnName: computed(()=> { return translate("userRole") }),
-                columnLabel: "user-role",
-                sortEnabled: true,
-                columnWidth: 100,
-                textAlign: "text-center",
             },
             {
                 columnName: computed(()=> { return translate("address") }),
