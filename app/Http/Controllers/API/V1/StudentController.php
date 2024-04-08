@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Models\StudentDevelopment;
 use App\Models\User;
 use App\Traits\UserAllocation;
 use App\Validators\CustomValidator;
@@ -326,6 +327,119 @@ class StudentController extends Controller
                 'result'=>false,
                 'errors' => $e->getMessage()
             ],500);
+        }
+    }
+
+    public function studentDevelopmentRegistration(Request $request){
+        $data = $request->all();
+
+        $rules = [
+            'note' => ['required'],
+        ];
+
+        $attributes = [
+            'note' => 'note',
+        ];
+
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $studentDevelopment = StudentDevelopment::create([
+                'student_id'=>$request['studentId'],
+                'note'=>$request['note'],
+            ]);
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+                'message' => 'recordHasBeenSuccesfullyAdded'
+            ], 200);
+        } catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'result'=>false,
+                'errors' => $e->getMessage()
+            ],500);
+        }
+    }
+
+    public function studentDevelopmentNoteList(Request $request){
+        $user = Auth::user();
+        try {
+            $studentsInfo = $this->getUserRoleRelatedStudents($user);
+
+            if(!$studentsInfo->isEmpty()){
+                $studentDevelopmentQuery = StudentDevelopment::whereIn('student_id', $studentsInfo->pluck('id')->all());
+                if(isset($request['studentId']) && $request['studentId']!= ""){
+                    $studentDevelopmentQuery->where('student_id', $request['studentId']);
+                }
+                $studentDevelopment = $studentDevelopmentQuery->orderBy('id','desc')->get();
+                $studentDevelopment->transform(function($std){
+                    $organization = $std->student->organization ? [
+                        'id' => $std->student->organization->id,
+                        'name' => $std->student->organization->name,
+                    ] : (object)[];
+                    $classRoom = $std->student->class_room ? [
+                        'id' => $std->student->class_room->id,
+                        'name' => $std->student->class_room->name,
+                    ] : (object)[];
+                    $guardian = $std->studentguardian ? [
+                        'id' => $std->student->guardian->id,
+                        'name' => $std->studentguardian->name,
+                    ] : (object)[];
+                    $student = $std->student ? [
+                        'id' => $std->student->id,
+                        'name' => $std->student->first_name. ' '.$std->student->last_name,
+                    ] : (object)[];
+                    return [
+                        'id'=>$std->id,
+                        'note'=>$std->note,
+                        'date'=>date('F d, Y H:i:s A', strtotime($std->created_at)),
+                        'organization'=>$organization,
+                        'class_room'=>$classRoom,
+                        'guardian'=>$guardian,
+                        'student'=>$student,
+                    ];
+                });
+                return response()->json([
+                    'result' => true,
+                    'notes' => $studentDevelopment
+                ], 200);
+            } else {
+                return response()->json([
+                    'result' => false,
+                    'errors' => ['Dont have registered parents']
+                ], 400);
+            }
+            
+        } catch (QueryException $e) {
+            // Handle database query exceptions
+            return response()->json([
+                'result' => false,
+                'errors' => ['Database error: ' . $e->getMessage()]
+            ], 500);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json([
+                'result' => false,
+                'errors' => ['An error occurred: ' . $e->getMessage()]
+            ], 500);
         }
     }
 }

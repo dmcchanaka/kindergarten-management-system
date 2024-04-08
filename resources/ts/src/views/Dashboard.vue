@@ -23,90 +23,10 @@
 
   <div class="w-full py-6 mx-auto">
     <div class="flex flex-wrap -mx-3">
-      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-          <div class="flex-auto p-4">
-            <div class="flex flex-row -mx-3">
-              <div class="flex-none w-2/3 max-w-full px-3">
-                <div>
-                  <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('organizations') }}</p>
-                  <h3 class="mb-0 font-bold">
-                    {{ dashboardOverview?.organizationsCount }}
-                  </h3>
-                </div>
-              </div>
-              <div class="px-3 text-right basis-1/3">
-                <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl bg-lime-500">
-                  <fa icon="school" class="ni leading-none ni-money-coins text-lg relative top-2 text-white h-7" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-          <div class="flex-auto p-4">
-            <div class="flex flex-row -mx-3">
-              <div class="flex-none w-2/3 max-w-full px-3">
-                <div>
-                  <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('classRooms') }}</p>
-                  <h3 class="mb-0 font-bold">
-                    {{ dashboardOverview?.classRoomsCount }}
-                  </h3>
-                </div>
-              </div>
-              <div class="px-3 text-right basis-1/3">
-                <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl bg-lime-500">
-                  <fa icon="chair" class="ni leading-none ni-money-coins text-lg relative top-2 text-white h-7" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-          <div class="flex-auto p-4">
-            <div class="flex flex-row -mx-3">
-              <div class="flex-none w-2/3 max-w-full px-3">
-                <div>
-                  <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('teachers') }}</p>
-                  <h3 class="mb-0 font-bold">
-                    {{ dashboardOverview?.teachersCount }}
-                  </h3>
-                </div>
-              </div>
-              <div class="px-3 text-right basis-1/3">
-                <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl bg-lime-500">
-                  <fa icon="user" class="ni leading-none ni-money-coins text-lg relative top-2 text-white h-7" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-          <div class="flex-auto p-4">
-            <div class="flex flex-row -mx-3">
-              <div class="flex-none w-2/3 max-w-full px-3">
-                <div>
-                  <p class="mb-0 font-sans text-sm font-semibold leading-normal">{{ translate('students') }}</p>
-                  <h3 class="mb-0 font-bold">
-                    {{ dashboardOverview?.studentsCount }}
-                  </h3>
-                </div>
-              </div>
-              <div class="px-3 text-right basis-1/3">
-                <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl bg-lime-500">
-                  <fa icon="baby" class="ni leading-none ni-money-coins text-lg relative top-2 text-white h-7" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <InfoCard title="organizations" icon="school" :count="dashboardOverview?.organizationsCount.toString()" />
+      <InfoCard title="classRooms" icon="chair" :count="dashboardOverview?.classRoomsCount.toString()" />
+      <InfoCard title="teachers" icon="user" :count="dashboardOverview?.teachersCount.toString()" />
+      <InfoCard title="students" icon="baby" :count="dashboardOverview?.studentsCount.toString()" />
     </div>
   </div>
 
@@ -205,8 +125,12 @@ import { useStudentStore, type Student } from "@/stores/students";
 import { useDashboardStore, type Overview } from '@/stores/dashboard';
 import { useI18n } from "vue-i18n";
 
+import InfoCard from "@/components/dashboard/InfoCard.vue";
 export default defineComponent({
   name: "dashboard",
+  components: {
+    InfoCard
+  },
   setup() {
     const store = useAuthStore();
     const studentStore = useStudentStore();

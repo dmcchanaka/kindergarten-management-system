@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('students-list', [StudentController::class, 'fetchStudentsList']);
     Route::post('update-student', [StudentController::class, 'updateStudent']);
     Route::post('student-remove', [StudentController::class, 'studentRemove']);
+    Route::post('student-development-registration', [StudentController::class, 'studentDevelopmentRegistration']);
+    Route::post('student-development-notes-list', [StudentController::class, 'studentDevelopmentNoteList']);
 
     //content area
     Route::post('student-list-associate-with-class-room', [GalleryController::class, 'studentListAssociateWithClassRoom']);
@@ -80,6 +82,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //attendance
     Route::post('attendance-list', [AttendanceController::class, 'fetchAttendanceList']);
+    Route::post('export-attendance-list', [AttendanceController::class, 'exportAttendanceList']);
+    Route::get('export-attendance-list', [AttendanceController::class, 'exportAttendanceList']);
     
     //chat
     Route::post('chat-user-list', [ChatController::class, 'chatUserList']);
@@ -90,6 +94,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('chat-groups-list', [ChatController::class, 'chatGroupList']);
     Route::post('user-group-messages', [ChatController::class, 'userGroupMessages']);
+    Route::post('user-group-old-messages', [ChatController::class, 'userGroupMessages']);
     Route::post('chat-room-registration', [ChatController::class, 'chatRoomRegistration']);
     Route::post('update-group-message-seen', [ChatController::class, 'updateGroupMessageSeen']);
 

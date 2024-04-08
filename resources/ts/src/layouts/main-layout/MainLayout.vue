@@ -1,33 +1,33 @@
 <template>
-  <div :style="{ backgroundColor: backgroundColor }" class="min-h-screen m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500 relative">
+  <div class="min-h-screen flex flex-col m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
     <Aside @close-sidebar="closeSideBar" :class="{ 'translate-x-0': isSidebarOpen, 'shadow-soft-xl': isSidebarOpen }" :style="{ 'margin-left': isSidebarOpen ? null : '0rem' }"></Aside>
-    <main class="ease-soft-in-out xl:ml-68.5 relative h-full min-h-screen rounded-xl transition-all duration-200 pt-2">
-      <Topbar @sidebarToggle="sidebarToggle"></Topbar>
 
+    <!-- Content Area -->
+    <main class="flex-grow px-4 pb-5 ease-soft-in-out xl:ml-68.5 relative h-full min-h-screen rounded-xl transition-all duration-200 pt-2">
+      <Topbar @sidebarToggle="sidebarToggle"></Topbar>
       <div class="w-full px-6 py-1 mx-auto">
         <div class="lg:flex lg:items-center lg:justify-between">
           <div class="flex-1 min-w-0">
             <nav>
               <!-- breadcrumb -->
-              <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+              <!-- <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
                 <li class="leading-normal text-sm">
                   <router-link to="/dashboard" class="text-slate-700 text-sm"><fa icon="home" class="h-3 w-4 text-sm mb-0.5" />&nbsp;{{ translate('home') }}</router-link>
                 </li>
                 <template v-for="(item, i) in breadcrumbs" :key="i">
                   <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">{{ translate(item as string) }}</li>
                 </template>
-              </ol>
-              <h1 class="text-header mb-0 font-bold capitalize">{{ translate(pageTitle as string) }}</h1>
+              </ol> -->
+              <h1 class="text-title mb-0 font-bold capitalize">{{ translate(pageTitle as string) }}</h1>
             </nav>
           </div>
           <div class="flex mt-5 lg:ml-4 lg:mt-0">&nbsp;</div>
         </div>
-        <router-view></router-view>
-        <!-- Footer -->
-        <Footer></Footer>
-        <!-- Footer -->
       </div>
+       <router-view></router-view>
     </main>
+
+    <Footer></Footer>
   </div>
 </template>
 <style lang="scss">

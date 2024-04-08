@@ -1,4 +1,5 @@
 <template>
+    <AttendanceFilterCard @search-attendance="searchAttendance" @export-attendance="exportAttendance" />
     <div class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="flex flex-wrap -mx-3">
             <div class="flex items-center flex-none w-full sm:w-1/2 max-w-full px-3 mb-2 sm:mb-0">
@@ -8,6 +9,10 @@
                 <input type="text" v-model="search" @input="searchItems()"
                     class="flex-grow max-w-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     :placeholder="translate('searchAttendace')" />
+                <router-link to="/attendance-form"
+                    class="ml-3 inline-block px-6 py-3 text-lg text-center text-white uppercase align-middle rounded-lg cursor-pointer leading-pro ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                    <fa icon="plus" />&nbsp;&nbsp;{{ translate('attendance') }}
+                </router-link>
             </div>
         </div>
         <Datatable key="userId" @on-sort="sort" @on-items-select="onItemSelect" :data="tableData" :header="tableHeader"
@@ -31,8 +36,8 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6">{{ att.classRoom.name }}</a>
             </template>
             <template v-slot:status="{ row: att }">
-                <span v-if="att.approve_status === true" class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('approved') }}</span>
-                <span v-else class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('notYetApproved') }}</span>
+                <span v-if="att.approve_status === true" class=" bg-green-500 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('approved') }}</span>
+                <span v-else class="bg-slate-600 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">{{ translate('notYetApproved') }}</span>
             </template>
             <template v-slot:actions="{ row: att }">
                 <a @click="approveAttendance(att.id)" v-if="att.approve_status === false"
@@ -52,13 +57,16 @@ import { useI18n } from "vue-i18n";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import arraySort from "array-sort";
 
-import { useAttendanceStore, type Attendance } from "@/stores/attendance";
+import { useAttendanceStore, type Attendance,AttendanceFilters } from "@/stores/attendance";
 import Datatable from "@/components/table/Datatable.vue";
+
+import AttendanceFilterCard from "@/components/attendance/filter/FilterCard.vue";
 
 export default defineComponent({
     name: "attendance-list",
     components: {
-        Datatable
+        Datatable,
+        AttendanceFilterCard
     },
     setup(){
         const { t, te } = useI18n();
@@ -76,7 +84,7 @@ export default defineComponent({
         const attendanceList = ref<Array<Attendance>>([]);
         const tableData = ref<Array<Attendance>>([]);
 
-            const tableHeader = ref([
+        const tableHeader = ref([
             {
                 columnName: "#",
                 columnLabel: "id",
@@ -139,8 +147,8 @@ export default defineComponent({
             await fetchAttendanceList();
         });
 
-        const fetchAttendanceList = async () => {
-            await store.fetchAttendanceList();
+        const fetchAttendanceList = async (options = {orgId: "",classRoomId: "",fromDate: "",toDate: ""}) => {
+            await store.fetchAttendanceList(options);
             const error = Object.values(store.errors);
             if (error.length === 0) {
                 attendanceList.value.splice(0, attendanceList.value.length, ...store.studentAttendanceList);
@@ -246,6 +254,50 @@ export default defineComponent({
             });
         }
 
+        const searchAttendance = async (data) => {
+            const inputs = {
+                orgId: data.value.orgId,
+                classRoomId: data.value.classRoomId,
+                fromDate: data.value.fromDate,
+                toDate: data.value.toDate ,
+            }
+            await fetchAttendanceList(inputs);
+        }
+
+        const exportAttendance = async (data) => {
+            const inputs = {
+                orgId: data.value.orgId,
+                classRoomId: data.value.classRoomId,
+                fromDate: data.value.fromDate,
+                toDate: data.value.toDate ,
+            }
+            const response = await store.exportAttendanceList(inputs);
+            const error = Object.values(store.errors);
+            if (error.length === 0) {
+                if (response.result && response.excel_url) {
+                    const link = document.createElement('a');
+                    link.href = response.excel_url;
+                    link.setAttribute('download', response.excel_name); // Set the desired filename
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link); // Clean up
+                } else {
+                    // Handle errors or display messages if needed
+                    console.error('Export failed:', response.errors);
+                }
+            } else {
+                Swal.fire({
+                    title: translate('opps') + '...',
+                    text: translate(error[0] as string),
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: translate('tryAgain') + '!'
+                }).then((result) => {
+                    store.errors = {};
+                })
+            }
+        }
+
         return {
             translate,
             tableData,
@@ -254,7 +306,9 @@ export default defineComponent({
             sort,
             onItemSelect,
             search,
-            approveAttendance
+            approveAttendance,
+            searchAttendance,
+            exportAttendance
         }
     }
 });

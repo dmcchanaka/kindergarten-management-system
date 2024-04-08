@@ -198,12 +198,30 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
+              path: "/student-profile",
+              name: "student-profile",
+              component: () => import("@/components/students/views/Profile.vue"),
+              meta: {
+                pageTitle: "students",
+                breadcrumbs: ["studentProfile"],
+              },
+            },
+            {
+              path: "/student-development",
+              name: "student-development",
+              component: () => import("@/components/students/views/StudentDevelopmentList.vue"),
+              meta: {
+                pageTitle: "students",
+                breadcrumbs: ["studentDevelopment"],
+              },
+            },
+            {
               path: "/gallery",
               name: "gallery",
               component: () => import("@/views/gallery/GalleryList.vue"),
               meta: {
-                pageTitle: "gallery",
-                breadcrumbs: ["galleryList"],
+                pageTitle: "post",
+                breadcrumbs: ["postList"],
               },
             },
             {
@@ -211,8 +229,8 @@ const routes: Array<RouteRecordRaw> = [
               name: "add-gallery",
               component: () => import("@/components/gallery/forms/AddGallery.vue"),
               meta: {
-                pageTitle: "gallery",
-                breadcrumbs: ["gallery", "addGallery"],
+                pageTitle: "post",
+                breadcrumbs: ["post", "addPost"],
               },
             },
             {
@@ -220,8 +238,8 @@ const routes: Array<RouteRecordRaw> = [
               name: "edit-gallery",
               component: () => import("@/components/gallery/forms/EditGallery.vue"),
               meta: {
-                pageTitle: "gallery",
-                breadcrumbs: ["gallery", "editGallery"],
+                pageTitle: "post",
+                breadcrumbs: ["post", "editPost"],
               },
             },
             {

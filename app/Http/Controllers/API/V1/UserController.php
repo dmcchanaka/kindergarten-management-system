@@ -167,6 +167,10 @@ class UserController extends Controller {
                 $userQuery->whereIn('id', $usersInfo->pluck('id')->all());
                 $users = $userQuery->orderBy('u_tp_id', 'ASC')->get();
                 $users->transform(function($user){
+                    $userRole = $user->user_type ? [
+                        'id' => $user->user_type->u_tp_id,
+                        'name' => $user->user_type->user_type,
+                    ] : (object)[];
                     return [
                         'id'=>$user->id,
                         'first_name'=>$user->first_name,
@@ -174,7 +178,7 @@ class UserController extends Controller {
                         'contact_number'=>$user->contact_num,
                         'email'=>$user->email,
                         'username'=>$user->username,
-                        'user_role'=>$user->userRole(),
+                        'user_role'=>$userRole,
                         'address'=>$user->address,
                     ];
                 });
