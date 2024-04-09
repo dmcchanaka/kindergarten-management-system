@@ -15,6 +15,7 @@ export interface User {
     userAccessLevel: number;
     userRole: string;
     logo: string;
+    initialLogin: boolean;
 }
 
 export interface Credentials {
@@ -38,6 +39,7 @@ export const useAuthStore = defineStore("auth", () => {
     const errors = ref({});
     const user = ref<User | null>(null);
     const isAuthenticated = ref(!!JwtService.getToken() || JwtService.getToken() !== 'undefined');
+    const isPasswordReset = ref(!!user.value?.initialLogin);
     const organization = ref({});
     const userPermissions = ref<UserPermission[]>([]);
     const navBarList = ref<UserMenu[]>([]);
@@ -120,6 +122,23 @@ export const useAuthStore = defineStore("auth", () => {
         purgeAuth();
     }
 
+    function resetPassword(userPassword: any){
+        return ApiService.post("/password-reset", userPassword)
+        .then(({ data }) => {
+            errors.value = {};
+            return data;
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                const error = {
+                    message : response.data.errors,
+                    status : response.status,
+                }
+                setError(error);
+            }
+        });
+    }
+
     return {
         errors,
         user,
@@ -129,6 +148,8 @@ export const useAuthStore = defineStore("auth", () => {
         logout,
         organization,
         userPermissions,
-        navBarList
+        navBarList,
+        resetPassword,
+        isPasswordReset
     }
 });

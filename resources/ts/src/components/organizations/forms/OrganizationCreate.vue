@@ -7,7 +7,7 @@
                   <h6 class="mb-0 text-header">{{ translate('organizationInformations') }}</h6>
               </div>
               <div class="flex-none w-1/2 max-w-full px-3 text-right">
-                  <router-link to="/organizations" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                  <router-link to="/organizations" class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">
                       <fa icon="arrow-left" />
                       &nbsp;&nbsp;{{ translate('back') }}
                   </router-link>
@@ -86,7 +86,7 @@
                         type="submit" 
                         @click.prevent="submitOrganizationFormData"
                         :disabled="form.loading"
-                        class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                        class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">
                         <span v-if="!form.loading">{{ translate('submit') }}</span>
                         <span v-if="form.loading">
                           {{ translate('pleaseWait') }}...

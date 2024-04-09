@@ -7,7 +7,7 @@
                         <h6 class="mb-0 text-header">{{ translate('chatRoom') }}</h6>
                     </div>
                     <div class="flex-none w-1/2 max-w-full px-3 text-right">
-                        <router-link to="/news-feed" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                        <router-link to="/news-feed" class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">
                             <fa icon="arrow-left" />
                             &nbsp;&nbsp;{{ translate('back') }}
                         </router-link>
@@ -22,13 +22,13 @@
                         <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
                             <ul class="flex flex-wrap -mb-px mb-1">
                                 <li class="me-2">
-                                    <a @click="selectTab('private')" :class="{ 'active bg-lime-500 hover:bg-lime-400 text-white hover:text-white': chatApp.activeTab === 'private' }" class="relative inline-block p-4 cursor-pointer rounded-lg border border-lime-200 hover:bg-lime-100 text-xl font-custom">
+                                    <a @click="selectTab('private')" :class="{ 'active bg-lime-500 hover:bg-lime-400 text-white hover:text-white': chatApp.activeTab === 'private' }" class="relative inline-block p-4 cursor-pointer rounded-lg border border-lime-200 hover:bg-lime-100 text-sm font-poppins">
                                         {{ translate('private') }}
                                         <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900" v-if="computedPrivateChatUnseenMsg">{{ computedPrivateChatUnseenMsg }}</div>
                                     </a>
                                 </li>
                                 <li class="me-2">
-                                    <a @click="selectTab('group')" :class="{ 'active bg-lime-500 hover:bg-lime-400 text-white hover:text-white': chatApp.activeTab === 'group' }" class="relative inline-block p-4 cursor-pointer rounded-lg border border-lime-200 hover:bg-lime-100 text-xl font-custom" aria-current="page">
+                                    <a @click="selectTab('group')" :class="{ 'active bg-lime-500 hover:bg-lime-400 text-white hover:text-white': chatApp.activeTab === 'group' }" class="relative inline-block p-4 cursor-pointer rounded-lg border border-lime-200 hover:bg-lime-100 text-sm font-poppins" aria-current="page">
                                         {{ translate('group') }}
                                         <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900" v-if="computedChatRoomUnseenMsg">{{ computedChatRoomUnseenMsg }}</div>
                                     </a>
@@ -53,7 +53,7 @@
                             </div>
                             <div v-if="chatApp.activeTab === 'group'">
                                 <div class="py-2">
-                                    <a v-if="!chatApp.groupChatCreateStatus" @click="createGroupChat"  class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                                    <a v-if="!chatApp.groupChatCreateStatus" @click="createGroupChat"  class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">
                                         <fa icon="plus" />
                                         &nbsp;&nbsp;{{ translate('createNewGroup') }}
                                     </a>
@@ -86,7 +86,7 @@
                                             type="submit" 
                                             @click.prevent="submitChatRoom"
                                             :disabled="chatApp.loading"
-                                            class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                                            class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">
                                             <span v-if="!chatApp.loading">{{ translate('submit') }}</span>
                                             <span v-if="chatApp.loading">
                                                 {{ translate('pleaseWait') }}...
@@ -190,7 +190,7 @@
                             <!--chat footer-->
                             <div class="flex items-center bg-white rounded-bl-md rounded-br-md">
                                 <input type="text" v-model="chatApp.message" class="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-400" @keydown.enter.prevent="send" />
-                                <button ref="submitButton" class="ml-2 inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom" @click.prevent="send" :disabled="chatApp.loading">
+                                <button ref="submitButton" class="ml-2 inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins" @click.prevent="send" :disabled="chatApp.loading">
                                     <span v-if="!chatApp.loading">Send</span>
                                     <span v-if="chatApp.loading">
                                         <div class="text-center">

@@ -15,11 +15,11 @@
                             <fa icon="school" />&nbsp;&nbsp;{{ studentForm.org }}
                         </p>
                     </div>
-                    <router-link to="/students" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                    <router-link to="/students" class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">
                         <fa icon="arrow-left" />
                         &nbsp;&nbsp;{{ translate('back') }}
                     </router-link>
-                    <router-link v-if="isPermittedRoute('student-development')" to="/student-development" class="inline-block px-6 py-2 ml-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                    <router-link v-if="isPermittedRoute('student-development')" to="/student-development" class="inline-block px-4 py-3 ml-2 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">
                         <fa icon="pen-to-square" />
                         &nbsp;&nbsp;{{ translate('studentDevelopment') }}
                     </router-link>

@@ -22,7 +22,7 @@
                                         <p class="mb-5 text-sm">{{ latestNewsFeed?.description }}</p>
                                         
                                         <div class="mt-auto" v-if="latestNewsFeed?.title">
-                                            <a @click.prevent="viewContent(latestNewsFeed?.id)" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">
+                                            <a @click.prevent="viewContent(latestNewsFeed?.id)" class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">
                                             &nbsp;&nbsp;{{ translate('readMore') }}
                                             </a>
                                         </div>
@@ -73,7 +73,7 @@
                                 </a>
                                 <p class="mb-6 leading-normal text-sm">{{ truncateText(item.description) }}</p>
                                 <div class="flex items-center justify-between">
-                                    <button @click.prevent="viewContent(item?.id)" type="button" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom">{{ translate('readMore') }}</button>
+                                    <button @click.prevent="viewContent(item?.id)" type="button" class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">{{ translate('readMore') }}</button>
                                 </div>
                             </div>
                         </div>
