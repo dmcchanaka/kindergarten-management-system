@@ -53,7 +53,9 @@ class UserController extends Controller {
                     'lastName' => $user->last_name,
                     'email' => $user->email,
                     'userAccessLevel' => $user->u_tp_id,
-                    'userRole'=>$user->userRole()
+                    'userRole'=>$user->userRole(),
+                    'logo' => $user->logo_url,
+                    'initialLogin'=>$user->userFirstLoginAttempt(),
                 ];
 
                 /**Organization info */
@@ -102,7 +104,8 @@ class UserController extends Controller {
                     'email' => $user->email,
                     'userAccessLevel' => $user->u_tp_id,
                     'userRole' => $user->userRole(),
-                    'logo' => $user->logo_url
+                    'logo' => $user->logo_url,
+                    'initialLogin'=>$user->userFirstLoginAttempt(),
                 ];
     
                 /**Organization info */
@@ -415,7 +418,7 @@ class UserController extends Controller {
         $data = $request->all();
 
         $rules = [
-            'password' => ['required', 'string', 'min:3', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/[A-Z]/', 'regex:/\d/', 'regex:/[#?!@$%^&*-]/'],
         ];
 
         $attributes = [
@@ -501,6 +504,57 @@ class UserController extends Controller {
                 'result'=>false,
                 'errors'=>['An error occurred: '.$e->getMessage()]
             ],500);
+        }
+    }
+
+    public function passwordReset(Request $request){
+        $data = $request->all();
+
+        $rules = [
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/[A-Z]/', 'regex:/\d/', 'regex:/[#?!@$%^&*-]/'],
+        ];
+
+        $attributes = [
+            'password' => 'password',
+        ];
+
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $user = User::findOrFail($request['id']);
+            $user->password = Hash::make($request->input('password'));
+            if(is_null($user->initial_login_at)){
+                $user->initial_login_at = date('Y-m-d H:i:s');
+            }
+            $user->save();
+            DB::commit();
+    
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfully updated'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'result' => false,
+                'errors' => $e->getMessage()
+            ], 500);
         }
     }
 }

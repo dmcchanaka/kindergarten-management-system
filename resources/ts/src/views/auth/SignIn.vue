@@ -1,17 +1,17 @@
 <template>
     <div class="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
-        <div class="md:w-1/2 px-5">
-            <h2 class="text-title font-bold text-[#002D74] header">{{ translate('login') }}</h2>
+        <div class="px-10">
+            <h2 class="text-title font-bold text-[#002D74] header text-center">{{ translate('login') }}</h2>
             <!-- <p class="text-sm mt-4 text-[#002D74]">{{ translate('loginSubTitle') }}</p> -->
             <form class="mt-6" @submit.prevent="onSubmitLogin">
             <div>
-                <label class="block text-gray-700">{{ translate('username') }}</label>
-                <input v-model="login.username" :placeholder="translate('enterUserame')" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autofocus required>
+                <label class="block text-[#002D74]">{{ translate('username') }}</label>
+                <input v-model="login.username" :placeholder="translate('enterUserame')" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border border-lime-500 focus:border-lime-400 focus:bg-white focus:outline-none" autofocus required>
             </div>
 
             <div class="mt-4">
-                <label class="block text-gray-700">{{ translate('password') }}</label>
-                <input type="password" v-model="login.password" :placeholder="translate('enterPassword')" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
+                <label class="block text-[#002D74]">{{ translate('password') }}</label>
+                <input type="password" v-model="login.password" :placeholder="translate('enterPassword')" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border border-lime-500 focus:border-lime-400
                     focus:bg-white focus:outline-none" required>
             </div>
 
@@ -21,7 +21,7 @@
 
             <button 
                 ref="submitButton" 
-                class="w-full block bg-blue-500 hover:bg-blue-800 focus:bg-blue-800 text-white font-semibold rounded-lg px-4 py-3 mt-6"
+                class="w-full block bg-lime-500 hover:bg-lime-400 focus:bg-lime-600 text-white font-semibold rounded-lg px-4 py-3 mt-6"
                 :disabled="loading"
                 >
                 <span v-if="!loading">{{ translate('logIn') }}</span>
@@ -37,8 +37,8 @@
                 <hr class="border-gray-500" />
             </div>
             <div class="text-sm flex justify-between items-center mt-3 text-[#002D74]">
-                <p class="mt-5">{{ translate('changeLanguage') }}</p>
-                <select @click="selectLanguage" v-model="i18n.locale.value" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 blockl p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <p class="mt-5 text-[#002D74]">{{ translate('changeLanguage') }}</p>
+                <select @click="selectLanguage" v-model="i18n.locale.value" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-lime-500 blockl p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option v-for="(country, code) in countries" :key="code" :value="code">
                         {{ country.name.value }}
                     </option>
@@ -46,9 +46,9 @@
             </div>
         </div>
 
-        <div class="w-1/2 md:block hidden ">
+        <!-- <div class="w-1/2 md:block hidden ">
             <img :src="getAssetPath('media/backgrounds/bg-02.png')" style="height: 100%;width: 100%;" class="rounded-2xl" alt="page img">
-        </div>
+        </div> -->
 
         </div>
     <div>
@@ -108,8 +108,10 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      if (store.isAuthenticated) {
+      if (store.isAuthenticated && store.isPasswordReset) {
         router.push({ name: "dashboard" });
+      } else {
+        signOut();
       }
     });
 
@@ -134,7 +136,11 @@ export default defineComponent({
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: translate('okGotIt') + '!'
             }).then(() => {
-                router.push({ name: "dashboard" });
+                if(store.user?.initialLogin === true){
+                    resetPassword();
+                } else {
+                    router.push({ name: "dashboard" });
+                }
             });
       } else {
         Swal.fire({
@@ -150,6 +156,59 @@ export default defineComponent({
       submitButton.value!.disabled = false;
       loading.value = false;
     }
+
+    const resetPassword = () => {
+        Swal.fire({
+            title: "Reset your password",
+            input: "password",
+            showCancelButton: true,
+            confirmButtonText: "Reset",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: "#d33",
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            footer: '<div style="text-align: center;">'
+                + '<p style="font-weight: bold">Password Policy</p>'
+                + '<ul style="text-align: left;list-style-type: none; padding-left: 0;">'
+                    + '<li>- At least 8 characters</li>'
+                    + '<li>- 1 capital letter</li>'
+                    + '<li>- 1 number</li>'
+                    + '<li>- 1 special character (e.g., #)</li>'
+                + '</ul>'
+            + '</div>',
+            preConfirm: async (password) => {
+                try {
+                    const inputs = {
+                        id: store.user?.userId,
+                        password: password,
+                        password_confirmation: password
+                    };
+                    await store.resetPassword(inputs);
+                    const error = Object.values(store.errors);
+                    if (error.length === 0) {
+
+                    } else {
+                        Swal.showValidationMessage(`
+                            Request failed: ${error[0].password}
+                        `);
+                    }
+                } catch (error) {
+                }
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.push({ name: "dashboard" });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                signOut();
+            }
+        });
+    }
+
+    const signOut = () => {
+      store.logout();
+      router.push({ name: "sign-in" });
+    };
 
     //select induvidual language
     const selectLanguage = (event) => {
