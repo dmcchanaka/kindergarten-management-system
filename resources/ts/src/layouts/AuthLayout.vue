@@ -1,5 +1,5 @@
 <template>
-    <section class="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center bg-cover" :style="`background-image: url('/media/backgrounds/bg-01.png')`">
+    <section class="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center bg-cover" :style="`background-image: url('/media/backgrounds/bg-03.png')`">
         <router-view></router-view>
     </section>
 </template>
