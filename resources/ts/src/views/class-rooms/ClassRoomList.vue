@@ -6,7 +6,7 @@
                     <h6 class="mb-0 text-header">{{ translate('classRoomsList') }}</h6>
                 </div>
                 <div class="flex-none w-1/2 max-w-full px-0 mb-2 text-right">
-                    <router-link v-if="isPermittedRoute('add-class-room')" to="/add-class-room" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom"> 
+                    <router-link v-if="isPermittedRoute('add-class-room')" to="/add-class-room" class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins"> 
                         <fa icon="plus" />&nbsp;&nbsp;{{ translate('addClassRoom') }}
                     </router-link>
                 </div>

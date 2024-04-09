@@ -739,7 +739,8 @@ module.exports = {
       serif: ['SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace', "serif"],
       body: ["Roboto", "sans-serif"],
       awesome: ["FontAwesome"],
-      custom: ["Nanum Pen Script"]
+      custom: ["Nanum Pen Script"],
+      poppins: ["Poppins"]
     },
     fontSize: ({ theme }) => ({
       ...theme("spacing"),

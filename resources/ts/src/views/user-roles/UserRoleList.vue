@@ -7,7 +7,7 @@
                     <h6 class="mb-0 text-header">{{ translate('userRoleList') }}</h6>
                 </div>
                 <div class="flex-none w-1/2 max-w-full px-0 mb-2 text-right">
-                    <router-link to="/add-user-role" class="inline-block px-6 py-2 text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-lg ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-custom"> 
+                    <router-link to="/add-user-role" class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins"> 
                         <fa icon="plus" />&nbsp;&nbsp;{{ translate('addUserRole') }}
                     </router-link>
                 </div>
@@ -33,9 +33,9 @@
                 <a @click="editUserType(userRole.role_id)" class="cursor-pointer mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
                     <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
                 </a>
-                <a class="cursor-pointer text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
+                <!-- <a class="cursor-pointer text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
                     <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
-                </a>
+                </a> -->
             </template>
         </Datatable>
     </div>

@@ -21,7 +21,7 @@
 
             <button 
                 ref="submitButton" 
-                class="w-full block bg-lime-500 hover:bg-lime-400 focus:bg-blue-800 text-white font-semibold rounded-lg px-4 py-3 mt-6"
+                class="w-full block bg-lime-500 hover:bg-lime-400 focus:bg-lime-600 text-white font-semibold rounded-lg px-4 py-3 mt-6"
                 :disabled="loading"
                 >
                 <span v-if="!loading">{{ translate('logIn') }}</span>
