@@ -29,7 +29,8 @@ class User extends Authenticatable
         'last_name',
         'address',
         'phone_number',
-        'logo_url'
+        'logo_url',
+        'initial_login_at'
     ];
 
     /**
@@ -75,5 +76,9 @@ class User extends Authenticatable
                 ->where('seen', 1)
                 ->whereNull('group_id')
                 ->where('receiver_id', auth()->user()->id);
+    }
+
+    public function userFirstLoginAttempt(){
+        return is_null($this->initial_login_at);
     }
 }

@@ -108,8 +108,10 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      if (store.isAuthenticated) {
+      if (store.isAuthenticated && store.isPasswordReset) {
         router.push({ name: "dashboard" });
+      } else {
+        signOut();
       }
     });
 
@@ -134,7 +136,11 @@ export default defineComponent({
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: translate('okGotIt') + '!'
             }).then(() => {
-                router.push({ name: "dashboard" });
+                if(store.user?.initialLogin === true){
+                    resetPassword();
+                } else {
+                    router.push({ name: "dashboard" });
+                }
             });
       } else {
         Swal.fire({
@@ -150,6 +156,59 @@ export default defineComponent({
       submitButton.value!.disabled = false;
       loading.value = false;
     }
+
+    const resetPassword = () => {
+        Swal.fire({
+            title: "Reset your password",
+            input: "password",
+            showCancelButton: true,
+            confirmButtonText: "Reset",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: "#d33",
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            footer: '<div style="text-align: center;">'
+                + '<p style="font-weight: bold">Password Policy</p>'
+                + '<ul style="text-align: left;list-style-type: none; padding-left: 0;">'
+                    + '<li>- At least 8 characters</li>'
+                    + '<li>- 1 capital letter</li>'
+                    + '<li>- 1 number</li>'
+                    + '<li>- 1 special character (e.g., #)</li>'
+                + '</ul>'
+            + '</div>',
+            preConfirm: async (password) => {
+                try {
+                    const inputs = {
+                        id: store.user?.userId,
+                        password: password,
+                        password_confirmation: password
+                    };
+                    await store.resetPassword(inputs);
+                    const error = Object.values(store.errors);
+                    if (error.length === 0) {
+
+                    } else {
+                        Swal.showValidationMessage(`
+                            Request failed: ${error[0].password}
+                        `);
+                    }
+                } catch (error) {
+                }
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.push({ name: "dashboard" });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                signOut();
+            }
+        });
+    }
+
+    const signOut = () => {
+      store.logout();
+      router.push({ name: "sign-in" });
+    };
 
     //select induvidual language
     const selectLanguage = (event) => {
