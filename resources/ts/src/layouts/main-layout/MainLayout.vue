@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
+  <div :style="{ backgroundColor: backgroundColor }" class="min-h-screen flex flex-col m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
     <Aside @close-sidebar="closeSideBar" :class="{ 'translate-x-0': isSidebarOpen, 'shadow-soft-xl': isSidebarOpen }" :style="{ 'margin-left': isSidebarOpen ? null : '0rem' }"></Aside>
 
     <!-- Content Area -->
