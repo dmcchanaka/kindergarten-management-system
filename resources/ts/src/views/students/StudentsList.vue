@@ -54,6 +54,10 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6 cursor-pointer">{{ users.special_notice }}</a>
             </template>
             <template v-slot:actions="{ row: users }">
+                <a  @click="showStudentProfile(users.id)"
+                    class="cursor-pointer mr-2 text-yellow-500 border border-yellow-500 hover:bg-yellow-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
+                    <fa icon="circle-info" class="text-yellow-500 group-hover:text-white"></fa>
+                </a>
                 <a v-if="isPermittedRoute('edit-student')" @click="editStudent(users.id)"
                     class="cursor-pointer mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
                     <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>

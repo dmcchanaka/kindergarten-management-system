@@ -220,7 +220,7 @@ const routes: Array<RouteRecordRaw> = [
               name: "posts",
               component: () => import("@/views/gallery/GalleryList.vue"),
               meta: {
-                pageTitle: "posts",
+                pageTitle: "postList",
                 breadcrumbs: ["postList"],
               },
             },
@@ -315,7 +315,7 @@ const routes: Array<RouteRecordRaw> = [
             name: "events",
             component: () => import("@/views/event-calendar/EventsList.vue"),
             meta: {
-              pageTitle: "events",
+              pageTitle: "eventList",
               breadcrumbs: ["events"],
 
             },
