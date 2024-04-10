@@ -9,7 +9,7 @@
                 <input type="text" v-model="search" @input="searchItems()"
                     class="flex-grow max-w-xs min-w-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     :placeholder="translate('searchPost')" />
-                <router-link v-if="isPermittedRoute('add-gallery')" to="/add-gallery"
+                <router-link v-if="isPermittedRoute('add-post')" to="/add-post"
                     class="ml-3 inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">
                     <fa icon="plus" />&nbsp;&nbsp;{{ translate('addPost') }}
                 </router-link>
@@ -42,12 +42,12 @@
                 <a class="mb-1 text-gray-800 fw-bold text-hover-primary fs-6" v-else>All</a>
             </template>
             <template v-slot:actions="{ row: gallery }">
-                <a v-if="isPermittedRoute('edit-gallery')" @click="editGallery(gallery.id)"
+                <a v-if="isPermittedRoute('edit-post')" @click="editGallery(gallery.id)"
                     class="cursor-pointer mr-2 text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-purple-500 dark:text-purple-500 dark:hover:text-white dark:focus:ring-purple-800 dark:hover:bg-purple-500 group">
                     <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
                 </a>
                 <span v-else>&nbsp;</span>
-                <a v-if="isPermittedRoute('delete-gallery')" @click="deleteGallery(gallery.id)"
+                <a v-if="isPermittedRoute('delete-post')" @click="deleteGallery(gallery.id)"
                     class="cursor-pointer text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
                     <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
                 </a>
@@ -227,7 +227,7 @@ export default defineComponent({
 
         const editGallery = (contentId) => {
             store.saveContentId(contentId);
-            router.push({ name: "edit-gallery" });
+            router.push({ name: "edit-post" });
         }
 
         const deleteGallery = async (contentId) => {
