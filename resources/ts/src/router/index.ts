@@ -216,30 +216,30 @@ const routes: Array<RouteRecordRaw> = [
               },
             },
             {
-              path: "/gallery",
-              name: "gallery",
+              path: "/posts",
+              name: "posts",
               component: () => import("@/views/gallery/GalleryList.vue"),
               meta: {
-                pageTitle: "post",
+                pageTitle: "posts",
                 breadcrumbs: ["postList"],
               },
             },
             {
-              path: "/add-gallery",
-              name: "add-gallery",
+              path: "/add-post",
+              name: "add-post",
               component: () => import("@/components/gallery/forms/AddGallery.vue"),
               meta: {
-                pageTitle: "post",
-                breadcrumbs: ["post", "addPost"],
+                pageTitle: "posts",
+                breadcrumbs: ["posts", "addPost"],
               },
             },
             {
-              path: "/edit-gallery",
-              name: "edit-gallery",
+              path: "/edit-post",
+              name: "edit-post",
               component: () => import("@/components/gallery/forms/EditGallery.vue"),
               meta: {
-                pageTitle: "post",
-                breadcrumbs: ["post", "editPost"],
+                pageTitle: "posts",
+                breadcrumbs: ["posts", "editPost"],
               },
             },
             {
