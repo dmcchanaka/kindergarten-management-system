@@ -2,7 +2,7 @@
     <div class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="flex flex-wrap -mx-3">
             <div class="flex items-center flex-none w-full sm:w-1/2 max-w-full px-3 mb-2 sm:mb-0">
-                <h6 class="mb-0 text-sub-header">{{ translate('eventCalendar') }}</h6>
+                <!-- <h6 class="mb-0 text-sub-header">{{ translate('eventCalendar') }}</h6> -->
             </div>
             <div class="flex-none w-full sm:w-1/2 max-w-full px-3 mb-2 flex items-center justify-end">
                 <router-link v-if="isPermittedRoute('add-event')" to="/add-event"
@@ -13,10 +13,6 @@
         </div>
         <FullCalendar :options="calendarOptions" />
     </div>
-    <!-- <div>
-        <button @click="toggleWeekends">Toggle Weekends</button>
-        <FullCalendar :options="calendarOptions" />
-    </div> -->
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
@@ -48,6 +44,8 @@ export default defineComponent({
             }
         };
 
+        console.log(i18n.locale.value);
+
         const isPermittedRoute = (currentRoute) => {
             if (authStore.userPermissions.length > 0) {
                 return authStore.userPermissions.some(permission => permission.name === currentRoute);
@@ -58,12 +56,22 @@ export default defineComponent({
             plugins: any[];
             initialView: string;
             events: { title: string; date: string }[];
-            locale: string;
+            locale: any;
+            headerToolbar: object;
+            buttonText: object;
         }>({
             plugins: [dayGridPlugin, interactionPlugin],
             initialView: 'dayGridMonth',
             events: [],
-            locale: i18n.locale.value
+            locale: computed(() => i18n.locale.value),
+            headerToolbar: {
+                left: "",
+                center: "title",
+                right: "today prev,next"
+            },
+            buttonText: {
+                today: computed(() => translate('today')) // Custom text for the "Today" button
+            },
         });
 
         onMounted(async () => {
