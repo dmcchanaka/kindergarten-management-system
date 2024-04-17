@@ -347,11 +347,11 @@ const messages = {
         privacyNotice: "Datenschutz",
         help: "Hilfe",
         today: "Heute",
-        forgotPassword: "Wachtwoord vergeten",
+        forgotPassword: "Passwort vergessen",
         passwordResetLinkHasBeenSent: "Wachtwoord Reset Link is verzonden",
         resetPassword: "Wachtwoord opnieuw instellen",
         somethingWentWrong: "Er is iets fout gegaan",
-        backToLogin: "Terug naar Inloggen"
+        backToLogin: "Zurück zur Anmeldung"
     },
 };
 
