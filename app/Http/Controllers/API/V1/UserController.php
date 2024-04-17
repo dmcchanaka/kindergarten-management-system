@@ -2,12 +2,14 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendPasswordResetLink;
 use App\Models\GeneralSetting;
 use App\Models\Organization;
 use App\Models\Permission;
 use App\Models\User;
 use App\Models\UserPermission;
 use App\Models\UserType;
+use App\Notifications\PasswordReset;
 use App\Traits\UserAllocation;
 use App\Validators\CustomValidator;
 use Exception;
@@ -20,6 +22,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Notification;
 
 class UserController extends Controller {
 
@@ -549,6 +553,123 @@ class UserController extends Controller {
                 'result' => true,
                 'message' => 'Record has been successfully updated'
             ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'result' => false,
+                'errors' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function forgotPassword(Request $request){
+        $data = $request->all();
+
+        $rules = [
+            'email' => ['required', 'email', 'exists:users'],
+        ];
+
+        $attributes = [
+            'email' => 'email',
+        ];
+
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $email = $request->email;
+            $token = Str::random(65);
+
+            DB::table('password_reset_tokens')->insert([
+                'email'=>$email,
+                'token'=>$token,
+                'created_at'=>now()->addHours(1)
+            ]);
+
+            DB::commit();
+
+            $user = User::whereEmail($email)->first();
+            
+            Notification::send($user, new PasswordReset($token));
+
+            return response()->json([
+                'result' => true,
+                'message' => 'Record has been successfully sent'
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'result' => false,
+                'errors' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function resetPassword(Request $request){
+        $data = $request->all();
+
+        $rules = [
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/[A-Z]/', 'regex:/\d/', 'regex:/[#?!@$%^&*-]/'],
+            'token' => ['required', 'exists:password_reset_tokens,token']
+        ];
+
+        $attributes = [
+            'password' => 'password',
+        ];
+
+        $validator = CustomValidator::validate($data, $rules, $attributes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            $formattedErrors = [];
+
+            foreach ($errors as $field => $messages) {
+                $formattedErrors[$field] = $messages[0];
+            }
+
+            return response()->json([
+                'result' => false,
+                "errors" => $formattedErrors,
+            ], 403);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $token = DB::table('password_reset_tokens')->where('token', $request->token)->first();
+            if($token){
+                $user = User::whereEmail($token->email)->first();
+                $user->password = Hash::make($request->password);
+                $user->save();
+
+                $token = DB::table('password_reset_tokens')->where('token', $request->token)->delete();
+                DB::commit();
+                return response()->json([
+                    'result' => true,
+                    'message' => 'Your password has been successfully reset'
+                ], 200);
+            } else {
+                return response()->json([
+                    'result' => false,
+                    "errors" => 'Incorrect or expired token',
+                ], 404);
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([

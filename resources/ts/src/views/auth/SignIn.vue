@@ -16,7 +16,7 @@
             </div>
 
             <div class="text-right mt-2">
-                <!-- <a href="#" class="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700">Forgot Password?</a> -->
+                <router-link to="forgot-password" class="text-sm font-semibold text-gray-700 hover:text-lime-500 focus:text-lime-500">{{ translate('forgotPassword') }}?</router-link>
             </div>
 
             <button 

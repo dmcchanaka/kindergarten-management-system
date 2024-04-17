@@ -15,6 +15,8 @@ use App\Http\Controllers\API\V1\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [UserController::class, 'login'])->name('login');
+Route::post('forgot', [UserController::class, 'forgotPassword'])->name('forgot');
+Route::post('reset', [UserController::class, 'resetPassword'])->name('reset');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('verify_token', [UserController::class, 'verifyToken']);

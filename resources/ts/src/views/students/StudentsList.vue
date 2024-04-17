@@ -3,7 +3,7 @@
         class="w-full p-4 mt-5 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="flex flex-wrap -mx-3">
             <div class="flex items-center flex-none w-full sm:w-1/2 max-w-full px-3 mb-2 sm:mb-0">
-                <h6 class="mb-0 text-sub-header">{{ translate('studentsList') }}</h6>
+                <!-- <h6 class="mb-0 text-sub-header">{{ translate('studentsList') }}</h6> -->
             </div>
             <div class="flex-none w-full sm:w-1/2 max-w-full px-3 mb-2 flex items-center justify-end">
                 <input type="text" v-model="search" @input="searchItems()"
