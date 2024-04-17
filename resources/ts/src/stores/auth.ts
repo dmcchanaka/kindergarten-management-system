@@ -43,6 +43,7 @@ export const useAuthStore = defineStore("auth", () => {
     const organization = ref({});
     const userPermissions = ref<UserPermission[]>([]);
     const navBarList = ref<UserMenu[]>([]);
+    const formDataErrors = ref({});
 
     function setAuth(authUser: User) {
         isAuthenticated.value = true;
@@ -139,6 +140,58 @@ export const useAuthStore = defineStore("auth", () => {
         });
     }
 
+    function forgotPassword(inputs: any) {
+        return ApiService.post("/forgot", inputs)
+        .then(({ data }) => {
+            errors.value = {};
+            return data;
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                let errorMsg = '';
+                if (typeof response.data.errors === 'object') {
+                    errorMsg = 'somethingWentWrong';
+                } else {
+                    errorMsg = response.data.errors;
+                }
+                const error = {
+                    message : errorMsg,
+                    status : response.status,
+                }
+                setError(error);
+                setFormDataErrors(response.data.errors);
+            }
+        });
+    }
+
+    function setFormDataErrors(error: any) {
+        formDataErrors.value = { ...error };
+    }
+
+    function passwordReset(inputs: any) {
+        return ApiService.post("/reset", inputs)
+        .then(({ data }) => {
+            errors.value = {};
+            return data;
+        })
+        .catch(({ response }) => {
+            if (response.status !== 200) {
+                let errorMsg = '';
+                if (typeof response.data.errors === 'object') {
+                    errorMsg = 'somethingWentWrong';
+                } else {
+                    errorMsg = response.data.errors;
+                }
+                const error = {
+                    message : errorMsg,
+                    status : response.status,
+                }
+                setError(error);
+                setFormDataErrors(response.data.errors);
+            }
+        });
+    }
+
     return {
         errors,
         user,
@@ -150,6 +203,9 @@ export const useAuthStore = defineStore("auth", () => {
         userPermissions,
         navBarList,
         resetPassword,
-        isPasswordReset
+        isPasswordReset,
+        forgotPassword,
+        formDataErrors,
+        passwordReset
     }
 });

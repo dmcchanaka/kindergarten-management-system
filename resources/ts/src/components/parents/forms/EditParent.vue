@@ -5,7 +5,7 @@
             <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
                 <div class="flex flex-wrap mx-3">
                     <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                        <h6 class="mb-0 text-header">{{ translate('parents') }}</h6>
+                        <!-- <h6 class="mb-0 text-header">{{ translate('parents') }}</h6> -->
                     </div>
                     <div class="flex-none w-1/2 max-w-full px-3 text-right">
                         <router-link to="/parents"

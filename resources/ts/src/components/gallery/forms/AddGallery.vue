@@ -4,7 +4,7 @@
             <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
                 <div class="flex flex-wrap mx-3">
                     <div class="flex items-center flex-none w-1/2 max-w-full px-3">
-                        <h6 class="mb-0 text-header">{{ translate('posts') }}</h6>
+                        <!-- <h6 class="mb-0 text-header">{{ translate('posts') }}</h6> -->
                     </div>
                     <div class="flex-none w-1/2 max-w-full px-3 text-right">
                         <router-link to="/posts" class="inline-block px-4 py-3 text-center font-bold text-white uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-sm ease-soft-in shadow-soft-md bg-150 bg-lime-500 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 font-poppins">

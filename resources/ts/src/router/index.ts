@@ -6,15 +6,15 @@ const routes: Array<RouteRecordRaw> = [
         path: "/",
         component: () => import("@/layouts/AuthLayout.vue"),
         children: [
-            {
-                path: "/sign-in",
-                name: "sign-in",
-                component: () =>
-                    import("@/views/auth/SignIn.vue"),
-                meta: {
-                    pageTitle: "Sign In",
-                },
-            },
+          {
+              path: "/sign-in",
+              name: "sign-in",
+              component: () =>
+                  import("@/views/auth/SignIn.vue"),
+              meta: {
+                  pageTitle: "Sign In",
+              },
+          },
         ]
     },
     {
@@ -370,7 +370,31 @@ const routes: Array<RouteRecordRaw> = [
                 pageTitle: "Error 404",
             },
         },
-    ]
+      ]
+    },
+    {
+      path: "/forgot-password",
+      component: () => import("@/layouts/PasswordLayout.vue"),
+      children: [
+        {
+          path: "/forgot-password",
+          name: "forgot-password",
+          component: () =>
+              import("@/views/auth/ForgotPassword.vue"),
+          meta: {
+              pageTitle: "Forgot Password",
+          },
+        },
+        {
+          path: "/reset-password",
+          name: "reset-password",
+          component: () =>
+              import("@/views/auth/ResetPassword.vue"),
+          meta: {
+              pageTitle: "Reset Password",
+          },
+        },
+      ]
     },
     {
         path: "/:pathMatch(.*)*",
