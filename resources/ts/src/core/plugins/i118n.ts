@@ -170,7 +170,12 @@ const messages = {
         imprint: "Imprint",
         privacyNotice: "Privacy Notice",
         help: "Help",
-        today: "Today"
+        today: "Today",
+        forgotPassword: "Forgot Password",
+        passwordResetLinkHasBeenSent: "Password Reset Link Has Been Sent",
+        resetPassword: "Reset Password",
+        somethingWentWrong: "Something Went Wrong",
+        backToLogin: "Back To Login"
     },
     de: {
         home: "Startseite",
@@ -341,7 +346,12 @@ const messages = {
         imprint: "Impressum",
         privacyNotice: "Datenschutz",
         help: "Hilfe",
-        today: "Heute"
+        today: "Heute",
+        forgotPassword: "Wachtwoord vergeten",
+        passwordResetLinkHasBeenSent: "Wachtwoord Reset Link is verzonden",
+        resetPassword: "Wachtwoord opnieuw instellen",
+        somethingWentWrong: "Er is iets fout gegaan",
+        backToLogin: "Terug naar Inloggen"
     },
 };
 
