@@ -35,9 +35,10 @@ class PasswordReset extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $frontUrl = config('app.front_url');
         return (new MailMessage)
                     ->line('Password Reset notification.')
-                    ->action('Forgot Password', url('http://127.0.0.1:8000/reset-password?token='.$this->token))
+                    ->action('Forgot Password', url($frontUrl . '/reset-password?token='.$this->token))
                     ->line('Thank you for using our application!');
     }
 
