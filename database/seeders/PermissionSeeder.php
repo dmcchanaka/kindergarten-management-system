@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Permission;
+use App\Models\UserPermission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class PermissionSeeder extends Seeder
 {
@@ -212,31 +214,31 @@ class PermissionSeeder extends Seeder
                 'order' => 7,
             ],
             [
-                'name' => 'gallery',
-                'heading' => 'gallery',
-                'route' => 'gallery',
-                'icon' => 'images',
+                'name' => 'posts',
+                'heading' => 'posts',
+                'route' => 'posts',
+                'icon' => 'newspaper',
                 'order' => 8,
             ],
             [
-                'name' => 'add-gallery',
-                'heading' => 'gallery',
-                'route' => 'gallery',
-                'icon' => 'images',
+                'name' => 'add-post',
+                'heading' => 'posts',
+                'route' => 'posts',
+                'icon' => 'newspaper',
                 'order' => 8,
             ],
             [
-                'name' => 'edit-gallery',
-                'heading' => 'gallery',
-                'route' => 'gallery',
-                'icon' => 'images',
+                'name' => 'edit-post',
+                'heading' => 'posts',
+                'route' => 'posts',
+                'icon' => 'newspaper',
                 'order' => 8,
             ],
             [
-                'name' => 'delete-gallery',
-                'heading' => 'gallery',
-                'route' => 'gallery',
-                'icon' => 'images',
+                'name' => 'delete-post',
+                'heading' => 'posts',
+                'route' => 'posts',
+                'icon' => 'newspaper',
                 'order' => 8,
             ],
             [
@@ -312,9 +314,13 @@ class PermissionSeeder extends Seeder
         ];
 
         //remove all data from table
+        Schema::disableForeignKeyConstraints();
+        UserPermission::truncate();
         Permission::truncate();
+        Schema::enableForeignKeyConstraints();
 
         //add array data to table
+        $createdPermissions = [];
         foreach($permissions as $permission){
 
             $data = [
@@ -324,7 +330,53 @@ class PermissionSeeder extends Seeder
                 'icon' => $permission['icon'],
                 'order' => $permission['order'],
             ];
-            Permission::create($data);
+            $p = Permission::create($data);
+            $createdPermissions[$permission['name']] = $p->getKey();
+        }
+
+        // Define default permission groups
+        $teacherPermissions = [
+            'dashboard', 'my-profile',
+            'students', 'add-student', 'edit-student', 'delete-student', 'student-profile', 'student-development',
+            'posts', 'add-post', 'edit-post', 'delete-post',
+            'news-feed', 'news-feed-content',
+            'attendance', 'chat', 'calendar', 'events', 'add-event', 'edit-event', 'delete-event'
+        ];
+
+        $parentPermissions = [
+            'dashboard', 'my-profile',
+            'student-profile', 'student-development',
+            'posts',
+            'news-feed', 'news-feed-content',
+            'chat', 'calendar'
+        ];
+
+        // Seeding user_permissions: Principal (u_tp_id = 2) gets all permissions
+        foreach ($createdPermissions as $name => $id) {
+            UserPermission::create([
+                'u_tp_id' => 2,
+                'p_id' => $id,
+            ]);
+        }
+
+        // Teacher (u_tp_id = 3)
+        foreach ($teacherPermissions as $name) {
+            if (isset($createdPermissions[$name])) {
+                UserPermission::create([
+                    'u_tp_id' => 3,
+                    'p_id' => $createdPermissions[$name],
+                ]);
+            }
+        }
+
+        // Parent (u_tp_id = 4)
+        foreach ($parentPermissions as $name) {
+            if (isset($createdPermissions[$name])) {
+                UserPermission::create([
+                    'u_tp_id' => 4,
+                    'p_id' => $createdPermissions[$name],
+                ]);
+            }
         }
     }
 }

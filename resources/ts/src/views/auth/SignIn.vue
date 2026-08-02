@@ -11,8 +11,12 @@
 
             <div class="mt-4">
                 <label class="block text-[#002D74]">{{ translate('password') }}</label>
-                <input type="password" v-model="login.password" :placeholder="translate('enterPassword')" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border border-lime-500 focus:border-lime-400
-                    focus:bg-white focus:outline-none" required>
+                <div class="relative w-full">
+                    <input :type="showPassword ? 'text' : 'password'" v-model="login.password" :placeholder="translate('enterPassword')" class="w-full px-4 py-3 pr-10 rounded-lg bg-gray-200 mt-2 border border-lime-500 focus:border-lime-400 focus:bg-white focus:outline-none" required>
+                    <button type="button" @click="showPassword = !showPassword" class="absolute right-3 top-1/2 mt-1 -translate-y-1/2 text-gray-500 hover:text-lime-600 focus:outline-none">
+                        <fa :icon="showPassword ? 'eye-slash' : 'eye'" />
+                    </button>
+                </div>
             </div>
 
             <div class="text-right mt-2">
@@ -101,6 +105,7 @@ export default defineComponent({
 
     const submitButton = ref<HTMLButtonElement | null>(null);
     const loading = ref(false);
+    const showPassword = ref(false);
 
     const login = ref({
         username: "",
@@ -160,7 +165,15 @@ export default defineComponent({
     const resetPassword = () => {
         Swal.fire({
             title: "Reset your password",
-            input: "password",
+            html: '<div style="position: relative; width: 100%;">'
+                + '<input id="swal-password" type="password" class="swal2-input" placeholder="Password" style="width: 100%; box-sizing: border-box; padding-right: 45px; margin: 1em auto 0 auto;">'
+                + '<button type="button" id="toggle-password" style="position: absolute; right: 25px; top: 60%; transform: translateY(-50%); border: none; background: transparent; cursor: pointer; display: flex; align-items: center;">'
+                    + '<svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 24px; height: 24px; color: #6b7280;">'
+                        + '<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />'
+                        + '<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />'
+                    + '</svg>'
+                + '</button>'
+            + '</div>',
             showCancelButton: true,
             confirmButtonText: "Reset",
             confirmButtonColor: '#3085d6',
@@ -177,7 +190,30 @@ export default defineComponent({
                     + '<li>- 1 special character (e.g., #)</li>'
                 + '</ul>'
             + '</div>',
-            preConfirm: async (password) => {
+            didOpen: () => {
+                const passwordInput = document.getElementById('swal-password') as HTMLInputElement;
+                const toggleButton = document.getElementById('toggle-password');
+                const eyeIcon = document.getElementById('eye-icon');
+                if (toggleButton && passwordInput && eyeIcon) {
+                    toggleButton.addEventListener('click', () => {
+                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                        passwordInput.setAttribute('type', type);
+                        if (type === 'text') {
+                            eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.815 7.815L21 21m-2.956-2.956L14.39 14.39m0 0a3 3 0 11-4.143-4.143L14.39 14.39z" />';
+                        } else {
+                            eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />'
+                                + '<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />';
+                        }
+                    });
+                }
+            },
+            preConfirm: async () => {
+                const passwordInput = document.getElementById('swal-password') as HTMLInputElement;
+                const password = passwordInput ? passwordInput.value : '';
+                if (!password) {
+                    Swal.showValidationMessage('Password is required');
+                    return false;
+                }
                 try {
                     const inputs = {
                         id: store.user?.userId,
@@ -187,13 +223,15 @@ export default defineComponent({
                     await store.resetPassword(inputs);
                     const error = Object.values(store.errors);
                     if (error.length === 0) {
-
+                        return password;
                     } else {
                         Swal.showValidationMessage(`
                             Request failed: ${error[0].password}
                         `);
+                        return false;
                     }
                 } catch (error) {
+                    return false;
                 }
             },
         }).then((result) => {
@@ -225,7 +263,8 @@ export default defineComponent({
         selectLanguage,
         i18n,
         countries,
-        translate
+        translate,
+        showPassword
     }
   },
 });

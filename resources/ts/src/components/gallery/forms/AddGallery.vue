@@ -229,7 +229,7 @@ export default defineComponent({
             } else {
                 Swal.fire({
                     title: translate('opps') + '...',
-                    text: error[0] as string,
+                    text: translate(error[0] as string),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: translate('tryAgain') + '!'
@@ -252,7 +252,7 @@ export default defineComponent({
             } else {
                 Swal.fire({
                     title: translate('opps') + '...',
-                    text: error[0] as string,
+                    text: translate(error[0] as string),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: translate('tryAgain') + '!'
@@ -276,7 +276,7 @@ export default defineComponent({
                 galleryForm.value.studentId = "";
                 Swal.fire({
                     title: translate('opps') + '...',
-                    text: error[0] as string,
+                    text: translate(error[0] as string),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: translate('tryAgain') + '!'
@@ -353,7 +353,7 @@ export default defineComponent({
             } else {
                 Swal.fire({
                     title: 'Oops...',
-                    text: error[0] as string,
+                    text: translate(error[0] as string),
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Try again!'

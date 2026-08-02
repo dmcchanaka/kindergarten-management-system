@@ -47,7 +47,7 @@
                     <fa icon="pen-to-square" class="text-purple-700 group-hover:text-white"></fa>
                 </a>
                 <span v-else>&nbsp;</span>
-                <a v-if="isPermittedRoute('delete-post')" @click="deleteGallery(gallery.id)"
+                <a v-if="isPermittedRoute('delete-gallery')" @click="deleteGallery(gallery.id)"
                     class="cursor-pointer text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 group">
                     <fa icon="trash-can" class="text-red-700 group-hover:text-white"></fa>
                 </a>
@@ -227,7 +227,7 @@ export default defineComponent({
 
         const editGallery = (contentId) => {
             store.saveContentId(contentId);
-            router.push({ name: "edit-post" });
+            router.push({ name: "edit-gallery" });
         }
 
         const deleteGallery = async (contentId) => {

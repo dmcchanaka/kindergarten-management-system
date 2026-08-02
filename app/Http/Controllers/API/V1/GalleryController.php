@@ -115,7 +115,35 @@ class GalleryController extends Controller
             }
             DB::commit();
 
-            dispatch(new SendNewsFeedNotification($data));
+            $activity->load(['student.guardian', 'class_room.students.guardian']);
+
+            if ($activity->student_id) {
+                if ($activity->student && $activity->student->guardian) {
+                    $notificationData = [
+                        [
+                            'parent_name' => $activity->student->guardian->name,
+                            'parent_email' => $activity->student->guardian->email,
+                        ]
+                    ];
+                } else {
+                    $notificationData = [];
+                }
+            } else {
+                $parents = [];
+                if ($activity->class_room && $activity->class_room->students) {
+                    foreach ($activity->class_room->students as $student) {
+                        if ($student->guardian) {
+                            $parents[] = [
+                                'parent_name' => $student->guardian->name,
+                                'parent_email' => $student->guardian->email,
+                            ];
+                        }
+                    }
+                }
+                $notificationData = $parents;
+            }
+
+            dispatch(new SendNewsFeedNotification($notificationData));
 
             return response()->json([
                 'result' => true,

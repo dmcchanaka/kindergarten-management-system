@@ -23,5 +23,15 @@ export default defineConfig({
             '@': path.resolve(__dirname, 'resources/ts/src/'),
             '~': path.resolve(__dirname, 'node_modules/')
         }
+    },
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        hmr: {
+            host: 'localhost'
+        },
+        watch: {
+            usePolling: true
+        }
     }
 });
