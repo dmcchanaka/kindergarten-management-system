@@ -12,7 +12,7 @@ services:
     volumes:
       - app-data:/var/www
       - ./.env:/var/www/.env
-    command: sh -c "mkdir -p /var/www/public/build && cp -rp /var/www/public/build-dist/. /var/www/public/build/ || true; php-fpm"
+    command: sh -c "mkdir -p /var/www/public/build && cp -rp /tmp/build-dist/. /var/www/public/build/ || true; php-fpm"
     networks:
       - kindergarten-network
 

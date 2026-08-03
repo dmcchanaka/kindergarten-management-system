@@ -38,8 +38,8 @@ WORKDIR /var/www
 # Copy existing application directory contents
 COPY . /var/www
 
-# Copy compiled assets from node-builder to a temporary build-dist folder
-COPY --from=node-builder /app/public/build /var/www/public/build-dist
+# Copy compiled assets from node-builder to a temporary folder outside the volume mount
+COPY --from=node-builder /app/public/build /tmp/build-dist
 
 # Install Composer dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-dev
