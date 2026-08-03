@@ -1,5 +1,7 @@
 # Stage 1: Build front-end assets
 FROM node:18-alpine AS node-builder
+ARG VITE_APP_API_URL
+ENV VITE_APP_API_URL=$VITE_APP_API_URL
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
